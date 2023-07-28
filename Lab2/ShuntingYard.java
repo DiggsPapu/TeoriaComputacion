@@ -48,7 +48,10 @@ public class ShuntingYard {
                     operatorStack.push('|');
                     break;                    
                 default:
-                    postfixStack.push(chars[i]);
+                    if (i!=0&&chars[i-1]=='*')
+                    {
+                        postfixStack.push(operatorStack.pop());
+                    } postfixStack.push(chars[i]);
                     break;
             }
         }
@@ -56,7 +59,6 @@ public class ShuntingYard {
         {
             postfixStack.push(operatorStack.pop());
         }
-        printShuntingYard();
     }
     private char[] translateToValidRegex(char[]chars)
     {
