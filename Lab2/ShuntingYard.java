@@ -6,63 +6,52 @@ public class ShuntingYard {
     public ShuntingYard(String string)
     {
         char[] chars = translateToValidRegex(string.toCharArray());
-        // for (int i = 0; i < chars.length; i++) {
-        //     switch (chars[i]) {
-        //         case ')':
-        //             if (!operatorStack.isEmpty())
-        //             {
-        //                 while (operatorStack.peek()!='(') {
-        //                     postfixStack.push(operatorStack.pop());
-        //                 }
-        //                 operatorStack.pop();
-        //             }
-        //             break;
-        //         case ']':
-        //             if (!operatorStack.isEmpty())
-        //             {
-        //                 while (operatorStack.peek()!='(') {
-        //                     postfixStack.push(operatorStack.pop());
-        //                 }
-        //                 operatorStack.pop();
-        //             }
-        //             break;
-        //         case '}':
-        //             if (!operatorStack.isEmpty())
-        //             {
-        //                 while (operatorStack.peek()!='(') {
-        //                     postfixStack.push(operatorStack.pop());
-        //                 }
-        //                 operatorStack.pop();
-        //             }
-        //             break;
-        //         case '\\':
-        //             postfixStack.push(chars[i++]);                    
-        //             break;
-        //         case '*':
-        //             if (!operatorStack.isEmpty())
-        //             {
-        //                 if (getPrecedence('*')>=getPrecedence(operatorStack.peek()))
-        //                 {
-        //                     postfixStack.push(operatorStack.pop());
-        //                 }
-        //             }
-        //             operatorStack.push('*');
-        //             break;                    
-        //         case '|':
-        //             if (!operatorStack.isEmpty())
-        //             {
-        //                 if (getPrecedence('*')>=getPrecedence(operatorStack.peek()))
-        //                 {
-        //                     postfixStack.push(operatorStack.pop());
-        //                 }
-        //             }
-        //             operatorStack.push('*');
-        //             break;                    
-        //         default:
-        //             postfixStack.push(chars[i]);
-        //             break;
-        //     }
-        // }
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]) {
+                case '(':
+                    operatorStack.push('(');
+                    break;
+                case ')':
+                    if (!operatorStack.isEmpty())
+                    {
+                        while (operatorStack.peek()!='(') {
+                            postfixStack.push(operatorStack.pop());
+                        }
+                        operatorStack.pop();
+                    }
+                    break;
+                case '\\':
+                    postfixStack.push(chars[i++]);                    
+                    break;
+                case '*':
+                    if (!operatorStack.isEmpty())
+                    {
+                        if (getPrecedence('*')>=getPrecedence(operatorStack.peek())&&operatorStack.peek()!='(')
+                        {
+                            postfixStack.push(operatorStack.pop());
+                        }
+                    }
+                    operatorStack.push('*');
+                    break;                    
+                case '|':
+                    if (!operatorStack.isEmpty())
+                    {
+                        if (getPrecedence('|')>=getPrecedence(operatorStack.peek())&&operatorStack.peek()!='(')
+                        {
+                            postfixStack.push(operatorStack.pop());
+                        }
+                    }
+                    operatorStack.push('|');
+                    break;                    
+                default:
+                    postfixStack.push(chars[i]);
+                    break;
+            }
+        }
+        while(!operatorStack.isEmpty())
+        {
+            postfixStack.push(operatorStack.pop());
+        }
         printShuntingYard();
     }
     private char[] translateToValidRegex(char[]chars)
@@ -240,9 +229,9 @@ public class ShuntingYard {
         {
             case '(':
                 return 0;
-            case '|':
-                return 1;
             case '*':
+                return 1;
+            case '|':
                 return 2;
             default:
                 return 0;
