@@ -7,6 +7,10 @@ public class ShuntingYard {
     {
         char[] chars = translateToValidRegex(string.toCharArray());
         for (int i = 0; i < chars.length; i++) {
+            System.out.print(i+".) Postfix stack:");
+            postfixStack.print();
+            System.out.print(" Operator:");
+            operatorStack.print();System.out.print("\n");
             switch (chars[i]) {
                 case '(':
                     operatorStack.push('(');
@@ -154,7 +158,12 @@ public class ShuntingYard {
                 break;
             }
         }
-        temp.print();
+        System.out.print("Inicial: ");
+        for (char c : chars) {
+            System.out.print(c);
+        }
+        System.out.print("Final: ");
+        temp.print();System.out.print("\n");
         return temp.toCharArray();
     }
     private int getTheOtherParenthesis(char[] chars, char symbol)

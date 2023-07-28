@@ -39,7 +39,7 @@ public class Stack {
         for (char c : arrary) {
             System.out.print(c);
         }
-        System.out.print("]\n");
+        System.out.print("]");
     }
     public char[] toCharArray()
     {
