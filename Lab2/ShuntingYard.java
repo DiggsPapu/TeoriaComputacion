@@ -1,5 +1,5 @@
 public class ShuntingYard {
-    private char[] specialChar = {'*',')','.','|'};
+    private char[] specialChar = {'*','(',')','.','|'};
     private Stack operatorStack = new Stack();
     private Stack postfixStack = new Stack();
     
@@ -173,15 +173,12 @@ public class ShuntingYard {
                     }
                 break;
                 default:
-                    if (i>0&&i<chars.length-1)
-                    {
-                        if (temp.peek()!='|'&&temp.peek()!='('&&!isOperator(chars[i])&&!isOperator(chars[i+1]))
-                        {
-                            temp.push('.');
-                        }
-                    }
                     temp.push(chars[i]);
-                break;
+                    break;
+            }
+            chars = temp.toCharArray();
+            for (int j = 0; j < chars.length; j++) {
+                
             }
         }
         System.out.print("Inicial: ");
