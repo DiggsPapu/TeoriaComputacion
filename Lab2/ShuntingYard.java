@@ -1,5 +1,5 @@
 public class ShuntingYard {
-    private char[] specialChar = {'*','\\','(',')','.','+','?','^','|'};
+    private char[] specialChar = {'*',')','.','|'};
     private Stack operatorStack = new Stack();
     private Stack postfixStack = new Stack();
     
@@ -25,24 +25,44 @@ public class ShuntingYard {
                     }
                     break;
                 case '\\':
+                    postfixStack.push(chars[i]);
                     postfixStack.push(chars[i++]);                    
                     break;
                 case '*':
                     if (!operatorStack.isEmpty())
                     {
-                        if (getPrecedence('*')>=getPrecedence(operatorStack.peek())&&operatorStack.peek()!='(')
+                        if (getPrecedence('*')<=getPrecedence(operatorStack.peek())&&operatorStack.peek()!='(')
                         {
-                            postfixStack.push(operatorStack.pop());
+                            while(!operatorStack.isEmpty())
+                            {
+                                postfixStack.push(operatorStack.pop());
+                            }
                         }
                     }
                     operatorStack.push('*');
-                    break;                    
+                    break; 
+                case '.':
+                    if (!operatorStack.isEmpty())
+                    {
+                        if (getPrecedence('.')<=getPrecedence(operatorStack.peek())&&operatorStack.peek()!='(')
+                        {
+                            while(!operatorStack.isEmpty())
+                            {
+                                postfixStack.push(operatorStack.pop());
+                            }
+                        }
+                    }
+                    operatorStack.push('.');
+                    break;                 
                 case '|':
                     if (!operatorStack.isEmpty())
                     {
-                        if (getPrecedence('|')>=getPrecedence(operatorStack.peek())&&operatorStack.peek()!='(')
+                        if (getPrecedence('|')<=getPrecedence(operatorStack.peek())&&operatorStack.peek()!='(')
                         {
-                            postfixStack.push(operatorStack.pop());
+                            while(!operatorStack.isEmpty())
+                            {
+                                postfixStack.push(operatorStack.pop());
+                            }
                         }
                     }
                     operatorStack.push('|');
@@ -69,6 +89,7 @@ public class ShuntingYard {
                 case '+':
                     if(chars[i-1]==')'||chars[i-1]==']'||chars[i-1]=='}')
                     {
+                        temp.push('.');
                         char[] temporal = temp.toCharArray();
                         int j = getTheOtherParenthesis(temporal,chars[i-1]);
                         for (int k2 = j ;k2 < temporal.length; k2++) {
@@ -77,15 +98,11 @@ public class ShuntingYard {
                     }
                     else
                     {
-                        temp.push(temp.peek());
+                        char value = temp.peek();
+                        temp.push('.');
+                        temp.push(value);
                     }
                     temp.push('*');
-                    break;
-                case '.':
-                    if (chars[i-1]=='\\')
-                    {
-                        temp.push('.');
-                    }
                     break;
                 case '?':
                     if(chars[i-1]==')'||chars[i-1]==']'||chars[i-1]=='}')
@@ -156,6 +173,13 @@ public class ShuntingYard {
                     }
                 break;
                 default:
+                    if (i>0&&i<chars.length-1)
+                    {
+                        if (temp.peek()!='|'&&temp.peek()!='('&&!isOperator(chars[i])&&!isOperator(chars[i+1]))
+                        {
+                            temp.push('.');
+                        }
+                    }
                     temp.push(chars[i]);
                 break;
             }
@@ -167,6 +191,16 @@ public class ShuntingYard {
         System.out.print("Final: ");
         temp.print();System.out.print("\n");
         return temp.toCharArray();
+    }
+    private boolean isOperator(char c)
+    {
+        for (int i = 0; i < specialChar.length; i++) {
+            if(c==specialChar[i])
+            {
+                return true;
+            }
+        }
+        return false;
     }
     private int getTheOtherParenthesis(char[] chars, char symbol)
     {
@@ -240,10 +274,12 @@ public class ShuntingYard {
         {
             case '(':
                 return 0;
-            case '*':
-                return 1;
             case '|':
+                return 1;
+            case '.':
                 return 2;
+            case '*':
+                return 3;
             default:
                 return 0;
         }
