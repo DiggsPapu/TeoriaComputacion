@@ -1,8 +1,12 @@
 import java.util.ArrayList;
 
 public class tokenizer {
+    private boolean dotSpecial = true;
     private char[] specialChar = {'*','(',')','.','|'};
     private ArrayList<token> list = new ArrayList<token>();
+    private TokenStack operatorStack = new TokenStack();
+    private TokenStack postfixStack = new TokenStack();
+        
     public void tokenize(String string)
     {
         list = new ArrayList<>();
@@ -172,6 +176,13 @@ public class tokenizer {
                         //a?=a|ε a+=aa*
                     }
                 break;
+                case '.':
+                    if (!dotSpecial)
+                    {
+                        temp.push('\\');
+                    }
+                    temp.push('.');
+                    break;
                 default:
                     temp.push(chars[i]);
                     break;
@@ -189,5 +200,60 @@ public class tokenizer {
             }
         }
         return false;
+    }
+    void getShuntingYard()
+    {
+        operatorStack = new TokenStack();
+        postfixStack = new TokenStack();
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(i+".) Postfix stack:");
+            postfixStack.print();
+            System.out.print(" Operator:");
+            operatorStack.print();System.out.print("\n");
+            token token = list.get(i);
+            switch (token.getToken())
+            {
+                case "(":
+                    operatorStack.push(token);
+                    break;
+                case ")":
+                    if (!operatorStack.isEmpty())
+                    {
+                        while (operatorStack.peek().getPrecedence()!=0) {
+                            postfixStack.push(operatorStack.pop());
+                        }
+                        operatorStack.pop();
+                    }
+                    break;
+                default:
+                    if(token.getPrecedence()>0)
+                    {
+                        if (!operatorStack.isEmpty())
+                        {
+                            if (token.getPrecedence()<=operatorStack.peek().getPrecedence())
+                            {
+                                while(!operatorStack.isEmpty()&&operatorStack.peek().getPrecedence()!=0)
+                                {
+                                    postfixStack.push(operatorStack.pop());
+                                }
+                            }
+                        }
+                        operatorStack.push(token);
+                    }
+                    else
+                    {
+                        postfixStack.push(token);
+                    }
+                    break;  
+            }
+        }
+         while(!operatorStack.isEmpty())
+        {
+            postfixStack.push(operatorStack.pop());
+        }
+        token array[] = postfixStack.totokenArray();
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i].getToken());
+        }
     }
 }
