@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class tokenizer {
     private char[] specialChar = {'*','(',')','.','|'};
-    public ArrayList<token> list = new ArrayList<token>();
+    private ArrayList<token> list = new ArrayList<token>();
     public tokenizer(String string)
     {
         char[] chars = translateToValidRegex(string.toCharArray());
@@ -10,8 +10,27 @@ public class tokenizer {
             token tok = new token(String.valueOf(chars[j]));
             if(chars[j]=='\\')
             {
+                j++;
+                tok = new token(String.valueOf(chars[j-1])+String.valueOf(chars[j]));
                 list.add(tok);
             }
+            // else if (chars[j]=='|')
+            // {
+            //     int equal = 0;int i = j-1;
+            //     while(equal!=1 && i!=0)
+            //     {
+            //         if(chars[i]==')')
+            //         {
+            //             equal--;
+            //         }
+            //         else if(chars[i]=='(')
+            //         {
+            //             equal++;
+            //         }
+            //         i--;
+            //     }
+            //     token tok1 = new token("(");list.add(i, tok1);tok1 = new token(")");list.add(tok1);list.add(tok);
+            // }
             else
             {
                 list.add(tok);
@@ -22,9 +41,16 @@ public class tokenizer {
                 list.add(dot);
             }
         }
+        System.out.print("Initial value: "+string+"\nConversion to Acceptable Regex: ");
         for (int index = 0; index < list.size(); index++) {
-            System.out.print(list.get(index).getToken());
+            token token = list.get(index);
+            // System.out.println("Value: "+token.getToken()+" Precedence: "+token.getPrecedence());
+            System.out.print(token.getToken());
         }
+        System.out.print("\n");
+    }
+    public ArrayList<token> getList() {
+        return list;
     }
     private int getTheOtherParenthesis(char[] chars, char symbol)
     {
@@ -33,7 +59,11 @@ public class tokenizer {
         {
             if(symbol == ')')
             {
-                if(chars[j]==')')
+                if(chars[j]==')' && j==0)
+                {
+                    k++;
+                }
+                else if (chars[j]==')' && chars[j-1]!='\\')
                 {
                     k++;
                 }
