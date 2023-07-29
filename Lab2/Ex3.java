@@ -2,21 +2,21 @@ import java.util.ArrayList;
 class Ex3 {
     public static void main(String[] args)
     {
-        // ShuntingYard shunt = new ShuntingYard("{ae03}+@{ae03}+.(com|net|org)(.{gt|cr|ci}+)?");
-        // ShuntingYard shunt = new ShuntingYard("aicb*(a|c.a*)?ou");
-        // shunt.printShuntingYard();
-        //a+(c|b*)k
+        // a+(c|b*)k
         // (a|t)c
         // (a|b)*
         // (a*|b*)*
         // ((z|a)|b*)*
         // (a|b)*abb(a|b)*
-        // {ae03}+@{ae03}+.(com|net|org)(.{gt|cr|ci}+)?
+        // 0?(1?)?0*
+        // if\\([ae]+\)\\{[ei]+\\})
         // [ae03]+@[ae03]+.(com|net|org)(.(gt|cr|co+))?
         // aicb*(\\*a|c.a*\\))?ou
         // (ao|ba(a|e)|i|(o|u)*o)
         // ( (ao)|((ba)(a|e))|(i)|((o|u)*o) )
-        tokenizer tokenizer = new tokenizer("(com|net|org)(gt|cr|co+)?");
+        tokenizer tokenizer = new tokenizer();
+        // tokenizer.tokenize("if\\([ae]+\\)\\{[ei]+\\}(\\n(else\\{[ji]\\}))");
+        tokenizer.tokenize("[ae03]+@[ae03]+.(com|net|org)(.(gt|cr|co+))?");
         ArrayList<token> list = tokenizer.getList();
         TokenStack operatorStack = new TokenStack();
         TokenStack postfixStack = new TokenStack();

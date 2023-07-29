@@ -3,8 +3,9 @@ import java.util.ArrayList;
 public class tokenizer {
     private char[] specialChar = {'*','(',')','.','|'};
     private ArrayList<token> list = new ArrayList<token>();
-    public tokenizer(String string)
+    public void tokenize(String string)
     {
+        list = new ArrayList<>();
         char[] chars = translateToValidRegex(string.toCharArray());
         for (int j = 0; j < chars.length; j++) {
             token tok = new token(String.valueOf(chars[j]));
@@ -35,7 +36,7 @@ public class tokenizer {
             {
                 list.add(tok);
             }
-            if (j!=chars.length-1 && (!isOperator(chars[j]) || chars[j]=='*' || chars[j]==')') && (!isOperator(chars[j+1]) || chars[j+1]=='('))
+            if (j!=chars.length-1 && (tok.getPrecedence()<0 || chars[j]=='*' || chars[j]==')') && (!isOperator(chars[j+1]) || chars[j+1]=='('))
             {
                 token dot = new token(".");
                 list.add(dot);
