@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+
 public class TokenStack {
     private token[] arrary = {};
     public token peek() {return this.arrary[arrary.length-1];}
@@ -41,8 +43,24 @@ public class TokenStack {
         }
         System.out.print("]");
     }
+    public void writeStack(FileWriter myWriter)
+    {
+        try {
+            myWriter.write("[");
+            for (token c : arrary) {
+                myWriter.write(c.getToken());
+            }
+            myWriter.write("]");
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
     public token[] totokenArray()
     {
         return this.arrary;
+    }
+    public token getToken(int index)
+    {
+        return this.arrary[index];
     }
 }

@@ -1,12 +1,14 @@
+import java.io.FileWriter;
 import java.util.ArrayList;
-
 public class tokenizer {
     private boolean dotSpecial = true;
     private char[] specialChar = {'*','(',')','.','|'};
     private ArrayList<token> list = new ArrayList<token>();
     private TokenStack operatorStack = new TokenStack();
     private TokenStack postfixStack = new TokenStack();
-        
+    public void setDotSpecial(boolean dotSpecial) {
+        this.dotSpecial = dotSpecial;
+    }
     public void tokenize(String string)
     {
         list = new ArrayList<>();
@@ -19,23 +21,6 @@ public class tokenizer {
                 tok = new token(String.valueOf(chars[j-1])+String.valueOf(chars[j]));
                 list.add(tok);
             }
-            // else if (chars[j]=='|')
-            // {
-            //     int equal = 0;int i = j-1;
-            //     while(equal!=1 && i!=0)
-            //     {
-            //         if(chars[i]==')')
-            //         {
-            //             equal--;
-            //         }
-            //         else if(chars[i]=='(')
-            //         {
-            //             equal++;
-            //         }
-            //         i--;
-            //     }
-            //     token tok1 = new token("(");list.add(i, tok1);tok1 = new token(")");list.add(tok1);list.add(tok);
-            // }
             else
             {
                 list.add(tok);
@@ -203,57 +188,66 @@ public class tokenizer {
     }
     void getShuntingYard()
     {
-        operatorStack = new TokenStack();
-        postfixStack = new TokenStack();
-        for (int i = 0; i < list.size(); i++) {
-            System.out.print(i+".) Postfix stack:");
-            postfixStack.print();
-            System.out.print(" Operator:");
-            operatorStack.print();System.out.print("\n");
-            token token = list.get(i);
-            switch (token.getToken())
-            {
-                case "(":
-                    operatorStack.push(token);
-                    break;
-                case ")":
-                    if (!operatorStack.isEmpty())
-                    {
-                        while (operatorStack.peek().getPrecedence()!=0) {
-                            postfixStack.push(operatorStack.pop());
-                        }
-                        operatorStack.pop();
-                    }
-                    break;
-                default:
-                    if(token.getPrecedence()>0)
-                    {
+        try {
+            FileWriter myWriter = new FileWriter("filename.txt");
+            operatorStack = new TokenStack();
+            postfixStack = new TokenStack();
+            for (int i = 0; i < list.size(); i++) {
+                myWriter.write(i+".) Postfix stack: ");
+                postfixStack.writeStack(myWriter);
+                myWriter.write(" Operator:");
+                operatorStack.writeStack(myWriter);
+                myWriter.write("\n");
+                token token = list.get(i);
+                switch (token.getToken())
+                {
+                    case "(":
+                        operatorStack.push(token);
+                        break;
+                    case ")":
                         if (!operatorStack.isEmpty())
                         {
-                            if (token.getPrecedence()<=operatorStack.peek().getPrecedence())
+                            while (operatorStack.peek().getPrecedence()!=0) {
+                                postfixStack.push(operatorStack.pop());
+                            }
+                            operatorStack.pop();
+                        }
+                        break;
+                    default:
+                        if(token.getPrecedence()>0)
+                        {
+                            if (!operatorStack.isEmpty())
                             {
-                                while(!operatorStack.isEmpty()&&operatorStack.peek().getPrecedence()!=0)
+                                if (token.getPrecedence()<=operatorStack.peek().getPrecedence())
                                 {
-                                    postfixStack.push(operatorStack.pop());
+                                    while(!operatorStack.isEmpty()&&operatorStack.peek().getPrecedence()!=0)
+                                    {
+                                        postfixStack.push(operatorStack.pop());
+                                    }
                                 }
                             }
+                            operatorStack.push(token);
                         }
-                        operatorStack.push(token);
-                    }
-                    else
-                    {
-                        postfixStack.push(token);
-                    }
-                    break;  
+                        else
+                        {
+                            postfixStack.push(token);
+                        }
+                        break;  
+                }
             }
-        }
-         while(!operatorStack.isEmpty())
-        {
-            postfixStack.push(operatorStack.pop());
-        }
-        token array[] = postfixStack.totokenArray();
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i].getToken());
+            while(!operatorStack.isEmpty())
+            {
+                postfixStack.push(operatorStack.pop());
+            }
+            token array[] = postfixStack.totokenArray();
+            myWriter.write("The postfix expression is:");
+            for (int i = 0; i < array.length; i++) {
+                myWriter.write(array[i].getToken());
+            }
+            myWriter.write("\n\n");
+            myWriter.close();
+        } catch (Exception e) {
+            // TODO: handle exception
         }
     }
 }
