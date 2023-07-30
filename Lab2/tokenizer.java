@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 public class tokenizer {
@@ -189,15 +191,14 @@ public class tokenizer {
     void getShuntingYard()
     {
         try {
-            FileWriter myWriter = new FileWriter("filename.txt");
+            FileWriter myWriter = new FileWriter("filename.txt",true);
             operatorStack = new TokenStack();
             postfixStack = new TokenStack();
             for (int i = 0; i < list.size(); i++) {
-                myWriter.write(i+".) Postfix stack: ");
+                myWriter.append("\n"+i+".) Postfix stack: ");
                 postfixStack.writeStack(myWriter);
-                myWriter.write(" Operator:");
+                myWriter.append(" Operator:");
                 operatorStack.writeStack(myWriter);
-                myWriter.write("\n");
                 token token = list.get(i);
                 switch (token.getToken())
                 {
@@ -240,11 +241,11 @@ public class tokenizer {
                 postfixStack.push(operatorStack.pop());
             }
             token array[] = postfixStack.totokenArray();
-            myWriter.write("The postfix expression is:");
+            myWriter.append("The postfix expression is:");
             for (int i = 0; i < array.length; i++) {
-                myWriter.write(array[i].getToken());
+                myWriter.append(array[i].getToken());
             }
-            myWriter.write("\n\n");
+            myWriter.append("\n\n");
             myWriter.close();
         } catch (Exception e) {
             // TODO: handle exception

@@ -46,11 +46,11 @@ public class TokenStack {
     public void writeStack(FileWriter myWriter)
     {
         try {
-            myWriter.write("[");
+            myWriter.append("[");
             for (token c : arrary) {
-                myWriter.write(c.getToken());
+                myWriter.append(c.getToken());
             }
-            myWriter.write("]");
+            myWriter.append("]");
         } catch (Exception e) {
             // TODO: handle exception
         }
