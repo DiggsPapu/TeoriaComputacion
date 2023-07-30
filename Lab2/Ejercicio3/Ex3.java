@@ -19,7 +19,7 @@ class Ex3 {
         Scanner scanner = new Scanner(System.in);
         tokenizer tokenizer = new tokenizer();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
@@ -29,7 +29,7 @@ class Ex3 {
         tokenizer.tokenize("(a|t)c");
         tokenizer.getShuntingYard();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
@@ -39,7 +39,7 @@ class Ex3 {
         tokenizer.tokenize("(a|b)*");
         tokenizer.getShuntingYard();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
@@ -49,7 +49,7 @@ class Ex3 {
         tokenizer.tokenize("(a*|b*)*");
         tokenizer.getShuntingYard();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
@@ -59,7 +59,7 @@ class Ex3 {
         tokenizer.tokenize("((z|a)|b*)*");
         tokenizer.getShuntingYard();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
@@ -69,7 +69,7 @@ class Ex3 {
         tokenizer.tokenize("(a|b)*abb(a|b)*");
         tokenizer.getShuntingYard();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
@@ -79,7 +79,7 @@ class Ex3 {
         tokenizer.tokenize("0?(1?)?0*");
         tokenizer.getShuntingYard();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
@@ -89,14 +89,14 @@ class Ex3 {
         tokenizer.tokenize("if\\([ae]+\\)\\{[ei]+\\}(\\n(else\\{[ji]\\}))");
         tokenizer.getShuntingYard();
         System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (scanner.nextLine()!="1")
+        if (!scanner.nextLine().equals("1"))
         {
             tokenizer.setDotSpecial(false);
         }
         else{
             tokenizer.setDotSpecial(true);
         }
-        tokenizer.tokenize("[ae/* 03]+@[ae03]+.(com|net|org)(\\.(gt|cr|co+))?");
+        tokenizer.tokenize("[ae/* 03]+@[ae03]+.(com|net|org)(.(gt|cr|co+))?");
         tokenizer.getShuntingYard();
     }
 }
