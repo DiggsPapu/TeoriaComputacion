@@ -1,3 +1,4 @@
+package Ejercicio3;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -33,13 +34,19 @@ public class tokenizer {
                 list.add(dot);
             }
         }
-        System.out.print("Initial value: "+string+"\nConversion to Acceptable Regex: ");
-        for (int index = 0; index < list.size(); index++) {
-            token token = list.get(index);
-            // System.out.println("Value: "+token.getToken()+" Precedence: "+token.getPrecedence());
-            System.out.print(token.getToken());
+        try {
+            FileWriter myWriter = new FileWriter("filename.txt",true);
+            myWriter.append("Initial value:"+string+"  Conversion to Acceptable Regex:");
+            for (int index = 0; index < list.size(); index++) {
+                token token = list.get(index);
+                // System.out.println("Value: "+token.getToken()+" Precedence: "+token.getPrecedence());
+                // System.out.print(token.getToken());
+                myWriter.append(token.getToken());
+            }
+            myWriter.close();
+        } catch (Exception e) {
+            // TODO: handle exception
         }
-        System.out.print("\n");
     }
     public ArrayList<token> getList() {
         return list;

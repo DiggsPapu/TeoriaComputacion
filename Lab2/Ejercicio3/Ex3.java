@@ -1,3 +1,4 @@
+package Ejercicio3;
 import java.util.ArrayList;
 import java.util.Scanner;
 class Ex3 {

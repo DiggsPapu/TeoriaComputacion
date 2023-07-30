@@ -1,4 +1,4 @@
-
+Initial value:(a|t)c  Conversion to Acceptable Regex:(a|t).c
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
@@ -7,7 +7,7 @@
 5.) Postfix stack: [at|] Operator:[]
 6.) Postfix stack: [at|] Operator:[.]The postfix expression is:at|c.
 
-
+Initial value:(a|b)*  Conversion to Acceptable Regex:(a|b)*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
@@ -15,7 +15,7 @@
 4.) Postfix stack: [ab] Operator:[(|]
 5.) Postfix stack: [ab|] Operator:[]The postfix expression is:ab|*
 
-
+Initial value:(a*|b*)*  Conversion to Acceptable Regex:(a*|b*)*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
@@ -25,7 +25,7 @@
 6.) Postfix stack: [a*b] Operator:[(|*]
 7.) Postfix stack: [a*b*|] Operator:[]The postfix expression is:a*b*|*
 
-
+Initial value:((z|a)|b*)*  Conversion to Acceptable Regex:((z|a)|b*)*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [] Operator:[((]
@@ -38,7 +38,7 @@
 9.) Postfix stack: [za|b] Operator:[(|*]
 10.) Postfix stack: [za|b*|] Operator:[]The postfix expression is:za|b*|*
 
-
+Initial value:(a|b)*abb(a|b)*  Conversion to Acceptable Regex:(a|b)*.a.b.b.(a|b)*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
@@ -59,7 +59,7 @@
 17.) Postfix stack: [ab|*a.b.b.ab] Operator:[.(|]
 18.) Postfix stack: [ab|*a.b.b.ab|] Operator:[.]The postfix expression is:ab|*a.b.b.ab|*.
 
-
+Initial value:0?(1?)?0*  Conversion to Acceptable Regex:(0|ε).(((1|ε))|ε).0*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [0] Operator:[(]
@@ -81,7 +81,7 @@
 18.) Postfix stack: [0ε|1ε|ε|.] Operator:[.]
 19.) Postfix stack: [0ε|1ε|ε|.0] Operator:[.]The postfix expression is:0ε|1ε|ε|.0*.
 
-
+Initial value:if\([ae]+\)\{[ei]+\}(\n(else\{[ji]\}))  Conversion to Acceptable Regex:i.f.\(.(a|e).(a|e)*.\).\{.(e|i).(e|i)*.\}.(\n.(e.l.s.e.\{.(j|i).\}))
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [i] Operator:[]
 2.) Postfix stack: [i] Operator:[.]
@@ -144,7 +144,7 @@
 59.) Postfix stack: [if.\(.ae|.ae|*.\).\{.ei|.ei|*.\}.\nel.s.e.\{.ji|.\}] Operator:[.(.(.]
 60.) Postfix stack: [if.\(.ae|.ae|*.\).\{.ei|.ei|*.\}.\nel.s.e.\{.ji|.\}.] Operator:[.(.]The postfix expression is:if.\(.ae|.ae|*.\).\{.ei|.ei|*.\}.\nel.s.e.\{.ji|.\}...
 
-
+Initial value:[ae/* 03]+@[ae03]+.(com|net|org)(\.(gt|cr|co+))?  Conversion to Acceptable Regex:(a|e|/|*| |0|3).(a|e|/|*| |0|3)*.@.(a|e|0|3).(a|e|0|3)*.\..(c.o.m|n.e.t|o.r.g).((\\.(g.t|c.r|c.o.o*))|ε)
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
