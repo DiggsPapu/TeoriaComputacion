@@ -1,4 +1,7 @@
 package Ejercicio3;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 class Ex3 {
@@ -18,85 +21,27 @@ class Ex3 {
         // ( (ao)|((ba)(a|e))|(i)|((o|u)*o) )
         Scanner scanner = new Scanner(System.in);
         tokenizer tokenizer = new tokenizer();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("(a|t)c");
-        tokenizer.getShuntingYard();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("(a|b)*");
-        tokenizer.getShuntingYard();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("(a*|b*)*");
-        tokenizer.getShuntingYard();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("((z|a)|b*)*");
-        tokenizer.getShuntingYard();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("(a|b)*abb(a|b)*");
-        tokenizer.getShuntingYard();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("0?(1?)?0*");
-        tokenizer.getShuntingYard();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("if\\([ae]+\\)\\{[ei]+\\}(\\n(else\\{[ji]\\}))");
-        tokenizer.getShuntingYard();
-        System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-        if (!scanner.nextLine().equals("1"))
-        {
-            tokenizer.setDotSpecial(false);
-        }
-        else{
-            tokenizer.setDotSpecial(true);
-        }
-        tokenizer.tokenize("[ae/* 03]+@[ae03]+.(com|net|org)(.(gt|cr|co+))?");
-        tokenizer.getShuntingYard();
+        BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader("/home/dieggspapu/UVG/TeoriaComputacion/Lab2/Ejercicio3/sample.txt"));
+			String line = reader.readLine();
+			while (line != null) {
+				System.out.println(line);
+				System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
+                if (!scanner.nextLine().equals("1"))
+                {
+                    tokenizer.setDotSpecial(false);
+                }
+                else{
+                    tokenizer.setDotSpecial(true);
+                }
+                tokenizer.tokenize(line);
+                tokenizer.getShuntingYard();
+                line = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }
