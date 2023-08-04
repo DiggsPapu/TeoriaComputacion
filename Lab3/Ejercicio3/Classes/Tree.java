@@ -1,4 +1,7 @@
 package Ejercicio3.Classes;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -82,13 +85,31 @@ public class Tree {
         }
         root = binaryTree.get(nodesStack.pop());
     }
-    public void generateGraphicTree()
+    public void generateGraphicTree(String archive)
     {
-        if (binaryTree.size()>0)
-        {
-            for (Node<token> node : binaryTree) {
-                
+        try {
+            FileWriter myWriter = new FileWriter("/home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph1.dot",true);
+            if (binaryTree.size()>0)
+            {
+                myWriter.append("digraph Tree{\nnode [shape=circle];\n");
+                for (Node<token> node : binaryTree) {
+                    myWriter.append("node"+node.getPos()+" [label=\""+node.value.getToken()+"\"];\n");
+                }
+                for (Node<token> node : binaryTree) {
+                    if (node.left != null)
+                    {
+                        myWriter.append("node"+node.getPos()+"->"+"node"+node.left.getPos()+";\n");
+                    }
+                    if (node.right != null)
+                    {
+                        myWriter.append("node"+node.getPos()+"->"+"node"+node.right.getPos()+";\n");
+                    }
+                }
+                myWriter.append("}\n");
             }
+            myWriter.close();
+        } catch (Exception e) {
+            // TODO: handle exception
         }
     }
 }

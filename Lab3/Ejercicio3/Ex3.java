@@ -40,6 +40,7 @@ class Ex3 {
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
+                tree.generateGraphicTree("/home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph1.dot");
                 line = reader.readLine();
 			}
 			reader.close();
