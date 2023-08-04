@@ -16,6 +16,7 @@ Deberá utilizar una librería que le permita dibujar un árbol en pantalla, ya 
 árbol generado. Si utiliza Python se recomienda que utilice la librería de Graphviz. De igual forma,
 todo queda a su elección.
 * El link al video de explicacion es el siguiente: https://youtu.be/70qYuAwL-ck
+* Solo se me olvido explicar en el video que para compilarlo y convertirlo a pdf es dot -Tpdf "nombre del .dot".dot -o "nombre del pdf a guardarlo".pdf
 
 # Ejercicio 2
 Utilice el Lema de Arden para encontrar el lenguaje generado por el
