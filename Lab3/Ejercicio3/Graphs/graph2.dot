@@ -1,0 +1,14 @@
+digraph Tree{
+node [shape=circle];
+node0 [label="a"];
+node1 [label="*"];
+node2 [label="b"];
+node3 [label="*"];
+node4 [label="|"];
+node5 [label="*"];
+node1->node0;
+node3->node2;
+node4->node1;
+node4->node3;
+node5->node4;
+}

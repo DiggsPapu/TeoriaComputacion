@@ -88,7 +88,7 @@ public class Tree {
     public void generateGraphicTree(String archive)
     {
         try {
-            FileWriter myWriter = new FileWriter("/home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph1.dot",true);
+            FileWriter myWriter = new FileWriter(archive,true);
             if (binaryTree.size()>0)
             {
                 myWriter.append("digraph Tree{\nnode [shape=circle];\n");

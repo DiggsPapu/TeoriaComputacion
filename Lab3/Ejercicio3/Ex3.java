@@ -40,7 +40,8 @@ class Ex3 {
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
-                tree.generateGraphicTree("/home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph1.dot");
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
+                tree.generateGraphicTree(scanner.nextLine());
                 line = reader.readLine();
 			}
 			reader.close();
@@ -50,4 +51,9 @@ class Ex3 {
         // BinarySearchTree tree = new BinarySearchTree<TreeNode,TreeNode>(new TokenComparator<>());
        scanner.close();
     }
+    // /home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph1.dot
+    // /home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph2.dot
+    // /home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph3.dot
+    // /home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph4.dot
+    // /home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/Graphs/graph5.dot
 }
