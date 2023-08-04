@@ -1,4 +1,4 @@
-package Ejercicio3;
+package Ejercicio3.Classes;
 import java.io.FileWriter;
 
 public class TokenStack {

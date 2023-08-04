@@ -1,9 +1,11 @@
 package Ejercicio3;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import Ejercicio3.Classes.*;
 class Ex3 {
     public static void main(String[] args)
     {
@@ -23,7 +25,7 @@ class Ex3 {
         tokenizer tokenizer = new tokenizer();
         BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader("/home/dieggspapu/UVG/TeoriaComputacion/Lab2/Ejercicio3/sample.txt"));
+			reader = new BufferedReader(new FileReader("/home/dieggspapu/UVG/TeoriaComputacion/Lab3/Ejercicio3/sample.txt"));
 			String line = reader.readLine();
 			while (line != null) {
 				System.out.println(line);
@@ -37,11 +39,14 @@ class Ex3 {
                 }
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
+                Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
                 line = reader.readLine();
 			}
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        // BinarySearchTree tree = new BinarySearchTree<TreeNode,TreeNode>(new TokenComparator<>());
+       scanner.close();
     }
 }

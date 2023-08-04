@@ -1,6 +1,4 @@
-package Ejercicio3;
-import java.io.BufferedReader;
-import java.io.FileReader;
+package Ejercicio3.Classes;
 import java.io.FileWriter;
 import java.util.ArrayList;
 public class tokenizer {
@@ -195,7 +193,7 @@ public class tokenizer {
         }
         return false;
     }
-    void getShuntingYard()
+    public void getShuntingYard()
     {
         try {
             FileWriter myWriter = new FileWriter("filename.txt",true);
@@ -257,5 +255,8 @@ public class tokenizer {
         } catch (Exception e) {
             // TODO: handle exception
         }
+    }
+    public TokenStack getPostfixStack() {
+        return postfixStack;
     }
 }

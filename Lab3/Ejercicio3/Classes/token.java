@@ -1,4 +1,4 @@
-package Ejercicio3;
+package Ejercicio3.Classes;
 public class token {
     private int precedence;
     private String token;

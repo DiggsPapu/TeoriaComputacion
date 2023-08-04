@@ -1,4 +1,4 @@
-## Laboratorio 2
+## Laboratorio 3
 Diego Andrés Alonzo Medinilla 20172
 Samuel Argueta 211024
 # Ejercicio 1

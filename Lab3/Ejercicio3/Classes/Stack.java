@@ -1,4 +1,4 @@
-package Ejercicio3;
+package Ejercicio3.Classes;
 public class Stack {
     private char[] arrary = {};
     public char peek() {return this.arrary[arrary.length-1];}
