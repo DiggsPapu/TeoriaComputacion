@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-import Classes.GraphNode;
+import Classes.AFN;
 import Classes.Tree;
 import Classes.tokenizer;
 
@@ -41,7 +41,9 @@ public class Lab4 {
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
-                
+                AFN afn = new AFN(tree);
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
+                afn.generateAFN(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
                 tree.generateGraphicTree(scanner.nextLine());
                 line = reader.readLine();

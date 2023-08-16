@@ -26,14 +26,6 @@ public class Tree {
         nodesStack = new Stack<>();
         tokenStack = new Stack<>();
         for (token token : postfix) {
-            if(nodesStack.size()>0)
-            {
-                System.out.println("Node Stack:"+nodesStack.peek());
-            }
-            if(tokenStack.size()>0)
-            {
-                System.out.println("Token Stack:"+tokenStack.peek());
-            }
             Node<token> node = new Node<token>(token);
             node.setPos(binaryTree.size());
             binaryTree.add(node);

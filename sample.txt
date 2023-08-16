@@ -1,5 +1,4 @@
-(a|b|A|(Bao))
-(a|b|A|((B|z)ao))
+abcd
 (a*|b*)+
 ((ε|a)|b*)*
 (a|b)*abb(a|b)*

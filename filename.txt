@@ -1,38 +1,81 @@
-Initial value:(a|b|A|(Bao))  Conversion to Acceptable Regex:(a|b|A|(B.a.o))
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
 0.) Postfix stack: [] Operator:[]
-1.) Postfix stack: [] Operator:[(]
-2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(|]
-4.) Postfix stack: [ab] Operator:[(|]
-5.) Postfix stack: [ab|] Operator:[(|]
-6.) Postfix stack: [ab|A] Operator:[(|]
-7.) Postfix stack: [ab|A|] Operator:[(|]
-8.) Postfix stack: [ab|A|] Operator:[(|(]
-9.) Postfix stack: [ab|A|B] Operator:[(|(]
-10.) Postfix stack: [ab|A|B] Operator:[(|(.]
-11.) Postfix stack: [ab|A|Ba] Operator:[(|(.]
-12.) Postfix stack: [ab|A|Ba.] Operator:[(|(.]
-13.) Postfix stack: [ab|A|Ba.o] Operator:[(|(.]
-14.) Postfix stack: [ab|A|Ba.o.] Operator:[(|]The postfix expression is:ab|A|Ba.o.|
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
 
-Initial value:(a|b|A|((B|z)ao))  Conversion to Acceptable Regex:(a|b|A|((B|z).a.o))
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
 0.) Postfix stack: [] Operator:[]
-1.) Postfix stack: [] Operator:[(]
-2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(|]
-4.) Postfix stack: [ab] Operator:[(|]
-5.) Postfix stack: [ab|] Operator:[(|]
-6.) Postfix stack: [ab|A] Operator:[(|]
-7.) Postfix stack: [ab|A|] Operator:[(|]
-8.) Postfix stack: [ab|A|] Operator:[(|(]
-9.) Postfix stack: [ab|A|] Operator:[(|((]
-10.) Postfix stack: [ab|A|B] Operator:[(|((]
-11.) Postfix stack: [ab|A|B] Operator:[(|((|]
-12.) Postfix stack: [ab|A|Bz] Operator:[(|((|]
-13.) Postfix stack: [ab|A|Bz|] Operator:[(|(]
-14.) Postfix stack: [ab|A|Bz|] Operator:[(|(.]
-15.) Postfix stack: [ab|A|Bz|a] Operator:[(|(.]
-16.) Postfix stack: [ab|A|Bz|a.] Operator:[(|(.]
-17.) Postfix stack: [ab|A|Bz|a.o] Operator:[(|(.]
-18.) Postfix stack: [ab|A|Bz|a.o.] Operator:[(|]The postfix expression is:ab|A|Bz|a.o.|
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
+
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
+
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
+
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
+
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
+
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
+
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
+
+Initial value:abcd  Conversion to Acceptable Regex:a.b.c.d
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [a] Operator:[]
+2.) Postfix stack: [a] Operator:[.]
+3.) Postfix stack: [ab] Operator:[.]
+4.) Postfix stack: [ab.] Operator:[.]
+5.) Postfix stack: [ab.c] Operator:[.]
+6.) Postfix stack: [ab.c.] Operator:[.]The postfix expression is:ab.c.d.
 
