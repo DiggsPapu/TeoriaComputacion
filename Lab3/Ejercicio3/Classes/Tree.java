@@ -43,9 +43,18 @@ public class Tree {
                     case 2:
                         if (!tokenStack.isEmpty())
                         {
-                            node.right = binaryTree.get(tokenStack.pop());
-                            node.left = binaryTree.get(nodesStack.pop());
-                            nodesStack.push(binaryTree.size()-1);
+                            if(tokenStack.size()>1)
+                            {
+                                node.right = binaryTree.get(tokenStack.pop());
+                                node.left = binaryTree.get(tokenStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            }
+                            else
+                            {
+                                node.right = binaryTree.get(tokenStack.pop());
+                                node.left = binaryTree.get(nodesStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            }
                         }
                         else
                         {
