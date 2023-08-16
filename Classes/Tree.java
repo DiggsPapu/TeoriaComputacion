@@ -16,6 +16,9 @@ public class Tree {
     public Tree(token postfix[]) {
         createSyntaxTree(postfix);
     }
+    public ArrayList<Node<token>> getBinaryTree() {
+        return binaryTree;
+    }
 
     private void createSyntaxTree(token postfix[]) {
         count = 0;
@@ -23,6 +26,14 @@ public class Tree {
         nodesStack = new Stack<>();
         tokenStack = new Stack<>();
         for (token token : postfix) {
+            if(nodesStack.size()>0)
+            {
+                System.out.println("Node Stack:"+nodesStack.peek());
+            }
+            if(tokenStack.size()>0)
+            {
+                System.out.println("Token Stack:"+tokenStack.peek());
+            }
             Node<token> node = new Node<token>(token);
             node.setPos(binaryTree.size());
             binaryTree.add(node);
@@ -40,9 +51,18 @@ public class Tree {
                         break;
                     case 2:
                         if (!tokenStack.isEmpty()) {
-                            node.right = binaryTree.get(tokenStack.pop());
-                            node.left = binaryTree.get(nodesStack.pop());
-                            nodesStack.push(binaryTree.size() - 1);
+                            if(tokenStack.size()>1)
+                            {
+                                node.right = binaryTree.get(tokenStack.pop());
+                                node.left = binaryTree.get(tokenStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            }
+                            else
+                            {
+                                node.right = binaryTree.get(tokenStack.pop());
+                                node.left = binaryTree.get(nodesStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            }
                         } else {
                             node.right = binaryTree.get(nodesStack.pop());
                             node.left = binaryTree.get(nodesStack.pop());

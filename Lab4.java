@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
+import Classes.GraphNode;
 import Classes.Tree;
 import Classes.tokenizer;
 
@@ -40,6 +41,7 @@ public class Lab4 {
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
+                
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
                 tree.generateGraphicTree(scanner.nextLine());
                 line = reader.readLine();
@@ -53,7 +55,5 @@ public class Lab4 {
     // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph1.dot
     // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph2.dot
     // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph3.dot
-    // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph4.dot
-    // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph5.dot
-    
+    // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph4.dot    
 }
