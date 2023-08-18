@@ -25,68 +25,76 @@ public class Tree {
         binaryTree = new ArrayList<>();
         nodesStack = new Stack<>();
         tokenStack = new Stack<>();
-        for (token token : postfix) {
-            Node<token> node = new Node<token>(token);
-            node.setPos(binaryTree.size());
-            binaryTree.add(node);
-
-            if (count > 0) {
-                switch (token.getPrecedence()) {
-                    case 3:
-                        if (!tokenStack.isEmpty()) {
-                            node.left = binaryTree.get(tokenStack.pop());
-                            nodesStack.push(binaryTree.size() - 1);
-                        } else {
-                            node.left = binaryTree.get(nodesStack.pop());
-                            nodesStack.push(binaryTree.size() - 1);
-                        }
-                        break;
-                    case 2:
-                        if (!tokenStack.isEmpty()) {
-                            if(tokenStack.size()>1)
-                            {
-                                node.right = binaryTree.get(tokenStack.pop());
+        if(postfix.length>1)
+        {
+            for (token token : postfix) {
+                Node<token> node = new Node<token>(token);
+                node.setPos(binaryTree.size());
+                binaryTree.add(node);
+                if (count > 0) {
+                    switch (token.getPrecedence()) {
+                        case 3:
+                            if (!tokenStack.isEmpty()) {
                                 node.left = binaryTree.get(tokenStack.pop());
                                 nodesStack.push(binaryTree.size() - 1);
-                            }
-                            else
-                            {
-                                node.right = binaryTree.get(tokenStack.pop());
+                            } else {
                                 node.left = binaryTree.get(nodesStack.pop());
                                 nodesStack.push(binaryTree.size() - 1);
                             }
-                        } else {
-                            node.right = binaryTree.get(nodesStack.pop());
-                            node.left = binaryTree.get(nodesStack.pop());
-                            nodesStack.push(binaryTree.size() - 1);
-                        }
-                        break;
-                    case 1:
-                        if (tokenStack.size() == 1) {
-                            node.right = binaryTree.get(tokenStack.pop());
-                            node.left = binaryTree.get(nodesStack.pop());
-                            nodesStack.push(binaryTree.size() - 1);
-                        } else if (tokenStack.size() > 1) {
-                            node.right = binaryTree.get(tokenStack.pop());
-                            node.left = binaryTree.get(tokenStack.pop());
-                            nodesStack.push(binaryTree.size() - 1);
-                        } else {
-                            node.right = binaryTree.get(nodesStack.pop());
-                            node.left = binaryTree.get(nodesStack.pop());
-                            nodesStack.push(binaryTree.size() - 1);
-                        }
-                        break;
-                    default:
-                        tokenStack.push(binaryTree.size() - 1);
-                        break;
+                            break;
+                        case 2:
+                            if (!tokenStack.isEmpty()) {
+                                if(tokenStack.size()>1)
+                                {
+                                    node.right = binaryTree.get(tokenStack.pop());
+                                    node.left = binaryTree.get(tokenStack.pop());
+                                    nodesStack.push(binaryTree.size() - 1);
+                                }
+                                else
+                                {
+                                    node.right = binaryTree.get(tokenStack.pop());
+                                    node.left = binaryTree.get(nodesStack.pop());
+                                    nodesStack.push(binaryTree.size() - 1);
+                                }
+                            } else {
+                                node.right = binaryTree.get(nodesStack.pop());
+                                node.left = binaryTree.get(nodesStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            }
+                            break;
+                        case 1:
+                            if (tokenStack.size() == 1) {
+                                node.right = binaryTree.get(tokenStack.pop());
+                                node.left = binaryTree.get(nodesStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            } else if (tokenStack.size() > 1) {
+                                node.right = binaryTree.get(tokenStack.pop());
+                                node.left = binaryTree.get(tokenStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            } else {
+                                node.right = binaryTree.get(nodesStack.pop());
+                                node.left = binaryTree.get(nodesStack.pop());
+                                nodesStack.push(binaryTree.size() - 1);
+                            }
+                            break;
+                        default:
+                            tokenStack.push(binaryTree.size() - 1);
+                            break;
+                    }
+                    count++;
+                } else {
+                    tokenStack.push(binaryTree.size() - 1);
+                    count++;
                 }
-                count++;
-            } else {
-                tokenStack.push(binaryTree.size() - 1);
-                count++;
             }
+            root = binaryTree.get(nodesStack.pop());
         }
-        root = binaryTree.get(nodesStack.pop());
+        else
+        {
+            Node<token> node = new Node<token>(postfix[0]);
+            binaryTree.add(node);
+            root = binaryTree.get(0);
+        }
     }
 
     public void generateGraphicTree(String archive) {

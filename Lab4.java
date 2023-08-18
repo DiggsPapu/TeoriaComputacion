@@ -42,11 +42,28 @@ public class Lab4 {
                 tokenizer.getShuntingYard();
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
                 AFN afn = new AFN(tree);
-                System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
-                afn.generateAFN(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
                 tree.generateGraphicTree(scanner.nextLine());
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
+                afn.generateAFN(scanner.nextLine());
+                while (true)
+                {
+                    System.out.println("Enter a chain to determine whether it is accepted");
+                    if (afn.isAccepted(scanner.nextLine()))
+                    {
+                        System.out.println("w∈L(r)?\nYes");
+                    }
+                    else{
+                        System.out.println("No");
+                    }
+                    System.out.println("Do you want to continue checking if strings are part of the lenguage? (y/n):");
+                    if(scanner.nextLine().equals("n"))
+                    {
+                        break;
+                    }
+                }
                 line = reader.readLine();
+                
 			}
 			reader.close();
 		} catch (IOException e) {
@@ -54,8 +71,12 @@ public class Lab4 {
 		}
        scanner.close();
     }
-    // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph1.dot
-    // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph2.dot
-    // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph3.dot
-    // /home/dieggspapu/UVG/TeoriaComputacion/Graphs/graph4.dot    
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph1.dot
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph2.dot
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph3.dot
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph4.dot
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn1.dot
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn2.dot
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn3.dot
+// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn4.dot
 }
