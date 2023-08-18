@@ -1,5 +1,3 @@
-![afn1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/32b1c59b-e72a-47b0-afad-7aa543f098cc)
-![afn4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/abd31572-5ea0-48e3-9b10-8d155dd86681)
 # Laboratorio 3
 Diego Andrés Alonzo Medinilla 20172
 Samuel Argueta 211024
