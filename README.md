@@ -1,3 +1,5 @@
+![afn1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/32b1c59b-e72a-47b0-afad-7aa543f098cc)
+![afn4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/abd31572-5ea0-48e3-9b10-8d155dd86681)
 # Laboratorio 3
 Diego Andrés Alonzo Medinilla 20172
 Samuel Argueta 211024
@@ -21,7 +23,41 @@ línea deberá de tener una expresión regular, correspondiente a la siguiente l
 ### Notas
 * Primero que nada se debe de notar que se hizo un make para poder convertir los archivos .dot a png's de manera que puedan ser visibles. 
     * Se ejecuta make -f [direccion del archivo make] para generar los archivos png's.
-    * Se ejecuta make -f [direccion del archivo make] clean para limpiar de los archivos png's. 
+    * Se ejecuta make -f [direccion del archivo make] clean para limpiar de los archivos png's.
+### Resultados
+* (𝑎 ∗ |𝑏 ∗) +
+   * Arbol
+  
+![graph1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/160dd4d9-b685-446f-a1c2-e224bcc3f60b)
+   * AFN
+
+![afn1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/a28f227a-e174-4049-9079-3e2e182643f4)
+
+* ((𝜀|𝑎)|𝑏 ∗) ∗
+   * Arbol
+
+!![graph2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/397bd5f7-fead-4a07-a8b7-fc548aa0c0f5)
+   * AFN
+
+[afn2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/47254660-4261-4cb8-b9f8-c8b8440426c9)
+
+* (𝑎|𝑏) ∗ 𝑎𝑏𝑏(𝑎|𝑏) ∗
+   * Arbol
+  
+![graph3](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/30276a87-a854-4e04-9a06-0204085a6cb0)
+   * AFN
+
+![afn3](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/cc74b404-25e1-4b43-bd53-28d2aaa82e2e)
+
+* 0? (1? )? 0 ∗
+   * Arbol
+  
+![graph4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/3e5bf44d-21f3-46f3-b372-db90853c04df)
+   * AFN
+
+![afn4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/f22716b9-1351-44ba-8d62-bf3ad30b9181)
+
+
 ### Link al video
 * 
 ## Ejercicio 2
