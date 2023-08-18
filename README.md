@@ -25,11 +25,11 @@ línea deberá de tener una expresión regular, correspondiente a la siguiente l
 ### Resultados
 * (𝑎 ∗ |𝑏 ∗) +
    * Arbol
-  
-![graph1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/160dd4d9-b685-446f-a1c2-e224bcc3f60b)
+
+     ![graph1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/160dd4d9-b685-446f-a1c2-e224bcc3f60b)
    * AFN
 
-![afn1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/a28f227a-e174-4049-9079-3e2e182643f4)
+     ![afn1](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/a28f227a-e174-4049-9079-3e2e182643f4)
 
 * ((𝜀|𝑎)|𝑏 ∗) ∗
    * Arbol
@@ -37,23 +37,23 @@ línea deberá de tener una expresión regular, correspondiente a la siguiente l
 !![graph2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/397bd5f7-fead-4a07-a8b7-fc548aa0c0f5)
    * AFN
 
-[afn2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/47254660-4261-4cb8-b9f8-c8b8440426c9)
+     [afn2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/47254660-4261-4cb8-b9f8-c8b8440426c9)
 
 * (𝑎|𝑏) ∗ 𝑎𝑏𝑏(𝑎|𝑏) ∗
    * Arbol
-  
-![graph3](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/30276a87-a854-4e04-9a06-0204085a6cb0)
+
+     ![graph3](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/30276a87-a854-4e04-9a06-0204085a6cb0)
    * AFN
 
-![afn3](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/cc74b404-25e1-4b43-bd53-28d2aaa82e2e)
+     ![afn3](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/cc74b404-25e1-4b43-bd53-28d2aaa82e2e)
 
 * 0? (1? )? 0 ∗
    * Arbol
-  
-![graph4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/3e5bf44d-21f3-46f3-b372-db90853c04df)
+
+     ![graph4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/3e5bf44d-21f3-46f3-b372-db90853c04df)
    * AFN
 
-![afn4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/f22716b9-1351-44ba-8d62-bf3ad30b9181)
+     ![afn4](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/f22716b9-1351-44ba-8d62-bf3ad30b9181)
 
 
 ### Link al video
