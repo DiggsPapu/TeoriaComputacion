@@ -34,7 +34,7 @@ línea deberá de tener una expresión regular, correspondiente a la siguiente l
 * ((𝜀|𝑎)|𝑏 ∗) ∗
    * Arbol
 
-!![graph2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/397bd5f7-fead-4a07-a8b7-fc548aa0c0f5)
+     !![graph2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/397bd5f7-fead-4a07-a8b7-fc548aa0c0f5)
    * AFN
 
      ![afn2](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/47254660-4261-4cb8-b9f8-c8b8440426c9)
