@@ -1,6 +1,6 @@
 # Theory of Computer Repo
-Diego Andres Alonzo Medinilla   20172
-Samuel Argueta 211024
+* Diego Andres Alonzo Medinilla   20172
+* Samuel Argueta 211024
 ## Labs
 ### Lab2
 It is in the branch of Lab2 it was done with Samuel Argueta.
