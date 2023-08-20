@@ -57,7 +57,7 @@ línea deberá de tener una expresión regular, correspondiente a la siguiente l
 
 
 ### Link al video
-* 
+* https://youtu.be/i_AofrNu4DQ
 ## Ejercicio 2
 ### Instrucciones
 * Utilice el Pumping Lemma para demostrar que el Lenguaje 𝐴 = {𝑦𝑦 | 𝑦 ∈ {0,1}∗ } no es regular.
