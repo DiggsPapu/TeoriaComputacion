@@ -6,142 +6,9 @@ import java.util.Set;
 import java.util.Stack;
 public class AFN {
     protected ArrayList<GraphNode<String>> nfa = new ArrayList<>();
-    protected Stack<String> tStack= new Stack<>();
     protected Stack<TwoValues<Integer,Integer>> subTreeStack = new Stack<>();
     protected int s0 = 0;
     protected int sf = 1;
-    // public AFN(Tree bTree)
-    // {
-    //     ArrayList<Node<token>> tree = bTree.getBinaryTree();
-    //     int i = 0;
-    //     for (Node<token> node : tree) {
-    //         switch (node.value.getPrecedence()) {
-    //             case 2://In case it gets an concat "."
-    //             if (tStack.size()>0) {
-    //                 if(tStack.size()>1)
-    //                 {
-    //                     // Second Node
-    //                     TwoValues<Integer,String> vals2 = new TwoValues<>();
-    //                     int pos1 = i;
-    //                     vals2.setVal2(tStack.pop());
-    //                     vals2.setVal1(i+2);
-    //                     ArrayList<TwoValues<Integer,String>> val2 = new ArrayList<>();
-    //                     val2.add(vals2);
-    //                     // First Node
-    //                     TwoValues<Integer, String> vals1 = new TwoValues<>();
-    //                     vals1.setVal1(i+1);
-    //                     vals1.setVal2(tStack.pop());
-    //                     ArrayList<TwoValues<Integer,String>> val1 = new ArrayList<>();
-    //                     val1.add(vals1);
-    //                     GraphNode<String> node1 = new GraphNode<>("S"+i++, val1);
-    //                     nfa.add(node1);
-    //                     GraphNode<String> node2 = new GraphNode<>("S"+i++, val2);
-    //                     nfa.add(node2);
-    //                     ArrayList<TwoValues<Integer,String>> emptyList = new ArrayList<>();
-    //                     GraphNode<String> node3 = new GraphNode<String>("S"+i++,emptyList);
-    //                     nfa.add(node3);
-    //                     int pos2 = i-1;
-    //                     TwoValues<Integer, Integer> positions = new TwoValues<>(pos1,pos2);
-    //                     subTreeStack.push(positions);// Add the position of nodes in stack
-    //                 }
-    //                 else
-    //                 {
-    //                     // Sub tree structure indexes
-    //                     TwoValues<Integer,Integer> positions = subTreeStack.pop();
-    //                     System.out.println("Init:"+positions.getVal1()+"End:"+positions.getVal2());
-    //                     // Create a new node and add it to the graph
-    //                     ArrayList<TwoValues<Integer,String>> emptyList = new ArrayList<>();
-    //                     GraphNode<String> newNode = new GraphNode<>("S" + i++,emptyList);
-    //                     nfa.add(newNode);
-    //                     // Creating a new transition to add to a node inside the graph
-    //                     TwoValues<Integer, String> transition = new TwoValues<Integer,String>(nfa.size()-1, tStack.pop());
-    //                     nfa.get(positions.getVal2()).getValues().add(transition);
-    //                     // Pushing positions of subtree in sub tree stack
-    //                     positions.setVal2(nfa.size()-1);
-    //                     subTreeStack.push(positions);
-    //                 }
-    //             }
-    //             else
-    //             {
-    //                 // Sub tree structure indexes
-    //                 TwoValues<Integer,Integer> positions2 = subTreeStack.pop();
-    //                 TwoValues<Integer,Integer> positions1 = subTreeStack.pop();
-    //                 TwoValues<Integer,String> transitionE = new TwoValues<Integer,String>(nfa.size()-1, "ε");
-    //                 nfa.get(positions1.getVal2()).getValues().add(transitionE);
-    //                 positions1.setVal2(positions2.getVal2());
-    //                 subTreeStack.push(positions1);
-    //             }
-    //             break;
-    //             case 1: //In case it gets an or "|"
-    //             if (tStack.size()>0) {
-    //                 if(tStack.size()>1)
-    //                 {
-    //                     TwoValues<Integer,Integer> positions = new TwoValues<>();
-    //                     TwoValues<Integer,String> transitionE11 = new TwoValues<Integer,String>(i+1, "ε");
-    //                     TwoValues<Integer,String> transitionE12 = new TwoValues<Integer,String>(i+3, "ε");
-    //                     ArrayList<TwoValues<Integer,String>> initTransitions = new ArrayList<>();
-    //                     initTransitions.add(transitionE11);
-    //                     initTransitions.add(transitionE12);
-    //                     positions.setVal1(i);
-    //                     GraphNode<String> initNode = new GraphNode<String>("S"+i++, initTransitions);
-    //                     nfa.add(initNode);
-    //                     ArrayList<TwoValues<Integer,String>> emptyTransition = new ArrayList<>();
-    //                     TwoValues<Integer,String> transition2 = new TwoValues<Integer,String>(i+3, tStack.pop());
-    //                     ArrayList<TwoValues<Integer,String>> node21T = new ArrayList<>();
-    //                     node21T.add(transition2);
-    //                     TwoValues<Integer,String> transition1 = new TwoValues<Integer,String>(i+1, tStack.pop());
-    //                     ArrayList<TwoValues<Integer,String>> node11T = new ArrayList<>();
-    //                     node11T.add(transition1);
-    //                     TwoValues<Integer,String> transitionfN = new TwoValues<Integer,String>(i+4, "ε");
-    //                     ArrayList<TwoValues<Integer,String>> lastTFN = new ArrayList<>();
-    //                     lastTFN.add(transitionfN);
-    //                     GraphNode<String> node11 = new GraphNode<String>("S"+i++, node11T);
-    //                     nfa.add(node11);
-    //                     GraphNode<String> node12 = new GraphNode<String>("S"+i++, lastTFN);
-    //                     nfa.add(node12);
-    //                     GraphNode<String> node21 = new GraphNode<String>("S"+i++, node21T);
-    //                     nfa.add(node21);
-    //                     GraphNode<String> node23 = new GraphNode<String>("S"+i++, lastTFN);
-    //                     nfa.add(node23);
-    //                     positions.setVal2(i);
-    //                     GraphNode<String> finalNode = new GraphNode<String>("S"+i++, emptyTransition);
-    //                     nfa.add(finalNode);
-    //                     subTreeStack.push(positions);
-    //                 }
-    //                 else
-    //                 {
-    //                     // k
-    //                     TwoValues<Integer,Integer> positions1 = subTreeStack.pop();
-
-    //                 }
-    //             } else {
-    //                 TwoValues<Integer,Integer> positions2 = subTreeStack.pop();
-    //                 TwoValues<Integer,Integer> positions1 = subTreeStack.pop();
-    //                 TwoValues<Integer,String> transitionE11 = new TwoValues<Integer,String>(positions1.getVal1(), "ε");
-    //                 TwoValues<Integer,String> transitionE12 = new TwoValues<Integer,String>(positions2.getVal1(), "ε");
-    //                 ArrayList<TwoValues<Integer,String>> initTransitions = new ArrayList<>();
-    //                 initTransitions.add(transitionE11);
-    //                 initTransitions.add(transitionE12);
-    //                 GraphNode<String> initNode = new GraphNode<String>("S"+i++, initTransitions);
-    //                 nfa.add(initNode);
-    //                 ArrayList<TwoValues<Integer,String>> emptyList = new ArrayList<>();
-    //                 GraphNode<String> finalNode = new GraphNode<String>("S"+i++, emptyList);
-    //                 nfa.add(finalNode);
-    //                 TwoValues<Integer,String> transitionE21 = new TwoValues<Integer,String>(i-1, "ε");
-    //                 TwoValues<Integer,String> transitionE22 = new TwoValues<Integer,String>(i-1, "ε");
-    //                 nfa.get(positions1.getVal2()).getValues().add(transitionE21);
-    //                 nfa.get(positions2.getVal2()).getValues().add(transitionE22);
-    //                 positions1.setVal1(i-1);
-    //                 positions1.setVal2(i);
-    //                 subTreeStack.push(positions1);                 
-    //             }
-    //             break;
-    //             default:
-    //             tStack.add(node.value.getToken());
-    //             break;
-    //         }
-    //     }
-    // }
     public AFN(Tree tree)
     {
         int i = 0;
@@ -245,41 +112,6 @@ public class AFN {
             }
         }
     }
-    public boolean belongs2Language(Integer index, String text)
-    {
-        System.out.println("Index:"+index);
-        // Index is the index of the node
-        for (TwoValues<Integer,String> index1 : nfa.get(index).getValues()) {
-            String character = String.valueOf(text.toCharArray()[0]);
-            if (index1.getVal2().equals(character) && text.length() == 1)
-            {
-                // If is the last character and the transition is equal to the char return true
-                return true;
-            }
-            else if (index1.getVal2().equals("ε") && text.length() == 1)
-            {
-                // If is the last character and the transition is equal to epsilon
-                return true;
-            }
-            else if (index1.getVal2().equals(character))
-            {
-                // If is not the last character but it is a valid character
-                if (belongs2Language(index1.getVal1(), text.substring(1,text.length())))
-                {
-                    return true;
-                }
-            }
-            else if (index1.getVal2().equals("ε"))
-            {
-                // If is not the last character but the transition is ε
-                if (belongs2Language(index1.getVal1(), text))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     public boolean isAccepted(String input) {
         Set<Integer> currentStateSet = new HashSet<>();
@@ -361,14 +193,6 @@ public class AFN {
 
     public void setNfa(ArrayList<GraphNode<String>> nfa) {
         this.nfa = nfa;
-    }
-
-    public Stack<String> getTStack() {
-        return this.tStack;
-    }
-
-    public void setTStack(Stack<String> tStack) {
-        this.tStack = tStack;
     }
 
     public Stack<TwoValues<Integer,Integer>> getSubTreeStack() {
