@@ -1,6 +1,6 @@
 # Laboratorio 4
-Diego Andrés Alonzo Medinilla 20172
-Samuel Argueta 211024
+* Diego Andrés Alonzo Medinilla 20172
+* Samuel Argueta 211024
 ## Ejercicio 1
 ### Instrucciones
 * En laboratorios anteriores implementó un balanceo de expresiones regulares, luego implementó Shunting Yard para convertir una Expresión Regular en notación infix a postfix y por último creó un árbol abstracto sintáctico que representa la expresión en postfix de forma visual. Ahora, utilizando todos estos elementos, deberá construir (con base en el árbol generado) el AFN resultante de aplicar el algoritmo de Thompson al árbol construido y mostrar su dibujo en pantalla, así como deberá también simular el AFN para reconocer cadenas de la expresión regular asociada. Especificación del funcionamiento del programa

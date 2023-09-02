@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
-public class Lab4 {
+public class Project1 {
      public static void main(String[] args)
     {
         // a+(c|b*)k
@@ -44,10 +44,10 @@ public class Lab4 {
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
                 AFN afn = new AFN(tree);
                 afn.generateAFDTransitionTable();
-                // System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
-                // tree.generateGraphicTree(scanner.nextLine());
-                // System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
-                // afn.generateAFN(scanner.nextLine());
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
+                tree.generateGraphicTree(scanner.nextLine());
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
+                afn.generateAFN(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AFD generated:");
                 afn.generateAFD(scanner.nextLine());
                 while (true)
