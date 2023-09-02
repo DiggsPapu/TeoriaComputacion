@@ -14,7 +14,7 @@ public class Lab4 {
         // (a|t)c
         // (a|b)*
         // (a*|b*)*
-        // ((z|a)|b*)*
+        // ((ε|a)|b*)*
         // (a|b)*abb(a|b)*
         // 0?(1?)?0*
         // if\\([ae]+\)\\{[ei]+\\})
@@ -30,14 +30,14 @@ public class Lab4 {
 			String line = reader.readLine();
 			while (line != null) {
 				System.out.println(line);
-				// System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-                // if (!scanner.nextLine().equals("1"))
-                // {
-                //     tokenizer.setDotSpecial(false);
-                // }
-                // else{
-                //     tokenizer.setDotSpecial(true);
-                // }
+				System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
+                if (!scanner.nextLine().equals("1"))
+                {
+                    tokenizer.setDotSpecial(false);
+                }
+                else{
+                    tokenizer.setDotSpecial(true);
+                }
                 tokenizer.setDotSpecial(false);
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
@@ -80,11 +80,13 @@ public class Lab4 {
 // ./Graphs/Tree/ast3.dot
 // ./Graphs/Tree/ast4.dot
 // ./Graphs/Tree/ast5.dot
+
 // ./Graphs/AFN/afn1.dot
 // ./Graphs/AFN/afn2.dot
 // ./Graphs/AFN/afn3.dot
 // ./Graphs/AFN/afn4.dot
 // ./Graphs/AFN/afn5.dot
+
 // ./Graphs/AFD/afd1.dot
 // ./Graphs/AFD/afd2.dot
 // ./Graphs/AFD/afd3.dot

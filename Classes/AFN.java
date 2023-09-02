@@ -122,6 +122,11 @@ public class AFN {
         {
             alphabet.add("ε");
         }
+        else if (this.alphabet.indexOf("ε")!= alphabet.size()-1)
+        {
+            alphabet.remove(this.alphabet.indexOf("ε"));
+            alphabet.add("ε");
+        }
     }
 
     public boolean isAccepted(String input) {
