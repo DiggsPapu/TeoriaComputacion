@@ -194,6 +194,10 @@ public class AFN {
     public void generateAFDTransitionTable(){
         generateAFNTransTable();
         this.afdTransTable.add(0,this.afnTransTable.get(s0).get(alphabet.size()-1));
+        if(this.afnTransTable.get(s0).get(alphabet.size()-1).contains(sf))
+        {
+            finalStatesAfd.add(0);
+        }
         // Entra en bucle para evaluar cada estado en el estado de transiciones del afd.
         for (int i = 0; i < this.afdTransTable.size(); i++) {
             ArrayList<TwoValues<Integer,String>> transitions = new ArrayList<>();
@@ -249,13 +253,13 @@ public class AFN {
         //     System.out.println("\nNodeNum:"+index);
         //     printSet(this.afnTransTable.get(index));
         // }
-        // for (int index = 0; index < this.afdTransTable.size(); index++) {
-        //     System.out.println("\nNodeNum:"+index);
-        //     for (int x = 0; x < this.afdTransTable.get(index).size(); x++)
-        //     {
-        //         System.out.print(" "+this.afdTransTable.get(index).get(x)+" ");
-        //     }
-        // }
+        for (int index = 0; index < this.afdTransTable.size(); index++) {
+            System.out.println("\nNodeNum:"+index);
+            for (int x = 0; x < this.afdTransTable.get(index).size(); x++)
+            {
+                System.out.print(" "+this.afdTransTable.get(index).get(x)+" ");
+            }
+        }
         // for (int index = 0; index<this.afd.size(); index++)
         // {
         //     System.out.println("\n"+this.afd.get(index).value+": ");
@@ -292,19 +296,16 @@ public class AFN {
                     {
                         myWriter.append(node.getValue() + "[shape=doublecircle] [label=\"" + node.getValue() + "\"];\n");
                     }
-                    else if (i == 0)
-                    {
-                        myWriter.append("init [label=\"\", shape=point];\n");
-                    }
                     else {
                         myWriter.append(node.getValue() + " [label=\"" + node.getValue() + "\"];\n");
                     }
                 }
+                myWriter.append("init [label=\"\", shape=point];\n");
                 for (int i = 0; i<afd.size(); i++) {
                     GraphNode<String> node = afd.get(i);
                     if (i==0)
                     {
-                        myWriter.append("init->"+node.getValue()+"[label=\"ε\"];\n");
+                        myWriter.append("init->"+node.getValue()+";\n");
                     }
                     for (TwoValues<Integer,String> transition : node.getValues()) {
                         // System.out.println("node:"+node.getValue()+" transition1:"+transition.getVal2()+" index:"+transition.getVal1());
