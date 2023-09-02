@@ -1,11 +1,11 @@
+import Classes.AFN;
+import Classes.Tree;
+import Classes.tokenizer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-import Classes.AFN;
-import Classes.Tree;
-import Classes.tokenizer;
 
 public class Lab4 {
      public static void main(String[] args)
@@ -26,22 +26,26 @@ public class Lab4 {
         tokenizer tokenizer = new tokenizer();
         BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader("/home/dieggspapu/UVG/TeoriaComputacion/sample.txt"));
+			reader = new BufferedReader(new FileReader("./sample.txt"));
 			String line = reader.readLine();
 			while (line != null) {
 				System.out.println(line);
-				System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-                if (!scanner.nextLine().equals("1"))
-                {
-                    tokenizer.setDotSpecial(false);
-                }
-                else{
-                    tokenizer.setDotSpecial(true);
-                }
+				// System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
+                // if (!scanner.nextLine().equals("1"))
+                // {
+                //     tokenizer.setDotSpecial(false);
+                // }
+                // else{
+                //     tokenizer.setDotSpecial(true);
+                // }
+                tokenizer.setDotSpecial(false);
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
                 AFN afn = new AFN(tree);
+                afn.generateAFDTransitionTable();
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AFD generated:");
+                afn.generateAFD(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
                 tree.generateGraphicTree(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
@@ -71,12 +75,14 @@ public class Lab4 {
 		}
        scanner.close();
     }
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph1.dot
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph2.dot
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph3.dot
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/Tree/graph4.dot
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn1.dot
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn2.dot
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn3.dot
-// /home/dieggspapu/UVG/TeoriaComputacion/Graphs/AFN/afn4.dot
+// ./Graphs/Tree/graph1.dot
+// ./Graphs/Tree/graph2.dot
+// ./Graphs/Tree/graph3.dot
+// ./Graphs/Tree/graph4.dot
+// ./Graphs/AFN/afn1.dot
+// ./Graphs/AFN/afn2.dot
+// ./Graphs/AFN/afn3.dot
+// ./Graphs/AFN/afn4.dot
+// ./Graphs/AFD/afd5.dot
+
 }
