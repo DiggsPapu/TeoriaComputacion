@@ -44,12 +44,12 @@ public class Lab4 {
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
                 AFN afn = new AFN(tree);
                 afn.generateAFDTransitionTable();
-                System.out.println("Enter the filename where you want to save an archive with a graph of the AFD generated:");
-                afn.generateAFD(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
                 tree.generateGraphicTree(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
                 afn.generateAFN(scanner.nextLine());
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AFD generated:");
+                afn.generateAFD(scanner.nextLine());
                 while (true)
                 {
                     System.out.println("Enter a chain to determine whether it is accepted");
@@ -75,14 +75,21 @@ public class Lab4 {
 		}
        scanner.close();
     }
-// ./Graphs/Tree/graph1.dot
-// ./Graphs/Tree/graph2.dot
-// ./Graphs/Tree/graph3.dot
-// ./Graphs/Tree/graph4.dot
+// ./Graphs/Tree/ast1.dot
+// ./Graphs/Tree/ast2.dot
+// ./Graphs/Tree/ast3.dot
+// ./Graphs/Tree/ast4.dot
+// ./Graphs/Tree/ast5.dot
 // ./Graphs/AFN/afn1.dot
 // ./Graphs/AFN/afn2.dot
 // ./Graphs/AFN/afn3.dot
 // ./Graphs/AFN/afn4.dot
+// ./Graphs/AFN/afn5.dot
+// ./Graphs/AFD/afd1.dot
+// ./Graphs/AFD/afd2.dot
+// ./Graphs/AFD/afd3.dot
+// ./Graphs/AFD/afd4.dot
 // ./Graphs/AFD/afd5.dot
+
 
 }

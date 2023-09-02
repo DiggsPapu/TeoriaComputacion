@@ -1,20 +1,15 @@
-Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
+Initial value:(a|b)a*b*  Conversion to Acceptable Regex:(a|b).a*.b*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(*]
-4.) Postfix stack: [a*] Operator:[(|]
-5.) Postfix stack: [a*b] Operator:[(|]
-6.) Postfix stack: [a*b] Operator:[(|*]
-7.) Postfix stack: [a*b*|] Operator:[]
-8.) Postfix stack: [a*b*|] Operator:[.]
-9.) Postfix stack: [a*b*|] Operator:[.(]
-10.) Postfix stack: [a*b*|a] Operator:[.(]
-11.) Postfix stack: [a*b*|a] Operator:[.(*]
-12.) Postfix stack: [a*b*|a*] Operator:[.(|]
-13.) Postfix stack: [a*b*|a*b] Operator:[.(|]
-14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
-15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
+3.) Postfix stack: [a] Operator:[(|]
+4.) Postfix stack: [ab] Operator:[(|]
+5.) Postfix stack: [ab|] Operator:[]
+6.) Postfix stack: [ab|] Operator:[.]
+7.) Postfix stack: [ab|a] Operator:[.]
+8.) Postfix stack: [ab|a] Operator:[.*]
+9.) Postfix stack: [ab|a*.] Operator:[.]
+10.) Postfix stack: [ab|a*.b] Operator:[.]The postfix expression is:ab|a*.b*.
 
 Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
 0.) Postfix stack: [] Operator:[]
@@ -34,23 +29,44 @@ Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
 14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
 15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
 
-Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
+Initial value:((ε|a)|b*)*  Conversion to Acceptable Regex:((ε|a)|b*)*
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [] Operator:[(]
+2.) Postfix stack: [] Operator:[((]
+3.) Postfix stack: [ε] Operator:[((]
+4.) Postfix stack: [ε] Operator:[((|]
+5.) Postfix stack: [εa] Operator:[((|]
+6.) Postfix stack: [εa|] Operator:[(]
+7.) Postfix stack: [εa|] Operator:[(|]
+8.) Postfix stack: [εa|b] Operator:[(|]
+9.) Postfix stack: [εa|b] Operator:[(|*]
+10.) Postfix stack: [εa|b*|] Operator:[]The postfix expression is:εa|b*|*
+
+Initial value:(a|b)a*b*  Conversion to Acceptable Regex:(a|b).a*.b*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(*]
-4.) Postfix stack: [a*] Operator:[(|]
-5.) Postfix stack: [a*b] Operator:[(|]
-6.) Postfix stack: [a*b] Operator:[(|*]
-7.) Postfix stack: [a*b*|] Operator:[]
-8.) Postfix stack: [a*b*|] Operator:[.]
-9.) Postfix stack: [a*b*|] Operator:[.(]
-10.) Postfix stack: [a*b*|a] Operator:[.(]
-11.) Postfix stack: [a*b*|a] Operator:[.(*]
-12.) Postfix stack: [a*b*|a*] Operator:[.(|]
-13.) Postfix stack: [a*b*|a*b] Operator:[.(|]
-14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
-15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
+3.) Postfix stack: [a] Operator:[(|]
+4.) Postfix stack: [ab] Operator:[(|]
+5.) Postfix stack: [ab|] Operator:[]
+6.) Postfix stack: [ab|] Operator:[.]
+7.) Postfix stack: [ab|a] Operator:[.]
+8.) Postfix stack: [ab|a] Operator:[.*]
+9.) Postfix stack: [ab|a*.] Operator:[.]
+10.) Postfix stack: [ab|a*.b] Operator:[.]The postfix expression is:ab|a*.b*.
+
+Initial value:(a|b)a*b*  Conversion to Acceptable Regex:(a|b).a*.b*
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [] Operator:[(]
+2.) Postfix stack: [a] Operator:[(]
+3.) Postfix stack: [a] Operator:[(|]
+4.) Postfix stack: [ab] Operator:[(|]
+5.) Postfix stack: [ab|] Operator:[]
+6.) Postfix stack: [ab|] Operator:[.]
+7.) Postfix stack: [ab|a] Operator:[.]
+8.) Postfix stack: [ab|a] Operator:[.*]
+9.) Postfix stack: [ab|a*.] Operator:[.]
+10.) Postfix stack: [ab|a*.b] Operator:[.]The postfix expression is:ab|a*.b*.
 
 Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
 0.) Postfix stack: [] Operator:[]
@@ -70,75 +86,72 @@ Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
 14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
 15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
 
-Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
+Initial value:((ε|a)|b*)*  Conversion to Acceptable Regex:((ε|a)|b*)*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
-2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(*]
-4.) Postfix stack: [a*] Operator:[(|]
-5.) Postfix stack: [a*b] Operator:[(|]
-6.) Postfix stack: [a*b] Operator:[(|*]
-7.) Postfix stack: [a*b*|] Operator:[]
-8.) Postfix stack: [a*b*|] Operator:[.]
-9.) Postfix stack: [a*b*|] Operator:[.(]
-10.) Postfix stack: [a*b*|a] Operator:[.(]
-11.) Postfix stack: [a*b*|a] Operator:[.(*]
-12.) Postfix stack: [a*b*|a*] Operator:[.(|]
-13.) Postfix stack: [a*b*|a*b] Operator:[.(|]
-14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
-15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
+2.) Postfix stack: [] Operator:[((]
+3.) Postfix stack: [ε] Operator:[((]
+4.) Postfix stack: [ε] Operator:[((|]
+5.) Postfix stack: [εa] Operator:[((|]
+6.) Postfix stack: [εa|] Operator:[(]
+7.) Postfix stack: [εa|] Operator:[(|]
+8.) Postfix stack: [εa|b] Operator:[(|]
+9.) Postfix stack: [εa|b] Operator:[(|*]
+10.) Postfix stack: [εa|b*|] Operator:[]The postfix expression is:εa|b*|*
 
-Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
+Initial value:(a|b)*abb(a|b)*  Conversion to Acceptable Regex:(a|b)*.a.b.b.(a|b)*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(*]
-4.) Postfix stack: [a*] Operator:[(|]
-5.) Postfix stack: [a*b] Operator:[(|]
-6.) Postfix stack: [a*b] Operator:[(|*]
-7.) Postfix stack: [a*b*|] Operator:[]
-8.) Postfix stack: [a*b*|] Operator:[.]
-9.) Postfix stack: [a*b*|] Operator:[.(]
-10.) Postfix stack: [a*b*|a] Operator:[.(]
-11.) Postfix stack: [a*b*|a] Operator:[.(*]
-12.) Postfix stack: [a*b*|a*] Operator:[.(|]
-13.) Postfix stack: [a*b*|a*b] Operator:[.(|]
-14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
-15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
+3.) Postfix stack: [a] Operator:[(|]
+4.) Postfix stack: [ab] Operator:[(|]
+5.) Postfix stack: [ab|] Operator:[]
+6.) Postfix stack: [ab|] Operator:[*]
+7.) Postfix stack: [ab|*] Operator:[.]
+8.) Postfix stack: [ab|*a] Operator:[.]
+9.) Postfix stack: [ab|*a.] Operator:[.]
+10.) Postfix stack: [ab|*a.b] Operator:[.]
+11.) Postfix stack: [ab|*a.b.] Operator:[.]
+12.) Postfix stack: [ab|*a.b.b] Operator:[.]
+13.) Postfix stack: [ab|*a.b.b.] Operator:[.]
+14.) Postfix stack: [ab|*a.b.b.] Operator:[.(]
+15.) Postfix stack: [ab|*a.b.b.a] Operator:[.(]
+16.) Postfix stack: [ab|*a.b.b.a] Operator:[.(|]
+17.) Postfix stack: [ab|*a.b.b.ab] Operator:[.(|]
+18.) Postfix stack: [ab|*a.b.b.ab|] Operator:[.]The postfix expression is:ab|*a.b.b.ab|*.
 
-Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
+Initial value:0?(1?)?0*  Conversion to Acceptable Regex:(0|ε).(((1|ε))|ε).0*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
-2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(*]
-4.) Postfix stack: [a*] Operator:[(|]
-5.) Postfix stack: [a*b] Operator:[(|]
-6.) Postfix stack: [a*b] Operator:[(|*]
-7.) Postfix stack: [a*b*|] Operator:[]
-8.) Postfix stack: [a*b*|] Operator:[.]
-9.) Postfix stack: [a*b*|] Operator:[.(]
-10.) Postfix stack: [a*b*|a] Operator:[.(]
-11.) Postfix stack: [a*b*|a] Operator:[.(*]
-12.) Postfix stack: [a*b*|a*] Operator:[.(|]
-13.) Postfix stack: [a*b*|a*b] Operator:[.(|]
-14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
-15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
+2.) Postfix stack: [0] Operator:[(]
+3.) Postfix stack: [0] Operator:[(|]
+4.) Postfix stack: [0ε] Operator:[(|]
+5.) Postfix stack: [0ε|] Operator:[]
+6.) Postfix stack: [0ε|] Operator:[.]
+7.) Postfix stack: [0ε|] Operator:[.(]
+8.) Postfix stack: [0ε|] Operator:[.((]
+9.) Postfix stack: [0ε|] Operator:[.(((]
+10.) Postfix stack: [0ε|1] Operator:[.(((]
+11.) Postfix stack: [0ε|1] Operator:[.(((|]
+12.) Postfix stack: [0ε|1ε] Operator:[.(((|]
+13.) Postfix stack: [0ε|1ε|] Operator:[.((]
+14.) Postfix stack: [0ε|1ε|] Operator:[.(]
+15.) Postfix stack: [0ε|1ε|] Operator:[.(|]
+16.) Postfix stack: [0ε|1ε|ε] Operator:[.(|]
+17.) Postfix stack: [0ε|1ε|ε|] Operator:[.]
+18.) Postfix stack: [0ε|1ε|ε|.] Operator:[.]
+19.) Postfix stack: [0ε|1ε|ε|.0] Operator:[.]The postfix expression is:0ε|1ε|ε|.0*.
 
-Initial value:(a*|b*)+  Conversion to Acceptable Regex:(a*|b*).(a*|b*)*
+Initial value:(a|b)a*b*  Conversion to Acceptable Regex:(a|b).a*.b*
 0.) Postfix stack: [] Operator:[]
 1.) Postfix stack: [] Operator:[(]
 2.) Postfix stack: [a] Operator:[(]
-3.) Postfix stack: [a] Operator:[(*]
-4.) Postfix stack: [a*] Operator:[(|]
-5.) Postfix stack: [a*b] Operator:[(|]
-6.) Postfix stack: [a*b] Operator:[(|*]
-7.) Postfix stack: [a*b*|] Operator:[]
-8.) Postfix stack: [a*b*|] Operator:[.]
-9.) Postfix stack: [a*b*|] Operator:[.(]
-10.) Postfix stack: [a*b*|a] Operator:[.(]
-11.) Postfix stack: [a*b*|a] Operator:[.(*]
-12.) Postfix stack: [a*b*|a*] Operator:[.(|]
-13.) Postfix stack: [a*b*|a*b] Operator:[.(|]
-14.) Postfix stack: [a*b*|a*b] Operator:[.(|*]
-15.) Postfix stack: [a*b*|a*b*|] Operator:[.]The postfix expression is:a*b*|a*b*|*.
+3.) Postfix stack: [a] Operator:[(|]
+4.) Postfix stack: [ab] Operator:[(|]
+5.) Postfix stack: [ab|] Operator:[]
+6.) Postfix stack: [ab|] Operator:[.]
+7.) Postfix stack: [ab|a] Operator:[.]
+8.) Postfix stack: [ab|a] Operator:[.*]
+9.) Postfix stack: [ab|a*.] Operator:[.]
+10.) Postfix stack: [ab|a*.b] Operator:[.]The postfix expression is:ab|a*.b*.
 

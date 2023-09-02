@@ -170,7 +170,7 @@ public class AFN {
             for (int index = 0; index < alphabet.size()-1; index++) {
                 if(transition.getVal2().equals(alphabet.get(index)))
                 {
-                    System.out.println(index);
+                    // System.out.println(index);
                     transitionSet.get(index).add(transition.getVal1());
                 }
             }
@@ -240,25 +240,25 @@ public class AFN {
                 }
             }
         }
-        for (int index = 0; index < this.afnTransTable.size(); index++) {
-            System.out.println("\nNodeNum:"+index);
-            printSet(this.afnTransTable.get(index));
-        }
-        for (int index = 0; index < this.afdTransTable.size(); index++) {
-            System.out.println("\nNodeNum:"+index);
-            for (int x = 0; x < this.afdTransTable.get(index).size(); x++)
-            {
-                System.out.print(" "+this.afdTransTable.get(index).get(x)+" ");
-            }
-        }
-        for (int index = 0; index<this.afd.size(); index++)
-        {
-            System.out.println("\n"+this.afd.get(index).value+": ");
-            for (int e = 0; e < this.afd.get(index).getValues().size(); e++) {
-                System.out.println("* "+this.afd.get(index).getValues().get(e).val2+"->"+this.afd.get(index).getValues().get(e).val1);
-            }
-        }
-        System.out.println(afd.size());
+        // for (int index = 0; index < this.afnTransTable.size(); index++) {
+        //     System.out.println("\nNodeNum:"+index);
+        //     printSet(this.afnTransTable.get(index));
+        // }
+        // for (int index = 0; index < this.afdTransTable.size(); index++) {
+        //     System.out.println("\nNodeNum:"+index);
+        //     for (int x = 0; x < this.afdTransTable.get(index).size(); x++)
+        //     {
+        //         System.out.print(" "+this.afdTransTable.get(index).get(x)+" ");
+        //     }
+        // }
+        // for (int index = 0; index<this.afd.size(); index++)
+        // {
+        //     System.out.println("\n"+this.afd.get(index).value+": ");
+        //     for (int e = 0; e < this.afd.get(index).getValues().size(); e++) {
+        //         System.out.println("* "+this.afd.get(index).getValues().get(e).val2+"->"+this.afd.get(index).getValues().get(e).val1);
+        //     }
+        // }
+        // System.out.println(afd.size());
     }
     void printSet(ArrayList<ArrayList<Integer>>set)
     {
