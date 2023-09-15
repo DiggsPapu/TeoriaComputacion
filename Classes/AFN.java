@@ -5,6 +5,8 @@ import java.util.Stack;
 public class AFN {
     protected ArrayList<GraphNode<String>> nfa = new ArrayList<>();
     protected ArrayList<GraphNode<String>> afd = new ArrayList<>();
+    protected ArrayList<GraphNode<String>> afdSimplified = new ArrayList<>();
+    protected ArrayList<Integer> finalStatesAfdSimplified = new ArrayList<>();
     protected ArrayList<Integer> finalStatesAfd = new ArrayList<>();
     protected Stack<TwoValues<Integer,Integer>> subTreeStack = new Stack<>();
     protected ArrayList<String> alphabet = new ArrayList<>();
@@ -12,6 +14,7 @@ public class AFN {
     protected int sf = 1;
     protected ArrayList<ArrayList<ArrayList<Integer>>> afnTransTable =new ArrayList<>();
     protected ArrayList<ArrayList<Integer>> afdTransTable =new ArrayList<>();
+    protected ArrayList<ArrayList<Integer>> afdSimplifiedTransTable =new ArrayList<>();
     public AFN(Tree tree)
     {
         int i = 0;
@@ -253,13 +256,13 @@ public class AFN {
         //     System.out.println("\nNodeNum:"+index);
         //     printSet(this.afnTransTable.get(index));
         // }
-        for (int index = 0; index < this.afdTransTable.size(); index++) {
-            System.out.println("\nNodeNum:"+index);
-            for (int x = 0; x < this.afdTransTable.get(index).size(); x++)
-            {
-                System.out.print(" "+this.afdTransTable.get(index).get(x)+" ");
-            }
-        }
+        // for (int index = 0; index < this.afdTransTable.size(); index++) {
+        //     System.out.println("\nNodeNum:"+index);
+        //     for (int x = 0; x < this.afdTransTable.get(index).size(); x++)
+        //     {
+        //         System.out.print(" "+this.afdTransTable.get(index).get(x)+" ");
+        //     }
+        // }
         // for (int index = 0; index<this.afd.size(); index++)
         // {
         //     System.out.println("\n"+this.afd.get(index).value+": ");
@@ -267,22 +270,313 @@ public class AFN {
         //         System.out.println("* "+this.afd.get(index).getValues().get(e).val2+"->"+this.afd.get(index).getValues().get(e).val1);
         //     }
         // }
-        // System.out.println(afd.size());
+    }
+    public boolean isAcceptedByAFD(String input, ArrayList<GraphNode<String>> newAfd) {
+        int currentState = 0;  // Start from the initial state
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            int nextState = getNextState(currentState, c, newAfd);
+            if (nextState == -1) {
+                // No transition defined for the input character, not accepted
+                return false;
+            }
+            currentState = nextState;
+        }
+        // Check if the final state is reached
+        return finalStatesAfd.contains(currentState);
+    }
+    private int getNextState(int currentState, char inputSymbol, ArrayList<GraphNode<String>> newAfd) {
+        for (TwoValues<Integer, String> transition : newAfd.get(currentState).getValues()) {
+            if (transition.getVal2().equals(String.valueOf(inputSymbol))) {
+                return transition.getVal1();
+            }
+        }
+        return -1;
+    }
+    private ArrayList<ArrayList<TwoValues<Integer,Integer>>> determineTransitions(ArrayList<ArrayList<TwoValues<Integer,Integer>>> transitions){
+        for (int index = 0; index < this.afd.size(); index++) {
+            // Obtiene las transiciones
+            ArrayList<TwoValues<Integer, String>>  nodeTrans = this.afd.get(index).getValues();
+            ArrayList<TwoValues<Integer, Integer>> trans = new ArrayList<>();
+            for (int index2 = 0; index2 < nodeTrans.size(); index2++ ) {
+                for (int index3 = 0; index3 < this.afdSimplifiedTransTable.size(); index3++){
+                    // Determina a que grupo pertenece
+                    if (this.afdSimplifiedTransTable.get(index3).contains(nodeTrans.get(index2).getVal1())) {
+                        TwoValues<Integer,Integer> tr = new TwoValues<Integer,Integer>(nodeTrans.get(index2).getVal1(), index3);
+                        trans.add(index2, tr);
+                    }
+                }
+            }
+            transitions.add(index, trans);
+        }
+        return transitions;
+    }
+    public void generateAfdSimplifiedTransTable(){
+        ArrayList<Integer> notFinalState = new ArrayList<>();
+        for (int index = 0; index < this.afd.size(); index++) {
+            if(!this.finalStatesAfd.contains(index)) {
+                notFinalState.add(index);
+            }
+        }
+        this.afdSimplifiedTransTable.add(notFinalState);
+        this.afdSimplifiedTransTable.add(this.finalStatesAfd);
+        // Creo unas transiciones, de manera que la posicion indicara el terminal, el primer valor la direccion y la segunda a que grupo pertenece
+        ArrayList<ArrayList<TwoValues<Integer,Integer>>> transitions = new ArrayList<>();
+        for (int index = 0; index < this.afd.size(); index++) {
+            // Obtiene las transiciones
+            ArrayList<TwoValues<Integer, String>>  nodeTrans = this.afd.get(index).getValues();
+            ArrayList<TwoValues<Integer, Integer>> trans = new ArrayList<>();
+            for (int index2 = 0; index2 < nodeTrans.size(); index2++ ) {
+                for (int index3 = 0; index3 < this.afdSimplifiedTransTable.size(); index3++){
+                    // Determina a que grupo pertenece
+                    if (this.afdSimplifiedTransTable.get(index3).contains(nodeTrans.get(index2).getVal1())) {
+                        TwoValues<Integer,Integer> tr = new TwoValues<Integer,Integer>(nodeTrans.get(index2).getVal1(), index3);
+                        trans.add(index2, tr);
+                    }
+                }
+            }
+            transitions.add(index, trans);
+        }
+        printSet(this.afdSimplifiedTransTable);        
+        int iteracion = 0;
+        boolean stillLoop = true;
+        while (stillLoop) {
+            System.out.println("Iteración: " + iteracion++ );
+            // Crear las transiciones
+            for (int index = 0; index < this.afd.size(); index++) {
+                // Obtiene las transiciones
+                ArrayList<TwoValues<Integer, String>>  nodeTrans = this.afd.get(index).getValues();
+                ArrayList<TwoValues<Integer, Integer>> trans = new ArrayList<>();
+                for (int index2 = 0; index2 < nodeTrans.size(); index2++ ) {
+                    for (int index3 = 0; index3 < this.afdSimplifiedTransTable.size(); index3++){
+                        // Determina a que grupo pertenece
+                        if (this.afdSimplifiedTransTable.get(index3).contains(nodeTrans.get(index2).getVal1())) {
+                            TwoValues<Integer,Integer> tr = new TwoValues<Integer,Integer>(nodeTrans.get(index2).getVal1(), index3);
+                            trans.add(index2, tr);
+                        }
+                    }
+                }
+                transitions.add(index, trans);
+                transitions.remove(index+1);
+            }
+            printTransitions2(transitions);
+            // Determinar a que grupo pertenece el nodo
+            ArrayList<ArrayList<Integer>> pi = new ArrayList<>();
+            for (int index = 0; index < transitions.size(); index++){
+                if (index==0){
+                    // en caso de que sea indice 0 se crea un nuevo grupo por default
+                    ArrayList<Integer> trns = new ArrayList<>();
+                    trns.add(0);
+                    pi.add(trns);
+                }
+                else {
+                    boolean added = false;
+                    // en cualquier otro caso se agrupa, for para recorrer las pi
+                    for (int j = 0; j < pi.size(); j++) {
+                        for (int i = 0; i < this.afdSimplifiedTransTable.size(); i++) {
+                            ArrayList<Integer> t = this.afdSimplifiedTransTable.get(i);
+                            // Si tienen mismas transiciones de grupo y pertenecen al mismo grupo de la ultima agrupacion se agrupan
+                            // System.out.print("Set#"+i+": ");
+                            // printSet2(t);
+                            // System.out.println("Value:"+pi.get(j).get(0));
+                            // Si contiene al nodo y contiene al del posible grupo
+                            if ( t.contains(index) && t.contains(pi.get(j).get(0)) ) {
+                                // Comparador para verificar las transiciones
+                                boolean comparator = true;
+                                for (int l = 0; l < transitions.get(index).size(); l++) {
+                                    // Si alguna de las transiciones lleva a uno que no pertenece al mismo grupo
+                                    if (transitions.get(index).get(l).getVal2()!=transitions.get(pi.get(j).get(0)).get(l).getVal2()) {
+                                        comparator = false;
+                                    }
+                                }
+                                // Si todas las transiciones llevan a nodos que pertenecen al grupo
+                                if (comparator) {
+                                    pi.get(j).add(index);
+                                    added = true;
+                                }
+                            }
+                        }
+                    }
+                    // Si no se aniadio a ninguno se crea un nuevo grupo
+                    if (added == false) {
+                        ArrayList<Integer> trns = new ArrayList<>();
+                        trns.add(index);
+                        pi.add(trns);
+                    }
+                }
+            }
+            printSet(pi);
+            if (pi.equals(this.afdSimplifiedTransTable)) {
+                stillLoop = false;
+            }
+            this.afdSimplifiedTransTable = pi;
+        }
+
+        for (int index = 0; index < this.afdSimplifiedTransTable.size(); index++) {
+            ArrayList<TwoValues<Integer, String>>transition = new ArrayList<>();
+            // Obtengo las transiciones para uno de los valores del grupo porque son iguales.
+            ArrayList<TwoValues<Integer, String>> values = this.afd.get(this.afdSimplifiedTransTable.get(index).get(0)).getValues();
+            // recorrer las transiciones
+            for (int index2 = 0; index2 < values.size(); index2++) {
+                // ir comparando en cada posible grupo
+                for (int index3 = 0; index3 < this.afdSimplifiedTransTable.size(); index3++) {
+                    if(this.afdSimplifiedTransTable.get(index3).contains(values.get(index2).getVal1())){
+                        TwoValues<Integer, String> trans = new TwoValues<Integer,String>(index3, values.get(index2).getVal2());
+                        transition.add(trans);
+                    }
+                }
+            } 
+            // construir el afd simplificado
+            GraphNode<String> node = new GraphNode<>(String.valueOf("S"+index), transition);
+            this.afdSimplified.add(node);
+            // aniadir los estados de aceptacion
+            if(this.finalStatesAfd.contains(index)) {
+                this.finalStatesAfdSimplified.add(this.afdSimplified.size()-1);
+            }
+        }
+        // while (stillLoop) {     
+        //     // Iteracion
+        //     System.out.println("\n  Iteracion: "+iteracion);
+        //     iteracion++;       
+        //     // recorre la las transiciones y chequea a que grupo pertenece cada una
+        //     for (int index = 0; index < transitions.size(); index++) {
+        //     }
+        //     for (int index = 0; index < transitions.size(); index++) {
+        //         // hace la suplementacion de la nueva iteracion de las transiciones
+        //         for (int i = 0; i < transitions.get(index).size(); i++) {
+        //             TwoValues<Integer, String> val = transitions.get(index).get(i);
+        //             // System.out.println("alphabet:"+val.getVal2()+" pointer:"+val.getVal1());
+        //             if ( val.val1 != null) {
+        //                 // Reemplazo
+        //                 transitions.get(index).add(i, this.afd.get(val.getVal1()).values.get(i));
+        //                 transitions.get(index).remove(i+1);
+        //             }
+        //         }
+        //         // Se determina a que grupo pertenece
+        //         pi = whichGroupE(pi, transitions, index);
+        //     }
+        //     // Si son iguales entonces se acaba sino prosigue repitiendose el ciclo
+        //     if(!stillInCycle(pi)){
+        //         stillLoop = false;
+        //     }
+        //     this.afdSimplifiedTransTable = pi;
+        //     printSet(pi);
+        //     printTransitions(transitions);
+        //     pi = new ArrayList<>();
+        // }
+    }
+    private void printSet2(ArrayList<Integer> set){
+        for (int i = 0; i < set.size(); i++){
+            System.out.print(set.get(i)+" ");
+        }
+    }
+    private boolean stillInCycle(ArrayList<ArrayList<Integer>> pi){
+        // Si son iguales entonces se acaba sino prosigue repitiendose el ciclo
+            if (!pi.equals(this.afdSimplifiedTransTable)) {
+                return true;
+            }
+            return false;
+    }
+    private ArrayList<ArrayList<Integer>> whichGroupE(ArrayList<ArrayList<Integer>> pi, ArrayList<ArrayList<TwoValues<Integer,String>>> transitions, int index)
+    {
+        if(index>0) {
+            // for (int index = 0; index < array.length; index++) {
+                
+            // }
+            for (int x = 0; x < pi.size();x++) {
+                for (int y = 0; y < this.afdSimplifiedTransTable.size(); y++) {
+                    int comparator = 1;
+                    for (int z = 0; z < this.alphabet.size()-1; z++) {
+                        
+                        if (transitions.get(pi.get(x).get(0)).get(z).getVal1() == transitions.get(index).get(z).getVal1() && transitions.get(pi.get(x).get(0)).get(z).getVal2() == transitions.get(index).get(z).getVal2()) {
+                            comparator *=1;
+                        }
+                        else{
+                            comparator *=0;
+                        }
+                    }
+                    if (this.afdSimplifiedTransTable.get(y).contains(index) && this.afdSimplifiedTransTable.get(y).contains(pi.get(x).get(0)) && comparator!=0) {
+                        pi.get(x).add(index);
+                        return pi;
+                    }
+                }
+            }
+        }
+        ArrayList<Integer> newL = new ArrayList<>();
+        newL.add(index);
+        pi.add(newL);
+        return pi;
+    }
+    void printTransitions(ArrayList<ArrayList<TwoValues<Integer, String>>> transitions) {
+        for (int index = 0; index < transitions.size(); index++) {
+            System.out.println("Nodo#"+index);
+            for (int index2 = 0; index2 < transitions.get(index).size(); index2++) {
+                transitions.get(index).get(index2).getVal2();
+                System.out.println("    "+transitions.get(index).get(index2).getVal2()+"->"+transitions.get(index).get(index2).getVal1());
+            }
+        }
+    }
+
+    void printTransitions2(ArrayList<ArrayList<TwoValues<Integer, Integer>>> transitions) {
+        for (int index = 0; index < transitions.size(); index++) {
+            System.out.println("Nodo#"+index);
+            for (int index2 = 0; index2 < transitions.get(index).size(); index2++) {
+                System.out.println("    terminal:"+alphabet.get(index2)+"->"+transitions.get(index).get(index2).getVal1()+"     Group:"+transitions.get(index).get(index2).getVal2());
+            }
+        }
     }
     void printSet(ArrayList<ArrayList<Integer>>set)
     {
         for (int i = 0; i < set.size(); i++) {
-            System.out.print(alphabet.get(i)+": ");
+            System.out.print("\nGrupo #"+i+": ");
             for (int k = 0; k < set.get(i).size(); k++)
             {
                 System.out.print(set.get(i).get(k)+" ");
             }
         }
+        System.out.println("");
     }
     void printArray(ArrayList<Integer> array)
     {
         for (int index = 0; index < array.size(); index++) {
             System.out.print(" "+array.get(index)+" ");
+        }
+    }
+
+    public void generateAFDSimplified(String archive) {
+        try {
+            FileWriter myWriter = new FileWriter(archive, true);
+            if (afdSimplified.size() > 0) {
+                myWriter.append("digraph AFD{\nnode [shape=circle];\nrankdir=LR;\n");
+                for (int i = 0; i<afdSimplified.size(); i++) {
+                    GraphNode<String> node = afdSimplified.get(i);
+                    if (finalStatesAfdSimplified.contains(i))
+                    {
+                        myWriter.append(node.getValue() + "[shape=doublecircle] [label=\"" + node.getValue() + "\"];\n");
+                    }
+                    else {
+                        myWriter.append(node.getValue() + " [label=\"" + node.getValue() + "\"];\n");
+                    }
+                }
+                myWriter.append("init [label=\"\", shape=point];\n");
+                for (int i = 0; i<afdSimplified.size(); i++) {
+                    GraphNode<String> node = afdSimplified.get(i);
+                    if (i==0)
+                    {
+                        myWriter.append("init->"+node.getValue()+";\n");
+                    }
+                    for (TwoValues<Integer,String> transition : node.getValues()) {
+                        // System.out.println("node:"+node.getValue()+" transition1:"+transition.getVal2()+" index:"+transition.getVal1());
+                        afdSimplified.get(transition.getVal1());
+                        myWriter.append(node.getValue()+"->"+afdSimplified.get(transition.getVal1()).getValue()+"[label=\""+transition.getVal2()+"\"];\n");
+                    }
+                    // myWriter.append(node.getValue()+"->"+node.getValues().);
+                }
+                myWriter.append("}\n");
+            }
+            myWriter.close();
+        } catch (Exception e) {
+            System.out.println("couldn't be done");
         }
     }
     public void generateAFD(String archive) {
@@ -341,7 +635,7 @@ public class AFN {
                     }
                 }
                 for (int i = 0; i<nfa.size(); i++) {
-                    GraphNode<String> node = nfa.get(i);
+                    GraphNode<String> node  = nfa.get(i);
                     if (i==s0)
                     {
                         myWriter.append("init->"+node.getValue()+"[label=\"ε\"];\n");
