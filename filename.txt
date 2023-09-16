@@ -198,3 +198,24 @@ Initial value:0?(1?)?0*  Conversion to Acceptable Regex:(0|ε).(((1|ε))|ε).0*
 18.) Postfix stack: [0ε|1ε|ε|.] Operator:[.]
 19.) Postfix stack: [0ε|1ε|ε|.0] Operator:[.]The postfix expression is:0ε|1ε|ε|.0*.
 
+Initial value:(b|b)*abb(a|b)*  Conversion to Acceptable Regex:(b|b)*.a.b.b.(a|b)*
+0.) Postfix stack: [] Operator:[]
+1.) Postfix stack: [] Operator:[(]
+2.) Postfix stack: [b] Operator:[(]
+3.) Postfix stack: [b] Operator:[(|]
+4.) Postfix stack: [bb] Operator:[(|]
+5.) Postfix stack: [bb|] Operator:[]
+6.) Postfix stack: [bb|] Operator:[*]
+7.) Postfix stack: [bb|*] Operator:[.]
+8.) Postfix stack: [bb|*a] Operator:[.]
+9.) Postfix stack: [bb|*a.] Operator:[.]
+10.) Postfix stack: [bb|*a.b] Operator:[.]
+11.) Postfix stack: [bb|*a.b.] Operator:[.]
+12.) Postfix stack: [bb|*a.b.b] Operator:[.]
+13.) Postfix stack: [bb|*a.b.b.] Operator:[.]
+14.) Postfix stack: [bb|*a.b.b.] Operator:[.(]
+15.) Postfix stack: [bb|*a.b.b.a] Operator:[.(]
+16.) Postfix stack: [bb|*a.b.b.a] Operator:[.(|]
+17.) Postfix stack: [bb|*a.b.b.ab] Operator:[.(|]
+18.) Postfix stack: [bb|*a.b.b.ab|] Operator:[.]The postfix expression is:bb|*a.b.b.ab|*.
+
