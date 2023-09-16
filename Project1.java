@@ -10,18 +10,6 @@ import java.util.Scanner;
 public class Project1 {
      public static void main(String[] args)
     {
-        // a+(c|b*)k
-        // (a|t)c
-        // (a|b)*
-        // (a*|b*)*
-        // ((ε|a)|b*)*
-        // (a|b)*abb(a|b)*
-        // 0?(1?)?0*
-        // if\\([ae]+\)\\{[ei]+\\})
-        // [ae03]+@[ae03]+.(com|net|org)(.(gt|cr|co+))?
-        // aicb*(\\*a|c.a*\\))?ou
-        // (ao|ba(a|e)|i|(o|u)*o)
-        // ( (ao)|((ba)(a|e))|(i)|((o|u)*o) )
         Scanner scanner = new Scanner(System.in);
         tokenizer tokenizer = new tokenizer();
         BufferedReader reader;
@@ -30,45 +18,71 @@ public class Project1 {
 			String line = reader.readLine();
 			while (line != null) {
 				System.out.println(line);
-				// System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
-                // if (!scanner.nextLine().equals("1"))
-                // {
-                //     tokenizer.setDotSpecial(false);
-                // }
-                // else{
-                //     tokenizer.setDotSpecial(true);
-                // }
+				System.out.println("If in the regex there are dots that are used as normal characters and not like operator of concat press 1 else press any other: ");
+                if (!scanner.nextLine().equals("1")) {
+                    tokenizer.setDotSpecial(false);
+                }
+                else{
+                    tokenizer.setDotSpecial(true);
+                }
                 tokenizer.setDotSpecial(false);
                 tokenizer.tokenize(line);
                 tokenizer.getShuntingYard();
                 Tree tree = new Tree(tokenizer.getPostfixStack().totokenArray());
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
+                tree.generateGraphicTree(scanner.nextLine());
                 AFN afn = new AFN(tree);
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
+                afn.generateAFN(scanner.nextLine());
+                while (true)
+                {
+                    System.out.println("Enter a chain to determine whether it is accepted by the AFN");
+                    if (afn.isAccepted(scanner.nextLine()))
+                    {
+                        System.out.println("w∈L(r)?\nYes");
+                    }
+                    else{
+                        System.out.println("No");
+                    }
+                    System.out.println("Do you want to continue checking if strings are part of the lenguage? (y/n):");
+                    if(scanner.nextLine().equals("n"))
+                    {
+                        break;
+                    }
+                }
                 afn.generateAFDTransitionTable();
+                System.out.println("Enter the filename where you want to save an archive with a graph of the AFD generated:");
+                afn.generateAFD(scanner.nextLine());
+                while (true)
+                {
+                    System.out.println("Enter a chain to determine whether it is accepted by afd");
+                    if (afn.isAcceptedByAFD(scanner.nextLine(), false)) {
+                        System.out.println("w∈L(r)?\nYes");
+                    }
+                    else {
+                        System.out.println("No");
+                    }
+                    System.out.println("Do you want to continue checking if strings are part of the lenguage? (y/n):");
+                    if(scanner.nextLine().equals("n")) {
+                        break;
+                    }
+                }
                 afn.generateAfdSimplifiedTransTable();
-                // System.out.println("Enter the filename where you want to save an archive with a graph of the AST:");
-                // tree.generateGraphicTree(scanner.nextLine());
-                // System.out.println("Enter the filename where you want to save an archive with a graph of the AFN generated:");
-                // afn.generateAFN(scanner.nextLine());
-                // System.out.println("Enter the filename where you want to save an archive with a graph of the AFD generated:");
-                // afn.generateAFD(scanner.nextLine());
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AFD Simplified generated:");
                 afn.generateAFDSimplified(scanner.nextLine());
-                // while (true)
-                // {
-                //     System.out.println("Enter a chain to determine whether it is accepted");
-                //     if (afn.isAccepted(scanner.nextLine()))
-                //     {
-                //         System.out.println("w∈L(r)?\nYes");
-                //     }
-                //     else{
-                //         System.out.println("No");
-                //     }
-                //     System.out.println("Do you want to continue checking if strings are part of the lenguage? (y/n):");
-                //     if(scanner.nextLine().equals("n"))
-                //     {
-                //         break;
-                //     }
-                // }
+                while (true) {
+                    System.out.println("Enter a chain to determine whether it is accepted by afd simplified");
+                    if (afn.isAcceptedByAFD(scanner.nextLine(), true)) {
+                        System.out.println("w∈L(r)?\nYes");
+                    }
+                    else {
+                        System.out.println("No");
+                    }
+                    System.out.println("Do you want to continue checking if strings are part of the lenguage? (y/n):");
+                    if(scanner.nextLine().equals("n")) {
+                        break;
+                    }
+                }
                 line = reader.readLine();
 			}
 			reader.close();
@@ -101,5 +115,16 @@ public class Project1 {
 // ./Graphs/SimplifiedAFD/afd4.dot
 // ./Graphs/SimplifiedAFD/afd5.dot
 
-
+// a+(c|b*)k
+// (a|t)c
+// (a|b)*
+// (a*|b*)*
+// ((ε|a)|b*)*
+// (a|b)*abb(a|b)*
+// 0?(1?)?0*
+// if\\([ae]+\)\\{[ei]+\\})
+// [ae03]+@[ae03]+.(com|net|org)(.(gt|cr|co+))?
+// aicb*(\\*a|c.a*\\))?ou
+// (ao|ba(a|e)|i|(o|u)*o)
+// ( (ao)|((ba)(a|e))|(i)|((o|u)*o) )
 }
