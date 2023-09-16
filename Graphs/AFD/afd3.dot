@@ -1,0 +1,15 @@
+digraph AFD{
+node [shape=circle];
+rankdir=LR;
+A[shape=doublecircle] [label="A"];
+B[shape=doublecircle] [label="B"];
+C[shape=doublecircle] [label="C"];
+init [label="", shape=point];
+init->A;
+A->B[label="a"];
+A->C[label="b"];
+B->B[label="a"];
+B->C[label="b"];
+C->B[label="a"];
+C->C[label="b"];
+}

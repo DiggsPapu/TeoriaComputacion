@@ -51,7 +51,6 @@ public class Project1 {
                 // afn.generateAFN(scanner.nextLine());
                 // System.out.println("Enter the filename where you want to save an archive with a graph of the AFD generated:");
                 // afn.generateAFD(scanner.nextLine());
-
                 System.out.println("Enter the filename where you want to save an archive with a graph of the AFD Simplified generated:");
                 afn.generateAFDSimplified(scanner.nextLine());
                 // while (true)
@@ -95,6 +94,12 @@ public class Project1 {
 // ./Graphs/AFD/afd3.dot
 // ./Graphs/AFD/afd4.dot
 // ./Graphs/AFD/afd5.dot
+
+// ./Graphs/SimplifiedAFD/afd1.dot
+// ./Graphs/SimplifiedAFD/afd2.dot
+// ./Graphs/SimplifiedAFD/afd3.dot
+// ./Graphs/SimplifiedAFD/afd4.dot
+// ./Graphs/SimplifiedAFD/afd5.dot
 
 
 }

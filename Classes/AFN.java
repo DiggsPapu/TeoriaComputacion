@@ -293,25 +293,9 @@ public class AFN {
         }
         return -1;
     }
-    private ArrayList<ArrayList<TwoValues<Integer,Integer>>> determineTransitions(ArrayList<ArrayList<TwoValues<Integer,Integer>>> transitions){
-        for (int index = 0; index < this.afd.size(); index++) {
-            // Obtiene las transiciones
-            ArrayList<TwoValues<Integer, String>>  nodeTrans = this.afd.get(index).getValues();
-            ArrayList<TwoValues<Integer, Integer>> trans = new ArrayList<>();
-            for (int index2 = 0; index2 < nodeTrans.size(); index2++ ) {
-                for (int index3 = 0; index3 < this.afdSimplifiedTransTable.size(); index3++){
-                    // Determina a que grupo pertenece
-                    if (this.afdSimplifiedTransTable.get(index3).contains(nodeTrans.get(index2).getVal1())) {
-                        TwoValues<Integer,Integer> tr = new TwoValues<Integer,Integer>(nodeTrans.get(index2).getVal1(), index3);
-                        trans.add(index2, tr);
-                    }
-                }
-            }
-            transitions.add(index, trans);
-        }
-        return transitions;
-    }
     public void generateAfdSimplifiedTransTable(){
+        int iteracion = 0;
+        System.out.println("Iteración: " + iteracion++ );
         ArrayList<Integer> notFinalState = new ArrayList<>();
         for (int index = 0; index < this.afd.size(); index++) {
             if(!this.finalStatesAfd.contains(index)) {
@@ -337,21 +321,69 @@ public class AFN {
             }
             transitions.add(index, trans);
         }
-        printSet(this.afdSimplifiedTransTable);        
-        int iteracion = 0;
+        printSet(this.afdSimplifiedTransTable);
+        printTransitions2(transitions);        
         boolean stillLoop = true;
         while (stillLoop) {
             System.out.println("Iteración: " + iteracion++ );
+            // Determinar a que grupo pertenece el nodo
+            ArrayList<ArrayList<Integer>> pi = new ArrayList<>();
+            for (int index = 0; index < transitions.size(); index++){
+                System.out.println("Nodo a evaluar:"+index);
+                ArrayList<TwoValues<Integer, Integer>> tr = transitions.get(index);
+                if (index==0){
+                    // en caso de que sea indice 0 se crea un nuevo grupo por default
+                    ArrayList<Integer> trns = new ArrayList<>();
+                    trns.add(0);
+                    pi.add(trns);
+                }
+                else {
+                    // obtener el nodo prueba del grupo a comparar
+                    boolean added = false;
+                    for (int index2 = 0; index2 < pi.size(); index2++) {
+                        int compareNode = pi.get(index2).get(0);
+                        ArrayList<TwoValues<Integer, Integer>> tr1 = transitions.get(compareNode);
+                        // pertenecen al mismo grupo anterior
+                        for (int index3 = 0; index3 < this.afdSimplifiedTransTable.size(); index3++) {
+                            // grupo anterior
+                            ArrayList<Integer> grupoAnterior = this.afdSimplifiedTransTable.get(index3);
+                            // Si el grupo anterior contiene a ambos
+                            if (grupoAnterior.contains(compareNode) && grupoAnterior.contains(index)) {
+                                // tienen las transiciones iguales
+                                boolean equalTransition = true;
+                                for (int index4 = 0; index4 < tr.size(); index4++) {
+                                    if (tr.get(index4).getVal2() != tr1.get(index4).getVal2()) {
+                                        equalTransition = false;
+                                    }
+                                }
+                                // Se aniade al mismo grupo si tienen transiciones iguales
+                                if (equalTransition) {
+                                    pi.get(index2).add(index);
+                                    added = true;
+                                }
+                            }
+                        }
+                    }
+                    // Si no se aniadio a ninguno se crea un nuevo grupo y se aniade el indice
+                    if (!added) {
+                        ArrayList<Integer> trns = new ArrayList<>();
+                        trns.add(index);
+                        pi.add(trns);
+                    }
+                }
+            }
             // Crear las transiciones
-            for (int index = 0; index < this.afd.size(); index++) {
-                // Obtiene las transiciones
-                ArrayList<TwoValues<Integer, String>>  nodeTrans = this.afd.get(index).getValues();
+            for (int index = 0; index < transitions.size(); index++) {
                 ArrayList<TwoValues<Integer, Integer>> trans = new ArrayList<>();
-                for (int index2 = 0; index2 < nodeTrans.size(); index2++ ) {
+                // Obtiene las transiciones
+                ArrayList<TwoValues<Integer,Integer>> nT = transitions.get(index);
+                for (int index2 = 0; index2 < nT.size(); index2++) {
+                    // Me devuelve el hacia donde apunta el nodo de la transicion index2
+                    Integer node = this.afd.get(nT.get(index2).getVal1()).getValues().get(index2).getVal1();
                     for (int index3 = 0; index3 < this.afdSimplifiedTransTable.size(); index3++){
                         // Determina a que grupo pertenece
-                        if (this.afdSimplifiedTransTable.get(index3).contains(nodeTrans.get(index2).getVal1())) {
-                            TwoValues<Integer,Integer> tr = new TwoValues<Integer,Integer>(nodeTrans.get(index2).getVal1(), index3);
+                        if (this.afdSimplifiedTransTable.get(index3).contains(node)) {
+                            TwoValues<Integer,Integer> tr = new TwoValues<Integer,Integer>(node, index3);
                             trans.add(index2, tr);
                         }
                     }
@@ -360,51 +392,6 @@ public class AFN {
                 transitions.remove(index+1);
             }
             printTransitions2(transitions);
-            // Determinar a que grupo pertenece el nodo
-            ArrayList<ArrayList<Integer>> pi = new ArrayList<>();
-            for (int index = 0; index < transitions.size(); index++){
-                if (index==0){
-                    // en caso de que sea indice 0 se crea un nuevo grupo por default
-                    ArrayList<Integer> trns = new ArrayList<>();
-                    trns.add(0);
-                    pi.add(trns);
-                }
-                else {
-                    boolean added = false;
-                    // en cualquier otro caso se agrupa, for para recorrer las pi
-                    for (int j = 0; j < pi.size(); j++) {
-                        for (int i = 0; i < this.afdSimplifiedTransTable.size(); i++) {
-                            ArrayList<Integer> t = this.afdSimplifiedTransTable.get(i);
-                            // Si tienen mismas transiciones de grupo y pertenecen al mismo grupo de la ultima agrupacion se agrupan
-                            // System.out.print("Set#"+i+": ");
-                            // printSet2(t);
-                            // System.out.println("Value:"+pi.get(j).get(0));
-                            // Si contiene al nodo y contiene al del posible grupo
-                            if ( t.contains(index) && t.contains(pi.get(j).get(0)) ) {
-                                // Comparador para verificar las transiciones
-                                boolean comparator = true;
-                                for (int l = 0; l < transitions.get(index).size(); l++) {
-                                    // Si alguna de las transiciones lleva a uno que no pertenece al mismo grupo
-                                    if (transitions.get(index).get(l).getVal2()!=transitions.get(pi.get(j).get(0)).get(l).getVal2()) {
-                                        comparator = false;
-                                    }
-                                }
-                                // Si todas las transiciones llevan a nodos que pertenecen al grupo
-                                if (comparator) {
-                                    pi.get(j).add(index);
-                                    added = true;
-                                }
-                            }
-                        }
-                    }
-                    // Si no se aniadio a ninguno se crea un nuevo grupo
-                    if (added == false) {
-                        ArrayList<Integer> trns = new ArrayList<>();
-                        trns.add(index);
-                        pi.add(trns);
-                    }
-                }
-            }
             printSet(pi);
             if (pi.equals(this.afdSimplifiedTransTable)) {
                 stillLoop = false;
@@ -429,9 +416,16 @@ public class AFN {
             // construir el afd simplificado
             GraphNode<String> node = new GraphNode<>(String.valueOf("S"+index), transition);
             this.afdSimplified.add(node);
+            
             // aniadir los estados de aceptacion
-            if(this.finalStatesAfd.contains(index)) {
-                this.finalStatesAfdSimplified.add(this.afdSimplified.size()-1);
+            if(this.finalStatesAfd.contains(this.afdSimplifiedTransTable.get(index).get(0))) {
+                this.finalStatesAfdSimplified.add(index);
+            }
+        }
+        for (int i = 0; i < this.afdSimplified.size(); i++) {
+            System.out.println(this.afdSimplified.get(i).getValue());
+            for (int j = 0; j< this.afdSimplified.get(i).getValues().size(); j++){
+                System.out.println("    "+alphabet.get(j)+"->"+this.afdSimplified.get(i).getValues().get(j).getVal1());
             }
         }
         // while (stillLoop) {     
@@ -511,7 +505,6 @@ public class AFN {
         for (int index = 0; index < transitions.size(); index++) {
             System.out.println("Nodo#"+index);
             for (int index2 = 0; index2 < transitions.get(index).size(); index2++) {
-                transitions.get(index).get(index2).getVal2();
                 System.out.println("    "+transitions.get(index).get(index2).getVal2()+"->"+transitions.get(index).get(index2).getVal1());
             }
         }

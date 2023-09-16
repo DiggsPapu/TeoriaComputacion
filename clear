@@ -1,0 +1,12 @@
+digraph AFD{
+node [shape=circle];
+rankdir=LR;
+S0[shape=doublecircle] [label="S0"];
+S1 [label="S1"];
+init [label="", shape=point];
+init->S0;
+S0->S0[label="0"];
+S0->S0[label="1"];
+S1->S1[label="0"];
+S1->S1[label="1"];
+}

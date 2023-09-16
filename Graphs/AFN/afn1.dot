@@ -1,0 +1,37 @@
+digraph AFN{
+node [shape=circle];
+rankdir=LR;
+init [label="", shape=point];
+S1 [label="S1"];
+S2 [label="S2"];
+S3 [label="S3"];
+S4 [label="S4"];
+S5 [label="S5"];
+S6 [label="S6"];
+S7 [label="S7"];
+S8 [label="S8"];
+S9 [label="S9"];
+S10 [label="S10"];
+S11 [label="S11"];
+S12 [label="S12"];
+S13[shape=doublecircle] [label="S13"];
+S0->S1[label="a"];
+S1->S5[label="ε"];
+S2->S3[label="b"];
+S3->S5[label="ε"];
+init->S4[label="ε"];
+S4->S0[label="ε"];
+S4->S2[label="ε"];
+S5->S8[label="ε"];
+S6->S7[label="a"];
+S7->S6[label="ε"];
+S7->S9[label="ε"];
+S8->S9[label="ε"];
+S8->S6[label="ε"];
+S9->S12[label="ε"];
+S10->S11[label="b"];
+S11->S10[label="ε"];
+S11->S13[label="ε"];
+S12->S13[label="ε"];
+S12->S10[label="ε"];
+}
