@@ -12,3 +12,6 @@ It is in the branch of Lab4, it was done with Samuel Argueta, was bout convertin
 
 ### Lab5
 It is in the branch of Lab5, it was done with Samuel Argueta, it was about making some derivations and minimizing some AFD's.
+
+### Lab7
+It is in its own branch. Contains the resolution of the exercise 2. It was done with Samuel Argueta And Diego Medinilla.
