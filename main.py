@@ -5,7 +5,7 @@ def main():
     Metodo para la iniciacion del programa.
   '''
   # Nombre del archivo de entrada con la gramática
-  nombre_archivo = "gramatica2.txt"
+  nombre_archivo = "gramatica1.txt"
   #nombre_archivo = "gramatica2.txt"
 
   # Cargar la gramática
@@ -27,13 +27,18 @@ def main():
     producciones_sin_unitarias = eliminar_producciones_unitarias(nuevas_producciones)
     # eliminar producciones unitarias
     print("\nGramatica sin producciones unitarias: ")
-    for clave, valor in producciones_sin_unitarias.items():
-      print(f"{clave} -> {valor}")
+    for clave_unitaria, valor_unitaria in producciones_sin_unitarias.items():
+      print(f"{clave_unitaria} -> {valor_unitaria}")
     
-    #producciones_sin_inutiles = eliminar_simbolos_inutiles(producciones_sin_unitarias)
+    producciones_sin_inutiles = eliminar_simbolos_inutiles(producciones_sin_unitarias)
     # eliminar producciones inutiles
     print("\nGramatica sin producciones inutiles: ")
-    eliminar_simbolos_inutiles(producciones_sin_unitarias)
+    for clave_inutiles, valor_inutiles in producciones_sin_inutiles.items():
+      print(f"{clave_inutiles} -> {valor_inutiles}")
+
+    
+    print("\nGramatica de Chomsky: ")
+    forma_normal_chomsky(producciones_sin_inutiles)
   
 
 # Función para validar una producción de gramática usando una expresión regular
@@ -77,7 +82,7 @@ def eliminar_producciones_epsilon(gramatica):
   # Encontrar las nuevas producciones
   #print(f"anulables: {anulables}")
   nuevas_producciones = []
-  resultado = {}
+  resultado_sin_epsilon = {}
   sin_copias = []
   for produccion in gramatica:
     simbolo = produccion[0]
@@ -111,8 +116,8 @@ def eliminar_producciones_epsilon(gramatica):
     # volver un diccionario a su estado original 
     for i in range (len(nuevas_producciones)):
       cadena = "|".join(nuevas_producciones[i])
-      resultado[simbolo] = cadena
-  return resultado
+      resultado_sin_epsilon[simbolo] = cadena
+  return resultado_sin_epsilon
 
 def eliminar_producciones_unitarias(gramatica):
   '''
@@ -154,7 +159,7 @@ def eliminar_simbolos_inutiles(gramatica):
   '''
   '''
   simbolos, producciones, nuevas_producciones = [], [], []
-  resultado = {}
+  resultado_sin_inutiles = {}
   diccionario_detallado = {} # este representa el diccionario original, pero con las producciones sin el | y en un arreglo
   # obtener los simbolos por aparte, asi como las producciones sin el |
   for clave, valor in gramatica.items():
@@ -201,38 +206,79 @@ def eliminar_simbolos_inutiles(gramatica):
 
   for clave in claves_eliminar:
     del diccionario_detallado[clave]
-  print(diccionario_detallado)
-        
-          
-          
-          
+  #print(diccionario_detallado)
 
-  '''
+  # reiniciar los arreglos prvios con los nuevos valores
+  simbolos.clear()
+  producciones.clear()
+  # ver si hay mas elementos que no ayudan en la gramatica
+  for clave, valor in diccionario_detallado.items():
+    simbolos.append(clave)
+    producciones.append(valor)
+
+  # obtener los elemetos que si derivan desde el estado inicial
+  elementos_validos = []
   for i in range (len(producciones)):
     for j in range (len(producciones[i])):
       for k in range (len(simbolos)):
         if simbolos[k] in producciones[i][j]:
-          produccion = valores[simbolos[k]]
-          for n in range (len(produccion)):
-            
-            print(producciones[i][j])
+          elementos_validos.append(simbolos[k])
+  # se toma por defecto el estado inicial
+  elementos_validos.append("S")
+  #print(elementos_validos)
+
+  elementos_no_validos = []
+  for i in range (len(simbolos)):
+    if simbolos[i] not in elementos_validos:
+      elementos_no_validos.append(simbolos[i])
+  #print(elementos_no_validos)
+  
+  # se termina de depurar
+  for i in range (len(elementos_no_validos)):
+    del diccionario_detallado[elementos_no_validos[i]]
+  #print(diccionario_detallado)
+
+  simbolos.clear()
+  producciones.clear()
+  for clave, valor in diccionario_detallado.items():
+    simbolos.append(clave)
+    producciones.append(valor)
+  for i in range (len(producciones)):
+    cadena = "|".join(producciones[i])
+    nuevas_producciones.append(cadena)
+
+  for i in range (len(nuevas_producciones)):
+    resultado_sin_inutiles[simbolos[i]] = nuevas_producciones[i]
+  #print(resultado_sin_inutiles)
+  return resultado_sin_inutiles
+
+
+def forma_normal_chomsky(gramatica):
   '''
+  '''
+  llaves, derivaciones = [], []
+  for llave, derivacion in gramatica.items():
+    llaves.append(llave)
+    derivaciones.append(derivacion.split("|"))
   
-
-
-        
-
+  sentencias_con_3_caracteres = []
+  for i in range (len(derivaciones)):
+    for j in range (len(derivaciones[i])):
+      if len(derivaciones[i][j]) >= 3:
+        sentencias_con_3_caracteres.append(derivaciones[i][j])
   
-      
+  sentencias_sin_repeticion = set(sentencias_con_3_caracteres)
+  sentencias_con_3_caracteres = list(sentencias_sin_repeticion)
+  print(sentencias_con_3_caracteres)
+
+  generador_de_sentencias = {}
+  for i in range (len(sentencias_con_3_caracteres)):
+    cadena = sentencias_con_3_caracteres[i]
+    arreglo_caracteres = list(cadena)
+    print(arreglo_caracteres)
     
   
-       
-    
 
-
-def forma_normal_chomsky():
-  ''''''
-  pass
 
 # Cargar la gramática desde un archivo de texto
 def cargar_gramatica(nombre_archivo):
