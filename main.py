@@ -6,7 +6,6 @@ def main():
   '''
   # Nombre del archivo de entrada con la gramática
   nombre_archivo = "gramatica1.txt"
-  #nombre_archivo = "gramatica2.txt"
 
   # Cargar la gramática
   gramatica = cargar_gramatica(nombre_archivo)
@@ -275,7 +274,6 @@ def forma_normal_chomsky(gramatica):
 
   eliminar_valores_terminales_repetidos = set(valores_terminales)
   valores_terminales = list(eliminar_valores_terminales_repetidos)
-
   #extraer los elementos que poseen mas de 2 caracteres
   sentencias_con_3_caracteres = []
   for i in range (len(derivaciones)):
@@ -286,23 +284,67 @@ def forma_normal_chomsky(gramatica):
   sentencias_sin_repeticion = set(sentencias_con_3_caracteres)
   sentencias_con_3_caracteres = list(sentencias_sin_repeticion)
 
-
+   # este bloque funciona para poder reemplazar los valores con mas de 2 caracteres
+  persistente = ""
+  sobrante = ""
+  simbolos_nuevos = []
+  # Recorrer cada una de las cadenas
   for i in range (len(sentencias_con_3_caracteres)):
+    # Recorrer cada carecter de la cadena
     for j in range (len(sentencias_con_3_caracteres[i])):
-      if j == 1:
+      # 
+      if j == 1 and len(sentencias_con_3_caracteres[i]) >= 3:
         persistente = sentencias_con_3_caracteres[i][:j]
         sobrante = sentencias_con_3_caracteres[i][j:]
-        print(persistente)
-        print(sobrante)
+        detalles_modificacion = []
+        if len(sobrante) < 3: # modificarlo, en caso de no haber cumplido la condicion y continuar teniendo mas
+          simbolo = "C"+str(i)
+          # almacenar el nuevo simbolo, lo que se va a cambiar, un registro del estado previo de la cadena
+          # y la concatenacion del nuevo valor, a modo de quedar como chomsky
+          detalles_modificacion.append(simbolo)
+          detalles_modificacion.append(sobrante)
+          detalles_modificacion.append(sentencias_con_3_caracteres[i])
+          # concatenar los elementos que no se quitaron con el nuevo simbolo
+          detalles_modificacion.append(persistente+simbolo)
+          simbolos_nuevos.append(detalles_modificacion)
+    # Repetir el ciclo, en caso de no tener un largo de 2
+    if len(persistente) >= 3:
+      sentencias_con_3_caracteres.append(persistente)
+  print(simbolos_nuevos)
+  
+  for i in range(len(valores_terminales)):
+    gramatica["C"+str(i)+str(i)] = valores_terminales[i]
+  
+  # Recorrer las actualizaciones segun chomsky
+  for i in range (len(simbolos_nuevos)):
+    # recorrer las derivcaionces originales
+    for j in range (len(derivaciones)):
+      # Recorrer cada una de las cadenas
+      for n in range (len(derivaciones[j])):
+        # en caso de tener similitud con la modicacion de chomsky
+        if simbolos_nuevos[i][2] == derivaciones[j][n]:
+          # actualizar el valor de la derivacion al nuevo
+          derivaciones[j][n] = simbolos_nuevos[i][3]
 
-      
-
-      
-
-
-  nuevos_simbolos = {}
-  for sentencia in sentencias_con_3_caracteres:
-    pass
+  derivacionces_con_union = []
+  for i in range (len(derivaciones)):
+    for j in range (len(derivaciones[i])):
+      derivacionces_con_union.append("|".join(derivaciones[i]))
+  
+  # Arreglar para la gramatica 1, pues elimina un valor que no debe
+  limpieza_repetido = set(derivacionces_con_union)
+  derivacionces_con_union = list(limpieza_repetido)
+  
+  print(derivacionces_con_union)
+  print(llaves)
+  #for i in range (len(llaves)):
+   # gramatica[llaves[i]] = derivacionces_con_union[i]
+  
+  for i in range (len(simbolos_nuevos)):
+    for j in range (len(simbolos_nuevos[i])):
+      gramatica[simbolos_nuevos[i][0]] = simbolos_nuevos[i][1]
+  print(gramatica)
+          
 
 # Cargar la gramática desde un archivo de texto
 def cargar_gramatica(nombre_archivo):
