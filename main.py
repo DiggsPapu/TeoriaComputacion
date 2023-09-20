@@ -257,28 +257,52 @@ def forma_normal_chomsky(gramatica):
   '''
   '''
   llaves, derivaciones = [], []
+  generador_de_sentencias = {}
+  valores_terminales, listas_caracteres = [], []
+  # descomponer el diccionario de la gramatica, separando los simbolos de las derivaciones
   for llave, derivacion in gramatica.items():
     llaves.append(llave)
-    derivaciones.append(derivacion.split("|"))
-  
+    derivaciones.append(derivacion.split("|")) 
+
+  # observar cuales son los elementos derivados, es decir, diferentes de lo simbolos
+  for i in range (len(derivaciones)):# recorrer el arreglo de arreglos
+    for elemento in derivaciones[i]: # para cada cadena del arreglo actual
+      for caracter in elemento: # reocrrer la cadena
+        if caracter.isupper(): # verificar si hay simbolos en el caracter
+          continue
+        else:
+          valores_terminales.append(caracter) #de no haber, extraer el valor terminal
+
+  eliminar_valores_terminales_repetidos = set(valores_terminales)
+  valores_terminales = list(eliminar_valores_terminales_repetidos)
+
+  #extraer los elementos que poseen mas de 2 caracteres
   sentencias_con_3_caracteres = []
   for i in range (len(derivaciones)):
     for j in range (len(derivaciones[i])):
       if len(derivaciones[i][j]) >= 3:
         sentencias_con_3_caracteres.append(derivaciones[i][j])
-  
+  # eliminar elementos repetidos, en caso de haber
   sentencias_sin_repeticion = set(sentencias_con_3_caracteres)
   sentencias_con_3_caracteres = list(sentencias_sin_repeticion)
-  print(sentencias_con_3_caracteres)
 
-  generador_de_sentencias = {}
+
   for i in range (len(sentencias_con_3_caracteres)):
-    cadena = sentencias_con_3_caracteres[i]
-    arreglo_caracteres = list(cadena)
-    print(arreglo_caracteres)
-    
-  
+    for j in range (len(sentencias_con_3_caracteres[i])):
+      if j == 1:
+        persistente = sentencias_con_3_caracteres[i][:j]
+        sobrante = sentencias_con_3_caracteres[i][j:]
+        print(persistente)
+        print(sobrante)
 
+      
+
+      
+
+
+  nuevos_simbolos = {}
+  for sentencia in sentencias_con_3_caracteres:
+    pass
 
 # Cargar la gramática desde un archivo de texto
 def cargar_gramatica(nombre_archivo):
@@ -297,7 +321,6 @@ def cargar_gramatica(nombre_archivo):
     print(f"Error: No se pudo encontrar el archivo '{nombre_archivo}'.")
   
   return gramatica
-
 
 if __name__ == "__main__":
   main()
