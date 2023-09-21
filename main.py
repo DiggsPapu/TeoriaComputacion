@@ -5,7 +5,7 @@ def main():
     Metodo para la iniciacion del programa.
   '''
   # Nombre del archivo de entrada con la gramática
-  nombre_archivo = "gramatica1.txt"
+  nombre_archivo = "gramatica2.txt"
 
   # Cargar la gramática
   gramatica = cargar_gramatica(nombre_archivo)
@@ -326,19 +326,22 @@ def forma_normal_chomsky(gramatica):
           # actualizar el valor de la derivacion al nuevo
           derivaciones[j][n] = simbolos_nuevos[i][3]
 
-  derivacionces_con_union = []
+  derivaciones_con_union = []
   for i in range (len(derivaciones)):
+    derivacionces_segun_simbolos = []
     for j in range (len(derivaciones[i])):
-      derivacionces_con_union.append("|".join(derivaciones[i]))
+      derivacionces_segun_simbolos.append("|".join(derivaciones[i]))
+    derivaciones_con_union.append(derivacionces_segun_simbolos)
   
   # Arreglar para la gramatica 1, pues elimina un valor que no debe
-  limpieza_repetido = set(derivacionces_con_union)
-  derivacionces_con_union = list(limpieza_repetido)
+  for i in range (len(derivaciones_con_union)):
+    limpieza_repetido = set(derivaciones_con_union[i])
+    derivaciones_con_union[i] = list(limpieza_repetido)
   
-  print(derivacionces_con_union)
-  print(llaves)
-  #for i in range (len(llaves)):
-   # gramatica[llaves[i]] = derivacionces_con_union[i]
+  for i in range (len(llaves)):
+    for j in range (len(derivacionces_segun_simbolos)):
+      for k in range (len(derivaciones_con_union[i])):
+        gramatica[llaves[i]] = derivaciones_con_union[i][k]
   
   for i in range (len(simbolos_nuevos)):
     for j in range (len(simbolos_nuevos[i])):
