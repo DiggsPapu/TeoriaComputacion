@@ -15,3 +15,4 @@ It is in the branch of Lab5, it was done with Samuel Argueta, it was about makin
 
 ### Lab7
 It is in its own branch. Contains the resolution of the exercise 2. It was done with Samuel Argueta And Diego Medinilla.
+Video demostrativo: https://youtu.be/KE5Losfd0fk

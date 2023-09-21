@@ -77,7 +77,7 @@ def eliminar_producciones_epsilon(gramatica):
   for produccion in gramatica:
     if '$' in produccion[1]:
       anulables.add(produccion[0])
-  
+  print(f"deteccion de elementos con epsilon: {anulables}")
   # Encontrar las nuevas producciones
   #print(f"anulables: {anulables}")
   nuevas_producciones = []
@@ -85,14 +85,14 @@ def eliminar_producciones_epsilon(gramatica):
   sin_copias = []
   for produccion in gramatica:
     simbolo = produccion[0]
-    #print(f"simbolo: {simbolo}")
+    print(f"simbolo: {simbolo}")
     cuerpo = produccion[1].split("|")
-    #print(f"cuerpo: {cuerpo}")
+    print(f"cuerpo: {cuerpo}")
     nuevo_cuerpo = []
     # leer cada una de las transiciones
     for derivacion in cuerpo:
       # obtener los no terminales de la lista anulables
-      #print(f"derivacion: {derivacion}")
+      print(f"derivacion: {derivacion}")
       if "$" in derivacion:
         continue
       else:            
@@ -111,11 +111,12 @@ def eliminar_producciones_epsilon(gramatica):
       nuevo_cuerpo = list(sin_copias)
     # almacenar los valores segun sus claves
     nuevas_producciones.append(nuevo_cuerpo)
-    
+    print(f"nuevas producciones sin epsilon: {nuevas_producciones}")
     # volver un diccionario a su estado original 
     for i in range (len(nuevas_producciones)):
       cadena = "|".join(nuevas_producciones[i])
       resultado_sin_epsilon[simbolo] = cadena
+    print(f"resultado final: {resultado_sin_epsilon}")
   return resultado_sin_epsilon
 
 def eliminar_producciones_unitarias(gramatica):
