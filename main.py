@@ -19,8 +19,8 @@ def main():
     nuevas_producciones = eliminar_producciones_epsilon(gramatica)
 
     print("\nGramática sin producciones-ε ($):")
-    for clave, valor in nuevas_producciones.items():
-      print(f"{clave} -> {valor}")
+    for clave_sin_epsilon, valor_sin_epsilon in nuevas_producciones.items():
+      print(f"{clave_sin_epsilon} -> {valor_sin_epsilon}")
 
     
     producciones_sin_unitarias = eliminar_producciones_unitarias(nuevas_producciones)
@@ -37,7 +37,9 @@ def main():
 
     
     print("\nGramatica de Chomsky: ")
-    forma_normal_chomsky(producciones_sin_inutiles)
+    formal_chomsky = forma_normal_chomsky(producciones_sin_inutiles)
+    for clave_chomsky, valor_chomsky in formal_chomsky.items():
+      print(f"{clave_chomsky} -> {valor_chomsky}")
   
 
 # Función para validar una producción de gramática usando una expresión regular
@@ -105,11 +107,12 @@ def eliminar_producciones_epsilon(gramatica):
             if cadena_modificada != "":
               nuevo_cuerpo.append(derivacion)
               nuevo_cuerpo.append(cadena_modificada)
-
+      # agregfar la nueva derivacion que se ha generado segun el simbolo
       nuevo_cuerpo.append(derivacion)
+      # eliminar elementos repetidos
       sin_copias = set(nuevo_cuerpo)
       nuevo_cuerpo = list(sin_copias)
-    # almacenar los valores segun sus claves
+    # almacenar los valores segun sus claves, en este caso, segun el simbolo
     nuevas_producciones.append(nuevo_cuerpo)
     print(f"nuevas producciones sin epsilon: {nuevas_producciones}")
     # volver un diccionario a su estado original 
@@ -134,15 +137,19 @@ def eliminar_producciones_unitarias(gramatica):
   #print(f"simbolos: {simbolos}, producciones: {producciones}")
   
   producciones_unitarias_presentes = True
+  # obtener las producciones unitarrias de toda la gramatica
   while producciones_unitarias_presentes:
     producciones_unitarias_presentes = False
+    # recorrer las producciones
     for i in range (len(producciones)):
       for j in range (len(producciones[i])):
         for simbolo in simbolos:
+          # Verificar si hay una produccion unitaria en la derivaciones, segun el simbolo
+          # en este caso, si hay un simbolo, es decir, solo la letra S en una derivaciones
+          # se toma como unitaria.
           if producciones[i][j] == simbolo:
             producciones[i][j] = gramatica[producciones[i][j]]
             producciones_unitarias_presentes = True
-
   #print(producciones)
   
   for i in range (len(producciones)):
@@ -152,7 +159,6 @@ def eliminar_producciones_unitarias(gramatica):
   for i in range (len(nuevas_producciones)):
     resultado[simbolos[i]] = nuevas_producciones[i]
   #print(resultado)
-
   return resultado
 
 def eliminar_simbolos_inutiles(gramatica):
@@ -311,23 +317,28 @@ def forma_normal_chomsky(gramatica):
     # Repetir el ciclo, en caso de no tener un largo de 2
     if len(persistente) >= 3:
       sentencias_con_3_caracteres.append(persistente)
-  print(simbolos_nuevos)
+  #print(simbolos_nuevos)
   
+  nuevos_simbolos_terminales = {}
   for i in range(len(valores_terminales)):
     gramatica["C"+str(i)+str(i)] = valores_terminales[i]
-  
+    nuevos_simbolos_terminales["C"+str(i)+str(i)] = valores_terminales[i]
+  print(f"observando gramatica: {gramatica}")
+  print(f"observando los nuevos valores terminales: {nuevos_simbolos_terminales}")
   # Recorrer las actualizaciones segun chomsky
   for i in range (len(simbolos_nuevos)):
     # recorrer las derivcaionces originales
     for j in range (len(derivaciones)):
       # Recorrer cada una de las cadenas
       for n in range (len(derivaciones[j])):
-        # en caso de tener similitud con la modicacion de chomsky
+        # en caso de tener similitud con la modificacion de chomsky
         if simbolos_nuevos[i][2] == derivaciones[j][n]:
           # actualizar el valor de la derivacion al nuevo
           derivaciones[j][n] = simbolos_nuevos[i][3]
-
+  print(f"observando las modificaciones a las derivacionces originales: {derivaciones}")
+  # Unir las cadenadas respectivas para volver a su estado original
   derivaciones_con_union = []
+
   for i in range (len(derivaciones)):
     derivacionces_segun_simbolos = []
     for j in range (len(derivaciones[i])):
@@ -343,12 +354,12 @@ def forma_normal_chomsky(gramatica):
     for j in range (len(derivacionces_segun_simbolos)):
       for k in range (len(derivaciones_con_union[i])):
         gramatica[llaves[i]] = derivaciones_con_union[i][k]
-  
+  #print(gramatica)
   for i in range (len(simbolos_nuevos)):
     for j in range (len(simbolos_nuevos[i])):
       gramatica[simbolos_nuevos[i][0]] = simbolos_nuevos[i][1]
-  print(gramatica)
-          
+  
+  return gramatica
 
 # Cargar la gramática desde un archivo de texto
 def cargar_gramatica(nombre_archivo):
