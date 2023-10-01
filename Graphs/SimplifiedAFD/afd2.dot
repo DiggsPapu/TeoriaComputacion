@@ -1,9 +1,0 @@
-digraph AFD{
-node [shape=circle];
-rankdir=LR;
-S0[shape=doublecircle] [label="S0"];
-init [label="", shape=point];
-init->S0;
-S0->S0[label="a"];
-S0->S0[label="b"];
-}
