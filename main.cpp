@@ -17,7 +17,8 @@
 #include <list>
 
 void ex1(int n){
-    int i, j , k, counter = 0;
+    long long int counter = 0;
+    int i, j , k =0;
     for (i = n/2; i <= n; i++){
         for (j=1; j+n/2<= n; j++ ){
             for (k = 1; k <= n; k = k*2){
@@ -25,6 +26,7 @@ void ex1(int n){
             }
         }
     }
+    printf("n: %d       counter: %lld\n",n,counter);
 }
 
 void ex2(int n){
@@ -47,8 +49,12 @@ void ex3(int n){
         }
     }
 }
+
 int main(){
     for (int l = 0; l<7; l++){
-        ex1(10^l);
+        ex1(pow(10.0f,(float) l));
+        // ex2(10.0f,(float) l);
+        // ex3(10.0f,(float) l);
     }
+    return 0;
 }
