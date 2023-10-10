@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <vector>
 #include <list>
-
+using namespace std;
 void ex1(int n){
     long long int counter = 0;
     int i, j , k =0;
