@@ -23,7 +23,7 @@ def cyk(grammar, sentence):
     
     # Verificamos si la oración pertenece a la gramática
     return 'S' in table[0][n-1]
-
+'''
 # Definimos la gramática
 grammar = {
     'S': ['NP VP'],
@@ -43,3 +43,4 @@ if result:
     print("La oración pertenece a la gramática.")
 else:
     print("La oración no pertenece a la gramática.")
+'''
