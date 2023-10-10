@@ -31,31 +31,29 @@ void ex1(int n){
 
 void ex2(int n){
     if (n>1) {
-        long long int counter = 0;
         int i, j;
         for (i = 1; i <= n; i++){
             for (j = 1; j <= n; j++){
-                counter++;
+                printf("Sequence\n");
                 break;
             }
         }
-        printf("n: %d       counter: %lld\n",n,counter);
+        printf("\nn: %d\n",n);
     }
 }
 
 void ex3(int n){
-    long long int counter = 0;
     int i, j;
     for (i = 1; i <= n/3; i++){
         for (j = 1; j <= n; j+=4){
-            counter++;
+            // printf("Sequence\n");
         }
     }
-    printf("n: %d       counter: %lld\n",n,counter);
+    printf("n: %d\n",n);
 }
 
 int main(){
-    ex3(pow(10.0f,(float) 6));
+    ex1(350000);
     // for (int l = 0; l<7; l++){
     //     ex1(pow(10.0f,(float) l));
     //     ex2(pow(10.0f,(float) l));
