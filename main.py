@@ -4,31 +4,37 @@ from cfg_implementacion import *
 
 def main():
     grammar = [
-        "S -> NP|VP",
-        "VP -> VP|PP|aPa",
-        "VP -> V|NP",
-        "VP -> cooks|drinks|eats|cuts",
-        "PP -> P|NP|$",
-        "NP -> Det|N",
-        "NP -> he|she|$",
-        "V -> cooks|drinks|eats|cuts",
-        "P -> in|with|$",
-        "N -> cat|dog",
-        "N -> beer|cake|juice|meat|soup",
-        "N -> fork|knife|oven|spoon",
-        "Det -> a|the",
+        "S->NP|VP",
+        "VP->VP|PP",
+        "VP->V|NP",
+        "VP->cooks|drinks|eats|cuts",
+        "PP->P|NP",
+        "NP->Det|N",
+        "NP->he|she",
+        "V->cooks|drinks|eats|cuts",
+        "P->in|with|$",
+        "N->cat|dog",
+        "N->beer|cake|juice|meat|soup",
+        "N->fork|knife|oven|spoon",
+        "Det->a|the",
     ]
     #gramatica = gramatica_input()
     
     
     gramatica = arreglar_gramatica(grammar)
-    print(gramatica)
+    #print(gramatica)
     validaciones = validacion_gramatica(gramatica)
     if False in validaciones:
         print("La gramatica no es valida.")
     else:
         sin_produccion_epsilon = eliminar_producciones_epsilon(gramatica)
         print(f"sin producciones epsilon: {sin_produccion_epsilon}")
+        sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
+        print(f"sin producciones unitarias",sin_producciones_unitarias)
+        sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
+        print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
+        chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
+        print(f"Formal normal de chomsky: {chomsky}")
 
 def arreglar_gramatica(gramatica):
     '''
@@ -46,7 +52,7 @@ def arreglar_gramatica(gramatica):
 
     # Recorre las reglas de la gramática
     for regla in gramatica:
-        partes = regla.split(" -> ")
+        partes = regla.split("->")
         no_terminal = partes[0]
         produccion = partes[1]
 
