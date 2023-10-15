@@ -139,7 +139,7 @@ def eliminar_simbolos_inutiles(gramatica_3):
   diccionario_detallado_3 = {} # este representa el diccionario original, pero con las producciones sin el | y en un arreglo
   # obtener los simbolos por aparte, asi como las producciones sin el |
   for clave_3, valor_3 in gramatica_3.items():
-    print(f"{clave_3} -> {valor_3}")
+    #print(f"{clave_3} -> {valor_3}")
     simbolos_3.append(clave_3)
     producciones_3.append(valor_3.split("|"))
 
@@ -229,34 +229,34 @@ def eliminar_simbolos_inutiles(gramatica_3):
   return resultado_sin_inutiles
 
 
-def forma_normal_chomsky(gramatica):
+def forma_normal_chomsky(gramatica_4):
   '''
   '''
-  llaves, derivaciones = [], []
+  llaves_4, derivaciones_4 = [], []
   generador_de_sentencias = {}
-  valores_terminales, listas_caracteres = [], []
+  valores_terminales_4, listas_caracteres_4 = [], []
   # descomponer el diccionario de la gramatica, separando los simbolos de las derivaciones
-  for llave, derivacion in gramatica.items():
-    llaves.append(llave)
-    derivaciones.append(derivacion.split("|")) 
-
+  for llave_4, derivacion_4 in gramatica_4.items():
+    llaves_4.append(llave_4)
+    derivaciones_4.append(derivacion_4.split("|")) 
+  
   # observar cuales son los elementos derivados, es decir, diferentes de lo simbolos
-  for i in range (len(derivaciones)):# recorrer el arreglo de arreglos
-    for elemento in derivaciones[i]: # para cada cadena del arreglo actual
-      for caracter in elemento: # reocrrer la cadena
-        if caracter.isupper(): # verificar si hay simbolos en el caracter
-          continue
+  for i_4 in range (len(derivaciones_4)):# recorrer el arreglo de arreglos
+    for elemento_4 in derivaciones_4[i_4]: # para cada cadena del arreglo actual
+        if elemento_4.islower(): # verificar si la cadena esta en minusculas. Las mayusculas son NoTerm.
+          valores_terminales_4.append(elemento_4.replace(" ",""))
         else:
-          valores_terminales.append(caracter) #de no haber, extraer el valor terminal
+            continue
+  # terminales no repetidos.
+  eliminar_valores_terminales_repetidos = set(valores_terminales_4)
+  valores_terminales_4 = list(eliminar_valores_terminales_repetidos)
 
-  eliminar_valores_terminales_repetidos = set(valores_terminales)
-  valores_terminales = list(eliminar_valores_terminales_repetidos)
   #extraer los elementos que poseen mas de 2 caracteres
   sentencias_con_3_caracteres = []
-  for i in range (len(derivaciones)):
-    for j in range (len(derivaciones[i])):
-      if len(derivaciones[i][j]) >= 3:
-        sentencias_con_3_caracteres.append(derivaciones[i][j])
+  for i in range (len(derivaciones_4)):
+    for j in range (len(derivaciones_4[i])):
+      if len(derivaciones_4[i][j]) >= 3:
+        sentencias_con_3_caracteres.append(derivaciones_4[i][j])
   # eliminar elementos repetidos, en caso de haber
   sentencias_sin_repeticion = set(sentencias_con_3_caracteres)
   sentencias_con_3_caracteres = list(sentencias_sin_repeticion)
@@ -290,29 +290,29 @@ def forma_normal_chomsky(gramatica):
   #print(simbolos_nuevos)
   
   nuevos_simbolos_terminales = {}
-  for i in range(len(valores_terminales)):
-    gramatica["C"+str(i)+str(i)] = valores_terminales[i]
-    nuevos_simbolos_terminales["C"+str(i)+str(i)] = valores_terminales[i]
-  print(f"observando gramatica: {gramatica}")
-  print(f"observando los nuevos valores terminales: {nuevos_simbolos_terminales}")
+  for i in range(len(valores_terminales_4)):
+    gramatica_4["C"+str(i)+str(i)] = valores_terminales_4[i]
+    nuevos_simbolos_terminales["C"+str(i)+str(i)] = valores_terminales_4[i]
+  #print(f"observando gramatica: {gramatica}")
+  #print(f"observando los nuevos valores terminales: {nuevos_simbolos_terminales}")
   # Recorrer las actualizaciones segun chomsky
   for i in range (len(simbolos_nuevos)):
     # recorrer las derivcaionces originales
-    for j in range (len(derivaciones)):
+    for j in range (len(derivaciones_4)):
       # Recorrer cada una de las cadenas
-      for n in range (len(derivaciones[j])):
+      for n in range (len(derivaciones_4[j])):
         # en caso de tener similitud con la modificacion de chomsky
-        if simbolos_nuevos[i][2] == derivaciones[j][n]:
+        if simbolos_nuevos[i][2] == derivaciones_4[j][n]:
           # actualizar el valor de la derivacion al nuevo
-          derivaciones[j][n] = simbolos_nuevos[i][3]
-  print(f"observando las modificaciones a las derivacionces originales: {derivaciones}")
+          derivaciones_4[j][n] = simbolos_nuevos[i][3]
+  #print(f"observando las modificaciones a las derivacionces originales: {derivaciones}")
   # Unir las cadenadas respectivas para volver a su estado original
   derivaciones_con_union = []
 
-  for i in range (len(derivaciones)):
+  for i in range (len(derivaciones_4)):
     derivacionces_segun_simbolos = []
-    for j in range (len(derivaciones[i])):
-      derivacionces_segun_simbolos.append("|".join(derivaciones[i]))
+    for j in range (len(derivaciones_4[i])):
+      derivacionces_segun_simbolos.append("|".join(derivaciones_4[i]))
     derivaciones_con_union.append(derivacionces_segun_simbolos)
   
   # Arreglar para la gramatica 1, pues elimina un valor que no debe
@@ -320,13 +320,13 @@ def forma_normal_chomsky(gramatica):
     limpieza_repetido = set(derivaciones_con_union[i])
     derivaciones_con_union[i] = list(limpieza_repetido)
   
-  for i in range (len(llaves)):
+  for i in range (len(llaves_4)):
     for j in range (len(derivacionces_segun_simbolos)):
       for k in range (len(derivaciones_con_union[i])):
-        gramatica[llaves[i]] = derivaciones_con_union[i][k]
+        gramatica_4[llaves_4[i]] = derivaciones_con_union[i][k]
   #print(gramatica)
   for i in range (len(simbolos_nuevos)):
     for j in range (len(simbolos_nuevos[i])):
-      gramatica[simbolos_nuevos[i][0]] = simbolos_nuevos[i][1]
+      gramatica_4[simbolos_nuevos[i][0]] = simbolos_nuevos[i][1]
   
-  return gramatica
+  return gramatica_4

@@ -1,5 +1,6 @@
 from validacion_gramatica import validacion_gramatica
 from cyk_implementacion import cyk
+from cyk_parse_tree import *
 from cfg_implementacion import *
 
 def main():
@@ -20,7 +21,6 @@ def main():
     ]
     #gramatica = gramatica_input()
     
-    
     gramatica = arreglar_gramatica(grammar)
     #print(gramatica)
     validaciones = validacion_gramatica(gramatica)
@@ -28,13 +28,17 @@ def main():
         print("La gramatica no es valida.")
     else:
         sin_produccion_epsilon = eliminar_producciones_epsilon(gramatica)
-        print(f"sin producciones epsilon: {sin_produccion_epsilon}")
+        #print(f"sin producciones epsilon: {sin_produccion_epsilon}")
         sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
-        print(f"sin producciones unitarias",sin_producciones_unitarias)
+        #print(f"sin producciones unitarias",sin_producciones_unitarias)
         sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
-        print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
+        #print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
         chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
-        print(f"Formal normal de chomsky: {chomsky}")
+        #print(f"Formal normal de chomsky: {chomsky}")
+        validacion_sentencias(sin_simbolos_inutiles)
+        
+        
+        
 
 def arreglar_gramatica(gramatica):
     '''
@@ -71,7 +75,6 @@ def arreglar_gramatica(gramatica):
 def gramatica_input():
     # Inicializa una lista vacía para almacenar las reglas de producción
     gramatica_entrada = []
-
     # Lee las reglas de producción desde la consola hasta que el usuario ingrese una línea en blanco
     while True:
         input_line = input("Ingrese una regla de producción (o presione Enter para finalizar): ")
@@ -80,6 +83,18 @@ def gramatica_input():
         gramatica_entrada.append(input_line.strip())
     return gramatica_entrada
 
+def validacion_sentencias(sin_simbolos_inutiles):
+    for clave_1, valor_1 in  sin_simbolos_inutiles.items():
+        arreglo = []
+        arreglo.append(valor_1)
+        sin_simbolos_inutiles[clave_1] = arreglo
+    print(sin_simbolos_inutiles)
+    while True:
+        oracion = str(input("Ingrese una oracion: "))
+        if not oracion:
+            break
+        #cyk_with_parse_tree(sin_simbolos_inutiles, oracion.split())
+    
 
 if __name__ == "__main__":
     main()

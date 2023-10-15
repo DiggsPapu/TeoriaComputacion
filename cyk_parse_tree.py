@@ -37,7 +37,7 @@ def cyk_with_parse_tree(grammar, sentence):
         return parse_tree  # Devolvemos el árbol Parse Tree
     else:
         return None  # La oración no pertenece a la gramática
-
+'''
 # Definimos la gramática
 grammar = {
     'S': ['NP VP'],
@@ -72,3 +72,4 @@ if parse_tree:
     print_parse_tree(parse_tree)
 else:
     print("La oración no pertenece a la gramática.")
+'''
