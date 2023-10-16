@@ -4,6 +4,10 @@ from cyk_parse_tree import *
 from cfg_implementacion import *
 
 def main():
+    '''
+        En este metodo se inicializa la ejecucion de todo el programa.
+    '''
+    
     grammar = [
         "S->NP|VP",
         "VP->VP|PP",
@@ -19,7 +23,8 @@ def main():
         "N->fork|knife|oven|spoon",
         "Det->a|the",
     ]
-    #gramatica = gramatica_input()
+    
+    #grammar = gramatica_input()
     
     gramatica = arreglar_gramatica(grammar)
     #print(gramatica)
@@ -33,9 +38,9 @@ def main():
         #print(f"sin producciones unitarias",sin_producciones_unitarias)
         sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
         #print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
-        chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
+        chomsky, gramatica_sin_chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
         #print(f"Formal normal de chomsky: {chomsky}")
-        validacion_sentencias(sin_simbolos_inutiles)
+        validacion_sentencias(gramatica_sin_chomsky)
         
         
         
@@ -69,10 +74,17 @@ def arreglar_gramatica(gramatica):
     # Crea una nueva lista de reglas con las producciones agrupadas
     nueva_gramatica = []
     for no_terminal, produccion in producciones.items():
-        nueva_gramatica.append(f"{no_terminal} -> {'|'.join(produccion)}")
+        nueva_gramatica.append(f"{no_terminal}->{'|'.join(produccion)}")
     return nueva_gramatica
 
 def gramatica_input():
+    '''
+        Este metodo sirve para poder ingresar de manera manual la gramatica
+        que servira para el ejercicio.
+
+        Returns:
+        list: los elementos de la gramatica que se han ingresado de manera manual
+    '''
     # Inicializa una lista vacía para almacenar las reglas de producción
     gramatica_entrada = []
     # Lee las reglas de producción desde la consola hasta que el usuario ingrese una línea en blanco
@@ -83,17 +95,25 @@ def gramatica_input():
         gramatica_entrada.append(input_line.strip())
     return gramatica_entrada
 
-def validacion_sentencias(sin_simbolos_inutiles):
-    for clave_1, valor_1 in  sin_simbolos_inutiles.items():
-        arreglo = []
-        arreglo.append(valor_1)
-        sin_simbolos_inutiles[clave_1] = arreglo
-    print(sin_simbolos_inutiles)
+def validacion_sentencias(gramatica_sin_chomsky):
+    '''
+        Este metodo tiene como objetivo la validacion de oraciones,
+        indicando si tal oracion pertenece o no en la gramatica.
+
+        Args:
+        gramatica_sin_chomsky (dict): Diccionario con los elementos no terminales
+        y sus respectivas derivaciones
+    '''
+    gramatica_refactorizada = {}
+
+    for claves_5, valores_5 in gramatica_sin_chomsky.items():       
+        gramatica_refactorizada[claves_5] = valores_5.split("|")
+    #print(gramatica_refactorizada)
     while True:
         oracion = str(input("Ingrese una oracion: "))
+        prueba_cyk(gramatica_refactorizada, oracion)
         if not oracion:
             break
-        #cyk_with_parse_tree(sin_simbolos_inutiles, oracion.split())
     
 
 if __name__ == "__main__":

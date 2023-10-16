@@ -95,6 +95,15 @@ def eliminar_producciones_epsilon(gramatica):
 
 def eliminar_producciones_unitarias(gramatica_2):
   '''
+    Funcion para eliminar las producciones unitarias de la gramatica.
+
+    Args:
+    gramatica_2 (dict): gramatica sin producciones epsilon para ser depurada
+    de las producciones unitarias.
+
+    Returns:
+    resultado_sin_producciones_unitarias (dict): Gramatica depurada de las
+    producciones unitarias 
   '''
   simbolos_2, producciones_2, nuevas_producciones_2 = [], [], []
   resultado_sin_producciones_unitarias = {}
@@ -112,16 +121,12 @@ def eliminar_producciones_unitarias(gramatica_2):
     # recorrer las producciones
     for i_2 in range (len(producciones_2)):
       for j_2 in range (len(producciones_2[i_2])):
-            
-        for simbolo_2 in simbolos_2:
-          # Verificar si hay una produccion unitaria en la derivaciones, segun el simbolo
-          # en este caso, si hay un simbolo, es decir, solo la letra S en una derivaciones
-          # se toma como unitaria.
-          if producciones_2[i_2][j_2] == simbolo_2:
-            producciones_2[i_2][j_2] = gramatica_2[producciones_2[i_2][j_2]]
-            producciones_unitarias_presentes = True
+        if len(producciones_2[i_2][j_2])  < 2 and producciones_2[i_2][j_2].isupper():
+          #print(f"PRODUCCIONES A COMPARAR: {producciones_2[i_2][j_2].isupper()}")
+          producciones_2[i_2][j_2] = gramatica_2[producciones_2[i_2][j_2]]
+          producciones_unitarias_presentes = True
   #print(producciones)
-  
+  #print(f"PRODUCCIONES UNITARIAS DE LA GRAMATICA: {producciones_2}")
   for i_22 in range (len(producciones_2)):
     cadena = "|".join(producciones_2[i_22])
     nuevas_producciones_2.append(cadena)
@@ -133,6 +138,13 @@ def eliminar_producciones_unitarias(gramatica_2):
 
 def eliminar_simbolos_inutiles(gramatica_3):
   '''
+    Este metodo sirve para poder eliminar los elementos inutiles en la gramatica.
+
+    Args:
+    gramatica_3 (dict): Gramatica depurada sin producciones epsilon, ni producciones unitarias
+
+    Returns:
+    resultado_sin_inutiles (dict): Gramatica depurada sin los elementos inutiles.
   '''
   simbolos_3, producciones_3, nuevas_producciones_3 = [], [], []
   resultado_sin_inutiles = {}
@@ -231,14 +243,28 @@ def eliminar_simbolos_inutiles(gramatica_3):
 
 def forma_normal_chomsky(gramatica_4):
   '''
+    Este metodo lleva a la gramatica a su etapa final, que es la forma
+    normal de chomsky.
+
+    Args:
+    gramatica_4 (dict): Gramatica simplificada previament
+
+    Returns:
+    gramatica_4 (dict): Devuelve la gramatica en forma de chomsky
+    gramatica_4_1 (dict): Devuelve la gramatica no forma de chomsky
+
   '''
+
   llaves_4, derivaciones_4 = [], []
-  generador_de_sentencias = {}
-  valores_terminales_4, listas_caracteres_4 = [], []
+  valores_terminales_4 = []
+
+  gramatica_4_1 = {}
   # descomponer el diccionario de la gramatica, separando los simbolos de las derivaciones
+  #print(gramatica_4)
   for llave_4, derivacion_4 in gramatica_4.items():
     llaves_4.append(llave_4)
     derivaciones_4.append(derivacion_4.split("|")) 
+    gramatica_4_1[llave_4] = derivacion_4
   
   # observar cuales son los elementos derivados, es decir, diferentes de lo simbolos
   for i_4 in range (len(derivaciones_4)):# recorrer el arreglo de arreglos
@@ -250,83 +276,21 @@ def forma_normal_chomsky(gramatica_4):
   # terminales no repetidos.
   eliminar_valores_terminales_repetidos = set(valores_terminales_4)
   valores_terminales_4 = list(eliminar_valores_terminales_repetidos)
+  
+  # agregar los nuevos valores no terminales
+  nuevos_noTerminales_4 = {}
+  for i_40 in range(len(valores_terminales_4)):
+    arreglo_4 = []
+    arreglo_4.append(valores_terminales_4[i_40])
+    gramatica_4["C"+str(i_40)] = arreglo_4
+    nuevos_noTerminales_4[valores_terminales_4[i_40]] = "C"+str(i_40)
 
-  #extraer los elementos que poseen mas de 2 caracteres
-  sentencias_con_3_caracteres = []
-  for i in range (len(derivaciones_4)):
-    for j in range (len(derivaciones_4[i])):
-      if len(derivaciones_4[i][j]) >= 3:
-        sentencias_con_3_caracteres.append(derivaciones_4[i][j])
-  # eliminar elementos repetidos, en caso de haber
-  sentencias_sin_repeticion = set(sentencias_con_3_caracteres)
-  sentencias_con_3_caracteres = list(sentencias_sin_repeticion)
+  for i_41 in range(len(derivaciones_4)):
+    for j_41 in range(len(derivaciones_4[i_41])):
+      if derivaciones_4[i_41][j_41] in valores_terminales_4:
+          derivaciones_4[i_41][j_41] = nuevos_noTerminales_4[derivaciones_4[i_41][j_41]]
 
-   # este bloque funciona para poder reemplazar los valores con mas de 2 caracteres
-  persistente = ""
-  sobrante = ""
-  simbolos_nuevos = []
-  # Recorrer cada una de las cadenas
-  for i in range (len(sentencias_con_3_caracteres)):
-    # Recorrer cada carecter de la cadena
-    for j in range (len(sentencias_con_3_caracteres[i])):
-      # 
-      if j == 1 and len(sentencias_con_3_caracteres[i]) >= 3:
-        persistente = sentencias_con_3_caracteres[i][:j]
-        sobrante = sentencias_con_3_caracteres[i][j:]
-        detalles_modificacion = []
-        if len(sobrante) < 3: # modificarlo, en caso de no haber cumplido la condicion y continuar teniendo mas
-          simbolo = "C"+str(i)
-          # almacenar el nuevo simbolo, lo que se va a cambiar, un registro del estado previo de la cadena
-          # y la concatenacion del nuevo valor, a modo de quedar como chomsky
-          detalles_modificacion.append(simbolo)
-          detalles_modificacion.append(sobrante)
-          detalles_modificacion.append(sentencias_con_3_caracteres[i])
-          # concatenar los elementos que no se quitaron con el nuevo simbolo
-          detalles_modificacion.append(persistente+simbolo)
-          simbolos_nuevos.append(detalles_modificacion)
-    # Repetir el ciclo, en caso de no tener un largo de 2
-    if len(persistente) >= 3:
-      sentencias_con_3_caracteres.append(persistente)
-  #print(simbolos_nuevos)
-  
-  nuevos_simbolos_terminales = {}
-  for i in range(len(valores_terminales_4)):
-    gramatica_4["C"+str(i)+str(i)] = valores_terminales_4[i]
-    nuevos_simbolos_terminales["C"+str(i)+str(i)] = valores_terminales_4[i]
-  #print(f"observando gramatica: {gramatica}")
-  #print(f"observando los nuevos valores terminales: {nuevos_simbolos_terminales}")
-  # Recorrer las actualizaciones segun chomsky
-  for i in range (len(simbolos_nuevos)):
-    # recorrer las derivcaionces originales
-    for j in range (len(derivaciones_4)):
-      # Recorrer cada una de las cadenas
-      for n in range (len(derivaciones_4[j])):
-        # en caso de tener similitud con la modificacion de chomsky
-        if simbolos_nuevos[i][2] == derivaciones_4[j][n]:
-          # actualizar el valor de la derivacion al nuevo
-          derivaciones_4[j][n] = simbolos_nuevos[i][3]
-  #print(f"observando las modificaciones a las derivacionces originales: {derivaciones}")
-  # Unir las cadenadas respectivas para volver a su estado original
-  derivaciones_con_union = []
+  for i_42 in range(len(llaves_4)):
+    gramatica_4[llaves_4[i_42]] = derivaciones_4[i_42]
 
-  for i in range (len(derivaciones_4)):
-    derivacionces_segun_simbolos = []
-    for j in range (len(derivaciones_4[i])):
-      derivacionces_segun_simbolos.append("|".join(derivaciones_4[i]))
-    derivaciones_con_union.append(derivacionces_segun_simbolos)
-  
-  # Arreglar para la gramatica 1, pues elimina un valor que no debe
-  for i in range (len(derivaciones_con_union)):
-    limpieza_repetido = set(derivaciones_con_union[i])
-    derivaciones_con_union[i] = list(limpieza_repetido)
-  
-  for i in range (len(llaves_4)):
-    for j in range (len(derivacionces_segun_simbolos)):
-      for k in range (len(derivaciones_con_union[i])):
-        gramatica_4[llaves_4[i]] = derivaciones_con_union[i][k]
-  #print(gramatica)
-  for i in range (len(simbolos_nuevos)):
-    for j in range (len(simbolos_nuevos[i])):
-      gramatica_4[simbolos_nuevos[i][0]] = simbolos_nuevos[i][1]
-  
-  return gramatica_4
+  return gramatica_4, gramatica_4_1
