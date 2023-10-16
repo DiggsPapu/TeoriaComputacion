@@ -64,7 +64,7 @@ def cyk_with_parse_tree(grammar, sentence):
 def prueba_cyk(grammar, sentence):
     '''
         Metodo para realizar la prueba para verificar si una oracion
-        pertence en la gramatica.
+        pertence a la gramatica.
 
         Args:
         grammar (dict): Gramatica previamente simplificada.

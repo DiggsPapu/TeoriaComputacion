@@ -240,7 +240,6 @@ def eliminar_simbolos_inutiles(gramatica_3):
   #print(resultado_sin_inutiles)
   return resultado_sin_inutiles
 
-
 def forma_normal_chomsky(gramatica_4):
   '''
     Este metodo lleva a la gramatica a su etapa final, que es la forma

@@ -41,9 +41,6 @@ def main():
         #print(f"Formal normal de chomsky: {chomsky}")
         validacion_sentencias(gramatica_sin_chomsky)
         
-        
-        
-
 def arreglar_gramatica(gramatica):
     '''
         Esta función toma una lista de reglas de gramática y las reorganiza
