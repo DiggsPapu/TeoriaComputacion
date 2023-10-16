@@ -1,5 +1,4 @@
 from validacion_gramatica import validacion_gramatica
-from cyk_implementacion import cyk
 from cyk_parse_tree import *
 from cfg_implementacion import *
 

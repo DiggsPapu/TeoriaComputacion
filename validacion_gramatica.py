@@ -1,6 +1,13 @@
 import re
 
 def validacion_gramatica(grammars):
+    '''
+        Metodo para validar si se ingresa una gramatica valida, tanto de manera manual
+        como una gramatica directa.
+
+        Args:
+        grammars (list): gramatica ingresada. 
+    '''
     regex_pattern = r'^[\w\s]+->[\w\s\|\$]+$'
     resultados = []
 
