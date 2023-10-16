@@ -1,6 +1,8 @@
 <div align="left">
 
 # Lab 8
+
+</div>
 ## Autor
 
 Diego Andres Alonzo Medinilla   20172
@@ -21,4 +23,4 @@ Se trato del lab 8 para hacer un analisis de algoritmos, en el xlsx estan las gr
 
 ![ex3](https://github.com/DiggsPapu/TeoriaComputacion/assets/84475020/d14e7983-3569-46d2-bcb7-af0f5be10021)
 
-</div>
+
