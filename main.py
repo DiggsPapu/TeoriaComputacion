@@ -25,7 +25,6 @@ def main():
     '''
     gramatica_file = "1.txt"
     grammar = cargar_gramatica(gramatica_file)
-    print(grammar)
     
     #gramatica = arreglar_gramatica(grammar)
     #print(gramatica)
