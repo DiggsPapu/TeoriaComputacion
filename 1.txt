@@ -1,0 +1,5 @@
+E -> T X $
+X -> + T X | e
+T -> F Y
+Y -> * F Y | e
+F -> ( E ) | id

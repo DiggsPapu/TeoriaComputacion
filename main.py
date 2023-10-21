@@ -1,12 +1,12 @@
-from validacion_gramatica import validacion_gramatica
 from cyk_parse_tree import *
 from cfg_implementacion import *
+from fileReader import *
 
 def main():
     '''
         En este metodo se inicializa la ejecucion de todo el programa.
     '''
-    
+    '''
     grammar = [
         "S->NP|VP",
         "VP->VP|PP",
@@ -22,24 +22,24 @@ def main():
         "N->fork|knife|oven|spoon",
         "Det->a|the",
     ]
+    '''
+    gramatica_file = "1.txt"
+    grammar = cargar_gramatica(gramatica_file)
+    print(grammar)
     
-    #grammar = gramatica_input()
-    
-    gramatica = arreglar_gramatica(grammar)
+    #gramatica = arreglar_gramatica(grammar)
     #print(gramatica)
-    validaciones = validacion_gramatica(gramatica)
-    if False in validaciones:
-        print("La gramatica no es valida.")
-    else:
-        sin_produccion_epsilon = eliminar_producciones_epsilon(gramatica)
-        #print(f"sin producciones epsilon: {sin_produccion_epsilon}")
-        sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
-        #print(f"sin producciones unitarias",sin_producciones_unitarias)
-        sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
-        #print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
-        chomsky, gramatica_sin_chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
-        #print(f"Formal normal de chomsky: {chomsky}")
-        validacion_sentencias(gramatica_sin_chomsky)
+    
+    
+    sin_produccion_epsilon = eliminar_producciones_epsilon(grammar)
+    #print(f"sin producciones epsilon: {sin_produccion_epsilon}")
+    #sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
+    #print(f"sin producciones unitarias",sin_producciones_unitarias)
+    #sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
+    #print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
+    #chomsky, gramatica_sin_chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
+    #print(f"Formal normal de chomsky: {chomsky}")
+    #validacion_sentencias(gramatica_sin_chomsky)
         
 def arreglar_gramatica(gramatica):
     '''
@@ -72,24 +72,6 @@ def arreglar_gramatica(gramatica):
     for no_terminal, produccion in producciones.items():
         nueva_gramatica.append(f"{no_terminal}->{'|'.join(produccion)}")
     return nueva_gramatica
-
-def gramatica_input():
-    '''
-        Este metodo sirve para poder ingresar de manera manual la gramatica
-        que servira para el ejercicio.
-
-        Returns:
-        list: los elementos de la gramatica que se han ingresado de manera manual
-    '''
-    # Inicializa una lista vacía para almacenar las reglas de producción
-    gramatica_entrada = []
-    # Lee las reglas de producción desde la consola hasta que el usuario ingrese una línea en blanco
-    while True:
-        input_line = input("Ingrese una regla de producción (o presione Enter para finalizar): ")
-        if not input_line:
-            break
-        gramatica_entrada.append(input_line.strip())
-    return gramatica_entrada
 
 def validacion_sentencias(gramatica_sin_chomsky):
     '''

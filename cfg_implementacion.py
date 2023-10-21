@@ -23,43 +23,35 @@ def eliminar_producciones_epsilon(gramatica):
   '''
   # Encontrar símbolos anulables
 
-  # Separar los no terminales, de las derivaciones, [no Terminal, derivacion]
-  gramatica_separada_1 = []
+  # Separar los no terminales, de las derivaciones, {no Terminal: derivacion]}
+  gramatica_separada_1 = {}
   for gramaticas in gramatica:
-    gramatica_separada_1.append(gramaticas.split("->"))
-
-  #print(gramatica_separada)
+    gramatica_separada_1[gramaticas[0]] = gramaticas[1].split(" ")
 
   # obtencion de las producciones con epsilon, se utiliza $ como epsilon
   anulables_1 = set()
-  # Recorrer el arreglo de arreglos
-  for produccion_1 in range (len(gramatica_separada_1)):
-    # Recorrer los elementos de cada arreglo del arreglo de arreglos
-    for derivacion_1 in gramatica_separada_1[produccion_1]:
-      # Verificar si hay epsilon, [0]->No terminal, [1]-> Terminal/derivacion
-      if '$' in gramatica_separada_1[produccion_1][1]:
-        # En caso de contener epsilon, obtener el valor no terminal y almacenarlo
-        anulables_1.add(gramatica_separada_1[produccion_1][0])
-  #print(f"deteccion de elementos con epsilon: {anulables}")
-  # ---------------------------------------------------
+  # Recorrer el diccionario de la gramatica en busca de epsilon ($)
+  for clave_original, valor_original in gramatica_separada_1.items():
+    # en caso de hallar un epsilon
+    if '$' in valor_original:
+      # almacenar el no terminal del cual proviene
+      anulables_1.add(clave_original)
+
   # Encontrar las nuevas producciones
-  
   nuevas_producciones_1 = []
   resultado_sin_epsilon = {}
   sin_copias_1 = []
     
-  for produccion_1 in gramatica:
-    # Dividir la cadena en "->"
-    partes_1 = produccion_1.split("->")      
-    #obtener el valor no terminal (lado izquierdo de la flecha)
-    non_terminal = partes_1[0].strip()
-    #print(f"simbolo: {non_terminal}")
-    # Obtener las derivaciones que posee el no terminal, lado derecho de la flecha
-    cuerpo_1 = partes_1[1].split("|")
-    #print(f"cuerpo: {cuerpo}")
+  for clave_original_1, valor_original_1 in gramatica:
+    terminal_original = []
+    # Obtener las derivaciones que posee el no terminal
+    if isinstance(valor_original_1, list):      
+      terminal_original.extend(valor_original_1)
+    else:
+      terminal_original.append(valor_original_1)
     nuevo_cuerpo_1 = []
     # leer cada una de las transiciones
-    for derivacion_1_1 in cuerpo_1:
+    for derivacion_1_1 in terminal_original:
       # obtener los no terminales de la lista anulables
       #print(f"derivacion: {derivacion}")
       if "$" in derivacion_1_1:
@@ -89,8 +81,8 @@ def eliminar_producciones_epsilon(gramatica):
     # volver un diccionario a su estado original 
     for i_1 in range (len(nuevas_producciones_1)):
       cadena_1 = "|".join(nuevas_producciones_1[i_1])
-      resultado_sin_epsilon[non_terminal] = cadena_1
-    #print(f"resultado final: {resultado_sin_epsilon}")
+      resultado_sin_epsilon[clave_original_1] = cadena_1
+    print(f"resultado final: {resultado_sin_epsilon}")
   return resultado_sin_epsilon
 
 def eliminar_producciones_unitarias(gramatica_2):
