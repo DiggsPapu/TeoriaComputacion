@@ -26,14 +26,14 @@ def eliminar_producciones_epsilon(gramatica):
   # Separar los no terminales, de las derivaciones, {no Terminal: derivacion]}
   gramatica_separada_1 = {}
   for gramaticas in gramatica:
-    gramatica_separada_1[gramaticas[0]] = gramaticas[1].split(" ")
-
+    gramatica_separada_1[gramaticas[0]] = gramaticas[1].split(" | ")
+  #print(gramatica_separada_1)
   # obtencion de las producciones con epsilon, se utiliza $ como epsilon
   anulables_1 = set()
   # Recorrer el diccionario de la gramatica en busca de epsilon ($)
   for clave_original, valor_original in gramatica_separada_1.items():
     # en caso de hallar un epsilon
-    if '$' in valor_original:
+    if 'e' in valor_original:
       # almacenar el no terminal del cual proviene
       anulables_1.add(clave_original)
 
@@ -46,43 +46,50 @@ def eliminar_producciones_epsilon(gramatica):
     terminal_original = []
     # Obtener las derivaciones que posee el no terminal
     if isinstance(valor_original_1, list):      
-      terminal_original.extend(valor_original_1)
+      terminal_original.extend(valor_original_1.split(" | "))
     else:
       terminal_original.append(valor_original_1)
     nuevo_cuerpo_1 = []
-    #print(terminal_original)
+    
     # leer cada una de las transiciones
     for derivacion_1_1 in terminal_original:
       # obtener los no terminales de la lista anulables
-      #print(f"derivacion: {derivacion}")
-      if "$" in derivacion_1_1:
-        # Ignorar el valor epsilon ($)
-        nuevo_cuerpo_1.append(derivacion_1_1.replace("$",""))
-        continue
-      else:
-        # Recorrer los no terminales que poseen epsilon ($)
-        for noTerminal in anulables_1:
-          #print(f"no terminal: {noTerminal}, derivacaion:{derivacion}")
-          # Verificar si el no terminal esta en la cadena derivable
-          if noTerminal in derivacion_1_1:
-            #print(f"Derivacion: {derivacion_1_1}")
-            #print(f"no terminal: {noTerminal}, derivacaion:{derivacion_1_1}, verdad")
-            # hacer la copia, pero con el caso donde el no terminal es epsilon
-            nuevo_cuerpo_1.append(derivacion_1_1)
-            nuevo_cuerpo_1.append(derivacion_1_1.replace(noTerminal,""))
+      #print(f"derivacion: {derivacion}")        
+      # Recorrer los no terminales que poseen epsilon ($)
+      for noTerminal in anulables_1:
+        #print(f"no terminal: {noTerminal}, derivacaion:{derivacion}")
+        # Verificar si el no terminal esta en la cadena derivable
+        if noTerminal in derivacion_1_1:
+          #print(f"Derivacion: {derivacion_1_1}")
+          #print(f"no terminal: {noTerminal}, derivacaion:{derivacion_1_1}, verdad")
+          # hacer la copia, pero con el caso donde el no terminal es epsilon
+          nuevo_cuerpo_1.append(derivacion_1_1)
+          nuevo_cuerpo_1.append(derivacion_1_1.replace(noTerminal,""))
+
       # agregar la nueva derivacion que se ha generado segun el simbolo
       nuevo_cuerpo_1.append(derivacion_1_1)
+      
+      for modificacion in range (len(nuevo_cuerpo_1)):
+        # Eliminando las producciones epsilon
+        nuevo_cuerpo_1[modificacion] = nuevo_cuerpo_1[modificacion].replace("e","")
+        # eliminando espacios extra
+        nuevo_cuerpo_1[modificacion] = nuevo_cuerpo_1[modificacion].replace("  "," ")
+        # eliminando | que estan de mas y no sirve como concatenacion
+        nuevo_cuerpo_1[modificacion] = nuevo_cuerpo_1[modificacion].replace(" | ","")
+      #print(nuevo_cuerpo_1)
+      #print(f"Nuevo Cuerpo sin epsion: {nuevo_cuerpo_1}")
       # eliminar elementos repetidos
       sin_copias_1 = set(nuevo_cuerpo_1)
       nuevo_cuerpo_1 = list(sin_copias_1)
     # almacenar los valores segun sus claves, en este caso, segun el simbolo
     nuevas_producciones_1.append(nuevo_cuerpo_1)
-    #print(f"nuevas producciones sin epsilon: {nuevas_producciones}")
+    #print(f"nuevas producciones sin epsilon: {nuevas_producciones_1}")
     # volver un diccionario a su estado original 
+
     for i_1 in range (len(nuevas_producciones_1)):
-      cadena_1 = "<--->".join(nuevas_producciones_1[i_1])
+      cadena_1 = "|".join(nuevas_producciones_1[i_1])
       resultado_sin_epsilon[clave_original_1] = cadena_1
-    print(f"resultado final: {resultado_sin_epsilon}")
+  #print(f"resultado final: {resultado_sin_epsilon}")
   return resultado_sin_epsilon
 
 def eliminar_producciones_unitarias(gramatica_2):

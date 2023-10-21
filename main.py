@@ -6,23 +6,6 @@ def main():
     '''
         En este metodo se inicializa la ejecucion de todo el programa.
     '''
-    '''
-    grammar = [
-        "S->NP|VP",
-        "VP->VP|PP",
-        "VP->V|NP",
-        "VP->cooks|drinks|eats|cuts",
-        "PP->P|NP",
-        "NP->Det|N",
-        "NP->he|she",
-        "V->cooks|drinks|eats|cuts",
-        "P->in|with|$",
-        "N->cat|dog",
-        "N->beer|cake|juice|meat|soup",
-        "N->fork|knife|oven|spoon",
-        "Det->a|the",
-    ]
-    '''
     gramatica_file = "1.txt"
     grammar = cargar_gramatica(gramatica_file)
     
@@ -31,9 +14,11 @@ def main():
     
     
     sin_produccion_epsilon = eliminar_producciones_epsilon(grammar)
-    #print(f"sin producciones epsilon: {sin_produccion_epsilon}")
-    #sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
-    #print(f"sin producciones unitarias",sin_producciones_unitarias)
+    for clave_sin_epsilon, valor_sin_epsilon in sin_produccion_epsilon.items():
+        print(f"{clave_sin_epsilon} -> {valor_sin_epsilon}")
+
+    sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
+    print(f"sin producciones unitarias",sin_producciones_unitarias)
     #sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
     #print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
     #chomsky, gramatica_sin_chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
