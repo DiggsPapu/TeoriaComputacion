@@ -283,61 +283,134 @@ def forma_normal_chomsky(gramatica_4):
   llaves_4, derivaciones_4 = [], []
   valores_terminales_4 = []
 
-  gramatica_4_1 = {}
   # descomponer el diccionario de la gramatica, separando los simbolos de las derivaciones
   #print(gramatica_4)
   for llave_4, derivacion_4 in gramatica_4.items():
     llaves_4.append(llave_4)
     derivaciones_4.append(derivacion_4.split("|")) 
-    gramatica_4_1[llave_4] = derivacion_4
   #print(derivaciones_4)
-  patron_no_letras = r'[^a-zA-Z]'
-  patron_letras_minusculas = r'\b[a-z]+\b'
-  caracteres_no_letras = []
-  caracteres_minusuclas = []
 
+  seleccion_regex = opciones()
+  patron_a_utilizar = ""
+  elementos_encontrados_por_regex = []
+  if seleccion_regex == 1:
+    patron_a_utilizar = r'[^a-zA-Z]'
+  elif seleccion_regex == 2:      
+    patron_a_utilizar = r'\b[a-z]+\b'
+  
+  
   # Encontrar los terminales que son diferentes de las letras mayusculas, pues estas representa no terminales
   for i_4 in range (len(derivaciones_4)):
     for elemento_4 in derivaciones_4[i_4]:
-      no_letras = re.findall(patron_no_letras, elemento_4)
-      letras_minusculas = re.findall(patron_letras_minusculas, elemento_4)
-      caracteres_no_letras.extend(no_letras)
-      caracteres_minusuclas.extend(letras_minusculas)
+      # hallar los todos y hacerlos un arreglo
+      elementos_encontrados = re.findall(patron_a_utilizar, elemento_4)
+      elementos_encontrados_por_regex.extend(elementos_encontrados)
 
-  # Eliminar los elementos repetidos
-  conjunto_sin_duplicado_4 = set(caracteres_no_letras)
-  caracteres_no_letras = list(conjunto_sin_duplicado_4)
-  caracteres_no_letras = [elemento for elemento in caracteres_no_letras if elemento != ' ']
-  conjunto_sin_duplicado_41 = set(caracteres_minusuclas)
-  caracteres_minusuclas = list(conjunto_sin_duplicado_41)
+  # Eliminar los elementos repetidos    
+  conjunto_sin_duplicado_4 = set(elementos_encontrados_por_regex)
+  elementos_encontrados_por_regex = list(conjunto_sin_duplicado_4)
+  # eleiminar los espacioes en blanco, en caso de haber
+  elementos_encontrados_por_regex = [elemento for elemento in elementos_encontrados_por_regex if elemento != ' ']
   
-
-  # ----------------------------------------------------------------
-  # observar cuales son los elementos derivados, es decir, diferentes de lo simbolos
-  for i_4 in range (len(derivaciones_4)):# recorrer el arreglo de arreglos
-    for elemento_4 in derivaciones_4[i_4]: # para cada cadena del arreglo actual
-        if elemento_4.islower(): # verificar si la cadena esta en minusculas. Las mayusculas son NoTerm.
-          valores_terminales_4.append(elemento_4.replace(" ",""))
-        else:
-            continue
-  # terminales no repetidos.
-  eliminar_valores_terminales_repetidos = set(valores_terminales_4)
-  valores_terminales_4 = list(eliminar_valores_terminales_repetidos)
-  
+  #print(elementos_encontrados_por_regex)
   # agregar los nuevos valores no terminales
   nuevos_noTerminales_4 = {}
-  for i_40 in range(len(valores_terminales_4)):
-    arreglo_4 = []
-    arreglo_4.append(valores_terminales_4[i_40])
-    gramatica_4["C"+str(i_40)] = arreglo_4
-    nuevos_noTerminales_4[valores_terminales_4[i_40]] = "C"+str(i_40)
 
+  # agregar y crear diccionario. Esto sirve para luego hacer el reemplazo en el dict original  
+  # Lista de letras disponibles
+  letras_disponibles = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+  # Crear un diccionario de mapeo de letras
+  mapeo_letras_4 = {}
+
+  for i_40 in range(len(elementos_encontrados_por_regex)):
+      simbolo = elementos_encontrados_por_regex[i_40]
+      if simbolo not in mapeo_letras_4:
+          # Si el símbolo aún no tiene una letra asignada, toma una de la lista
+          letra_asignada = letras_disponibles.pop(0)
+          
+          if not letras_disponibles:
+              # Si se agotaron las letras, comienza a generar combinaciones de letras
+              nueva_letra = 'A'
+              while nueva_letra in mapeo_letras_4.values():
+                  nueva_letra = chr(ord(nueva_letra) + 1)
+              letra_asignada += nueva_letra
+              
+          mapeo_letras_4[simbolo] = letra_asignada
+      else:
+          # Si el símbolo ya tiene una letra asignada, úsala
+          letra_asignada = mapeo_letras_4[simbolo]
+
+      # Asigna la letra en lugar de "Cn" como nombre para los nuevos símbolos
+      nuevos_noTerminales_4[simbolo] = letra_asignada
+      gramatica_4[letra_asignada] = simbolo
+  # ----------------------------------------------------------------
+  #print(nuevos_noTerminales_4)
+  #print(gramatica_4)
+  # reemplazar los elementos en las derivaciones que corresponda. Por ejemplo * con C1.
   for i_41 in range(len(derivaciones_4)):
     for j_41 in range(len(derivaciones_4[i_41])):
-      if derivaciones_4[i_41][j_41] in valores_terminales_4:
-          derivaciones_4[i_41][j_41] = nuevos_noTerminales_4[derivaciones_4[i_41][j_41]]
+      #print(derivaciones_4[i_41][j_41])
+      cadena_modificada = ""
+      for elemento_gramatica in derivaciones_4[i_41][j_41]:
+        if elemento_gramatica in elementos_encontrados_por_regex:
+          elemento_gramatica = nuevos_noTerminales_4[elemento_gramatica]
+        cadena_modificada += elemento_gramatica
+      derivaciones_4[i_41][j_41] = cadena_modificada
+  
 
-  for i_42 in range(len(llaves_4)):
-    gramatica_4[llaves_4[i_42]] = derivaciones_4[i_42]
+  continuar_cortando = True
+  partes_cortadas = {}
+  while continuar_cortando:
+    continuar_cortando = False
+    for i_42 in range (len(derivaciones_4)):
+      for j_42 in range (len(derivaciones_4[i_42])):
+        # Eliminar los epscioas vacios, por ejemplo D E B -> DEB
+        derivacion_sin_espacios = derivaciones_4[i_42][j_42].replace(" ","")
+        # Obtencion de las cadenas con un largo mayores a 2        
+        if len(derivacion_sin_espacios) > 2:
+          cadena_separada = derivacion_sin_espacios[1:]
+          #print(cadena_separada)
+          # Almacenarlo como un no terminal y su derivacion en la gramatica
+          if len(cadena_separada) == 2 and cadena_separada not in partes_cortadas:
+            partes_cortadas[cadena_separada] = "C"+str(i_42)
+            derivaciones_4.append(cadena_separada)
+            nueva_cadena_4 = derivacion_sin_espacios[0] + " C"+str(i_42)
+            derivaciones_4[i_42][j_42] = nueva_cadena_4
+            #print(derivaciones_4)
+          #continuar_cortando = True
+  # agregar las nuevas claves a la gramatica original
+  for claves_cortadas, valores_cortados in partes_cortadas.items():
+    gramatica_4[valores_cortados] = claves_cortadas
 
-  return gramatica_4, gramatica_4_1
+  for i_44 in range (len(derivaciones_4)):
+    for j_44 in range (len(derivaciones_4[i_44])):
+      valores = derivaciones_4[i_44][j_44].replace(" ","")
+      for claves_nuevas, valores_nuevas in partes_cortadas.items():
+        if claves_nuevas in valores and len(valores) > 2:
+          valores_reemplazados = valores.replace(claves_nuevas, valores_nuevas)
+          # Agrega la cadena con un espacio entre elementos a la lista
+          derivaciones_4[i_44][j_44] = valores_reemplazados[0] + " " + valores_reemplazados[1:]
+          #print(derivaciones_4[i_44][j_44])
+
+  for i_43 in range(len(llaves_4)):
+    cadena = "|".join(derivaciones_4[i_43])
+    gramatica_4[llaves_4[i_43]] = cadena
+  #print(gramatica_4)
+  return gramatica_4
+
+
+def opciones():
+  seleccion = 0
+  repetir = True
+  menu = ["Caracteres","Palabras"]
+  while repetir:
+    print("SELECCIONE UNA DE LAS OPCIONES")
+    for i_opc in range (len(menu)):
+      print(f"{i_opc+1}. {menu[i_opc]}")
+    seleccion = int(input("Ingrese una de las opciones del menu: "))
+    if seleccion < 0 or seleccion > len(menu):
+      print("DEBE INGRESAR UNA OPCION VALIDA")
+    else:
+      repetir = False
+  return seleccion

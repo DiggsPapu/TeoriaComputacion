@@ -25,10 +25,10 @@ def main():
         print(f"{clave_sin_inutiles} -> {valor_sin_inutiles}")
     
     print("\nFORMA NORMAL DE CHOMSKY")
-    chomsky, gramatica_sin_chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
+    chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
     for clave_chomsky, valor_chomsky in chomsky.items():
         print(f"{clave_chomsky} -> {valor_chomsky}")
-    #validacion_sentencias(gramatica_sin_chomsky)
+    validacion_sentencias(chomsky)
 
 def validacion_sentencias(gramatica_sin_chomsky):
     '''
@@ -43,7 +43,7 @@ def validacion_sentencias(gramatica_sin_chomsky):
 
     for claves_5, valores_5 in gramatica_sin_chomsky.items():       
         gramatica_refactorizada[claves_5] = valores_5.split("|")
-    #print(gramatica_refactorizada)
+    print(gramatica_refactorizada)
     while True:
         oracion = str(input("Ingrese una oracion: "))
         prueba_cyk(gramatica_refactorizada, oracion)
