@@ -9,53 +9,26 @@ def main():
     gramatica_file = "1.txt"
     grammar = cargar_gramatica(gramatica_file)
     
-    #gramatica = arreglar_gramatica(grammar)
-    #print(gramatica)
-    
-    
     sin_produccion_epsilon = eliminar_producciones_epsilon(grammar)
+    print("SIN PRODUCCIONES EPSILON")
     for clave_sin_epsilon, valor_sin_epsilon in sin_produccion_epsilon.items():
         print(f"{clave_sin_epsilon} -> {valor_sin_epsilon}")
 
+    print("\nSIN PRODUCCIONES UNITARIAS")
     sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
-    print(f"sin producciones unitarias",sin_producciones_unitarias)
-    #sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
-    #print(f"sin simbolos inutiles: {sin_simbolos_inutiles}")
-    #chomsky, gramatica_sin_chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
-    #print(f"Formal normal de chomsky: {chomsky}")
+    for clave_sin_unitarias, valor_sin_unitarias in sin_producciones_unitarias.items():
+        print(f"{clave_sin_unitarias} -> {valor_sin_unitarias}")
+    
+    print("\nSIN PRODUCCIONES INUTILES")
+    sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
+    for clave_sin_inutiles, valor_sin_inutiles in sin_simbolos_inutiles.items():
+        print(f"{clave_sin_inutiles} -> {valor_sin_inutiles}")
+    
+    print("\nFORMA NORMAL DE CHOMSKY")
+    chomsky, gramatica_sin_chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
+    for clave_chomsky, valor_chomsky in chomsky.items():
+        print(f"{clave_chomsky} -> {valor_chomsky}")
     #validacion_sentencias(gramatica_sin_chomsky)
-        
-def arreglar_gramatica(gramatica):
-    '''
-        Esta función toma una lista de reglas de gramática y las reorganiza
-        de manera que los no terminales se agrupen y no se repitan.
-
-        Args:
-        gramatica (list): Una lista de reglas de gramática en formato "A -> B|C|D".
-
-        Returns:
-        list: Una nueva lista de reglas de gramática con no terminales agrupados.
-    '''
-    # Crea un diccionario para almacenar las producciones de cada no terminal
-    producciones = {}
-
-    # Recorre las reglas de la gramática
-    for regla in gramatica:
-        partes = regla.split("->")
-        no_terminal = partes[0]
-        produccion = partes[1]
-
-        # Si el no terminal ya existe en el diccionario, agrega la producción
-        if no_terminal in producciones:
-            producciones[no_terminal].extend(produccion.split("|"))
-        else:
-            producciones[no_terminal] = produccion.split("|")
-
-    # Crea una nueva lista de reglas con las producciones agrupadas
-    nueva_gramatica = []
-    for no_terminal, produccion in producciones.items():
-        nueva_gramatica.append(f"{no_terminal}->{'|'.join(produccion)}")
-    return nueva_gramatica
 
 def validacion_sentencias(gramatica_sin_chomsky):
     '''

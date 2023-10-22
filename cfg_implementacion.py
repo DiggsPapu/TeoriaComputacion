@@ -1,4 +1,4 @@
-
+import re
 # Función para eliminar producciones epsilon
 def eliminar_producciones_epsilon(gramatica):
   '''
@@ -27,7 +27,7 @@ def eliminar_producciones_epsilon(gramatica):
   gramatica_separada_1 = {}
   for gramaticas in gramatica:
     gramatica_separada_1[gramaticas[0]] = gramaticas[1].split(" | ")
-  #print(gramatica_separada_1)
+  #print(f"Gramatica separada: {gramatica_separada_1}")
   # obtencion de las producciones con epsilon, se utiliza $ como epsilon
   anulables_1 = set()
   # Recorrer el diccionario de la gramatica en busca de epsilon ($)
@@ -41,23 +41,23 @@ def eliminar_producciones_epsilon(gramatica):
   nuevas_producciones_1 = []
   resultado_sin_epsilon = {}
   sin_copias_1 = []
-    
+  #print(f"gramatica original: {gramatica}")
   for clave_original_1, valor_original_1 in gramatica:
     terminal_original = []
     # Obtener las derivaciones que posee el no terminal
     if isinstance(valor_original_1, list):      
-      terminal_original.extend(valor_original_1.split(" | "))
+      terminal_original.extend(valor_original_1.split("|"))
     else:
       terminal_original.append(valor_original_1)
     nuevo_cuerpo_1 = []
-    
+    #print(f"terminal original: {terminal_original}")
     # leer cada una de las transiciones
     for derivacion_1_1 in terminal_original:
       # obtener los no terminales de la lista anulables
-      #print(f"derivacion: {derivacion}")        
+      #print(f"derivacion: {derivacion_1_1}")
       # Recorrer los no terminales que poseen epsilon ($)
       for noTerminal in anulables_1:
-        #print(f"no terminal: {noTerminal}, derivacaion:{derivacion}")
+        #print(f"no terminal: {noTerminal}, derivacaion:{derivacion_1_1}")
         # Verificar si el no terminal esta en la cadena derivable
         if noTerminal in derivacion_1_1:
           #print(f"Derivacion: {derivacion_1_1}")
@@ -68,15 +68,14 @@ def eliminar_producciones_epsilon(gramatica):
 
       # agregar la nueva derivacion que se ha generado segun el simbolo
       nuevo_cuerpo_1.append(derivacion_1_1)
-      
       for modificacion in range (len(nuevo_cuerpo_1)):
         # Eliminando las producciones epsilon
         nuevo_cuerpo_1[modificacion] = nuevo_cuerpo_1[modificacion].replace("e","")
         # eliminando espacios extra
         nuevo_cuerpo_1[modificacion] = nuevo_cuerpo_1[modificacion].replace("  "," ")
         # eliminando | que estan de mas y no sirve como concatenacion
-        nuevo_cuerpo_1[modificacion] = nuevo_cuerpo_1[modificacion].replace(" | ","")
-      #print(nuevo_cuerpo_1)
+        #nuevo_cuerpo_1[modificacion] = nuevo_cuerpo_1[modificacion].replace(" | ","")
+      
       #print(f"Nuevo Cuerpo sin epsion: {nuevo_cuerpo_1}")
       # eliminar elementos repetidos
       sin_copias_1 = set(nuevo_cuerpo_1)
@@ -115,7 +114,7 @@ def eliminar_producciones_unitarias(gramatica_2):
     simbolos_2.append(clave_2)
     producciones_2.append(valor_2.split("|"))
     parejas.append(temporal)
-
+  
     # Arreglando posible error en la gramatica
   for i_02 in range (len(producciones_2)):
     for j_02 in range (len(producciones_2[i_02])):
@@ -128,7 +127,8 @@ def eliminar_producciones_unitarias(gramatica_2):
   # Reajustando gramatica con la modificacion
   for i_020 in range (len(simbolos_2)):
     gramatica_2[simbolos_2[i_020]] = "|".join(producciones_2[i_020])
-
+  # Eliminando los espacios en blanco que estan de mas en la gramatica
+  producciones_2 = [[elemento.strip() for elemento in sublista if elemento.strip()] for sublista in producciones_2]
   #print(f"Observando las producciones: {producciones_2}")
   #print(f"Observando la gramatica: {gramatica_2}")
   producciones_unitarias_presentes = True
@@ -159,7 +159,7 @@ def eliminar_producciones_unitarias(gramatica_2):
   #print(nuevas_producciones)
   for i_222 in range (len(nuevas_producciones_2)):
     resultado_sin_producciones_unitarias[simbolos_2[i_222]] = nuevas_producciones_2[i_222]
-  #print(resultado)
+  #print(resultado_sin_producciones_unitarias)
   return resultado_sin_producciones_unitarias
 
 def eliminar_simbolos_inutiles(gramatica_3):
@@ -290,7 +290,29 @@ def forma_normal_chomsky(gramatica_4):
     llaves_4.append(llave_4)
     derivaciones_4.append(derivacion_4.split("|")) 
     gramatica_4_1[llave_4] = derivacion_4
+  #print(derivaciones_4)
+  patron_no_letras = r'[^a-zA-Z]'
+  patron_letras_minusculas = r'\b[a-z]+\b'
+  caracteres_no_letras = []
+  caracteres_minusuclas = []
+
+  # Encontrar los terminales que son diferentes de las letras mayusculas, pues estas representa no terminales
+  for i_4 in range (len(derivaciones_4)):
+    for elemento_4 in derivaciones_4[i_4]:
+      no_letras = re.findall(patron_no_letras, elemento_4)
+      letras_minusculas = re.findall(patron_letras_minusculas, elemento_4)
+      caracteres_no_letras.extend(no_letras)
+      caracteres_minusuclas.extend(letras_minusculas)
+
+  # Eliminar los elementos repetidos
+  conjunto_sin_duplicado_4 = set(caracteres_no_letras)
+  caracteres_no_letras = list(conjunto_sin_duplicado_4)
+  caracteres_no_letras = [elemento for elemento in caracteres_no_letras if elemento != ' ']
+  conjunto_sin_duplicado_41 = set(caracteres_minusuclas)
+  caracteres_minusuclas = list(conjunto_sin_duplicado_41)
   
+
+  # ----------------------------------------------------------------
   # observar cuales son los elementos derivados, es decir, diferentes de lo simbolos
   for i_4 in range (len(derivaciones_4)):# recorrer el arreglo de arreglos
     for elemento_4 in derivaciones_4[i_4]: # para cada cadena del arreglo actual
