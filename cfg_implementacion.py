@@ -106,25 +106,52 @@ def eliminar_producciones_unitarias(gramatica_2):
   '''
   simbolos_2, producciones_2, nuevas_producciones_2 = [], [], []
   resultado_sin_producciones_unitarias = {}
-
+  parejas = []
   # Obtener los símbolos y producciones del diccionario
   for clave_2, valor_2 in gramatica_2.items():
-    #print(f"{clave} -> {valor}")
+    temporal = []
+    temporal.append(clave_2)
+    temporal.append(clave_2)
     simbolos_2.append(clave_2)
     producciones_2.append(valor_2.split("|"))
+    parejas.append(temporal)
 
+    # Arreglando posible error en la gramatica
+  for i_02 in range (len(producciones_2)):
+    for j_02 in range (len(producciones_2[i_02])):
+      if len(producciones_2[i_02][j_02]) == 2:
+        # eliminar espacio en blanco de la gramatica
+        try:
+          producciones_2[i_02][j_02] = producciones_2[i_02][j_02].replace(" ","")
+        except:
+          pass
+  # Reajustando gramatica con la modificacion
+  for i_020 in range (len(simbolos_2)):
+    gramatica_2[simbolos_2[i_020]] = "|".join(producciones_2[i_020])
+
+  #print(f"Observando las producciones: {producciones_2}")
+  #print(f"Observando la gramatica: {gramatica_2}")
   producciones_unitarias_presentes = True
   # obtener las producciones unitarrias de toda la gramatica
+    # recorrer las producciones
   while producciones_unitarias_presentes:
     producciones_unitarias_presentes = False
-    # recorrer las producciones
     for i_2 in range (len(producciones_2)):
       for j_2 in range (len(producciones_2[i_2])):
-        if len(producciones_2[i_2][j_2])  < 2 and producciones_2[i_2][j_2].isupper():
-          #print(f"PRODUCCIONES A COMPARAR: {producciones_2[i_2][j_2].isupper()}")
-          producciones_2[i_2][j_2] = gramatica_2[producciones_2[i_2][j_2]]
-          producciones_unitarias_presentes = True
-  #print(producciones)
+        for simbolo_2 in simbolos_2:
+          # Verificar si hay una produccion unitaria en la derivaciones, segun el simbolo
+          # en este caso, si hay un simbolo, es decir, solo la letra S en una derivaciones
+          # se toma como unitaria.
+          if producciones_2[i_2][j_2] == simbolo_2:
+            lista_temporal = gramatica_2[producciones_2[i_2][j_2]].split("|")
+            for i_222 in range (len(lista_temporal)):
+              producciones_2[i_2].append(lista_temporal[i_222])
+            producciones_2[i_2].remove(simbolo_2)
+            producciones_unitarias_presentes = True
+                
+  
+  #print(f"Observando producciones modificadas: {producciones_2}")
+  #print(producciones_unitarias_presentes)
   #print(f"PRODUCCIONES UNITARIAS DE LA GRAMATICA: {producciones_2}")
   for i_22 in range (len(producciones_2)):
     cadena = "|".join(producciones_2[i_22])

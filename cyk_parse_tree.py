@@ -101,16 +101,21 @@ def prueba_cyk(grammar, sentence):
 '''
 if __name__ == "__main__":
     # Definicion de una gramatica 
+    
     grammar = {
-        'S': ['NP VP'],
-        'NP': ['Det N', 'NP PP'],
-        'VP': ['V NP', 'VP PP'],
-        'PP': ['P NP'],
-        'Det': ['the', 'a'],
-        'N': ['dog', 'cat', 'bat'],
-        'V': ['chased', 'ate', 'saw'],
-        'P': ['in', 'on', 'with']
+        'E': ['T X', 'F Y', 'L Z', 'id'],
+        'X': ['P W', 'P T'],
+        'T': ['F Y', 'L Z', 'id'],
+        'Y': ['M V', 'M F'],
+        'F': ['L Z', 'id'],
+        'Z': ['E R'],
+        'W': ['T X'],
+        'V': ['F Y'],
+        'L': ['('],
+        'R': [')'],
+        'P': ['+'],
+        'M': ['*']
     }
-    sentence = "the dog chased the cat"
+    sentence = ""
     prueba_cyk(grammar, sentence)
 '''
