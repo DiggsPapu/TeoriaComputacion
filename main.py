@@ -30,7 +30,7 @@ def main():
         print(f"{clave_chomsky} -> {valor_chomsky}")
     validacion_sentencias(chomsky)
 
-def validacion_sentencias(gramatica_sin_chomsky):
+def validacion_sentencias(gramatica_chomsky):
     '''
         Este metodo tiene como objetivo la validacion de oraciones,
         indicando si tal oracion pertenece o no en la gramatica.
@@ -41,12 +41,13 @@ def validacion_sentencias(gramatica_sin_chomsky):
     '''
     gramatica_refactorizada = {}
 
-    for claves_5, valores_5 in gramatica_sin_chomsky.items():       
+    for claves_5, valores_5 in gramatica_chomsky.items():       
         gramatica_refactorizada[claves_5] = valores_5.split("|")
-    print(gramatica_refactorizada)
+    print(f"gramatica refactorizada: {gramatica_refactorizada}")
     while True:
-        oracion = str(input("Ingrese una oracion: "))
-        prueba_cyk(gramatica_refactorizada, oracion)
+        oracion = str(input("Ingrese una oracion:"))
+        print(oracion)
+        prueba_cyk(gramatica_refactorizada, oracion.split())
         if not oracion:
             break
     

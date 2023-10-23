@@ -383,22 +383,32 @@ def forma_normal_chomsky(gramatica_4):
   for claves_cortadas, valores_cortados in partes_cortadas.items():
     gramatica_4[valores_cortados] = claves_cortadas
 
+  # Recorrer el arreglo de arreglos donde estan las derivaciones
   for i_44 in range (len(derivaciones_4)):
+    # Recorrer el arreglo de la derivacion actual
     for j_44 in range (len(derivaciones_4[i_44])):
+      # Eliminar los espaciones en blanco que hayan
       valores = derivaciones_4[i_44][j_44].replace(" ","")
+      # Recorrer los nuevos simbolos para reemplazarlos
       for claves_nuevas, valores_nuevas in partes_cortadas.items():
+        # En caso de habe similitudes, reemplazar el simbolo para hacer de largo 2
         if claves_nuevas in valores and len(valores) > 2:
+          # Reemplazar el simbolo
           valores_reemplazados = valores.replace(claves_nuevas, valores_nuevas)
           # Agrega la cadena con un espacio entre elementos a la lista
           derivaciones_4[i_44][j_44] = valores_reemplazados[0] + " " + valores_reemplazados[1:]
           #print(derivaciones_4[i_44][j_44])
 
+  # Hacerlo mas legible, en sentido de no confundir AA, con A A
+  for claves_cortadas_1, valores_cortados_1 in partes_cortadas.items():
+        gramatica_4[valores_cortados_1] = claves_cortadas_1[0] + " " + claves_cortadas_1[1]
+  
+  # Restaurar la gramatica original
   for i_43 in range(len(llaves_4)):
     cadena = "|".join(derivaciones_4[i_43])
     gramatica_4[llaves_4[i_43]] = cadena
   #print(gramatica_4)
   return gramatica_4
-
 
 def opciones():
   seleccion = 0
@@ -414,3 +424,4 @@ def opciones():
     else:
       repetir = False
   return seleccion
+
