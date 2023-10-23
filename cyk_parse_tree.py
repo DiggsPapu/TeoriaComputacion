@@ -39,7 +39,7 @@ def cyk_with_parse_tree(grammar, sentence):
             return None
 
 def prueba_cyk(grammar, sentence):
-    print(f"gramatica refactorizada DOS: {grammar}")
+    #print(f"gramatica refactorizada DOS: {grammar}")
     start_time = time.time()
     parse_tree = cyk_with_parse_tree(grammar, sentence)
     end_time = time.time()

@@ -1,4 +1,4 @@
-E -> T X F G H
+E -> T X
 X -> + T X | e
 T -> F Y 
 Y -> * F Y | e

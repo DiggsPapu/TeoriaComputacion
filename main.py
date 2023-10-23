@@ -43,10 +43,10 @@ def validacion_sentencias(gramatica_chomsky):
 
     for claves_5, valores_5 in gramatica_chomsky.items():       
         gramatica_refactorizada[claves_5] = valores_5.split("|")
-    print(f"gramatica refactorizada: {gramatica_refactorizada}")
+    #print(f"gramatica refactorizada: {gramatica_refactorizada}")
     while True:
         oracion = str(input("Ingrese una oracion:"))
-        print(oracion)
+        #print(oracion)
         prueba_cyk(gramatica_refactorizada, oracion.split())
         if not oracion:
             break
