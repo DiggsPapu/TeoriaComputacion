@@ -1,23 +1,36 @@
 def cyk_parser(grammar, sentence):
+    # Almacenar las palabras en un arreglo
     words = sentence.split()
+    # Cantidad de numero de palabras que compone la oracion
     n = len(words)
+    # Obtencion de los no terminales de la gramatica
     non_terminals = list(grammar.keys())
+    # almacenar los símbolos no terminales que derivan en subcadenas de la cadena de entrada.
     table = [[set() for _ in range(n)] for _ in range(n)]
 
     # Llenar la diagonal de la tabla con los símbolos terminales
     for i in range(n):
         for non_terminal, productions in grammar.items():
             for production in productions:
+                # verifica si alguna producción de la gramática contiene esa palabra
                 if words[i] in production.split():
+                    # agrega el símbolo no terminal correspondiente a la celda de la tabla.
                     table[i][i].add(non_terminal)
 
     # Completar la tabla
+    # iterar a través de todas las longitudes posibles de subcadenas de la cadena de entrada
     for length in range(2, n + 1):
+        # El bucle exterior se ejecuta para todas las longitudes de subcadenas posibles, 
+        # y el bucle interior se ejecuta para todas las posiciones de inicio i de una subcadena de esa longitud
         for i in range(n - length + 1):
             j = i + length - 1
+            # examinar todas las producciones en la gramática para verificar si A y B 
+            # (dos símbolos no terminales) pueden derivar en las subcadenas de la 
+            # izquierda (i a k) y derecha (k+1 a j) de una subcadena de longitud length
             for k in range(i, j):
                 for non_terminal, productions in grammar.items():
                     for production in productions:
+                        # Se hace para todas las producciones de la gramática que tienen dos símbolos no terminales en el lado derecho
                         if len(production.split()) == 2:
                             A, B = production.split()
                             if A in table[i][k] and B in table[k + 1][j]:

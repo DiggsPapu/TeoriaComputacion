@@ -48,7 +48,7 @@ def validacion_sentencias(gramatica_chomsky):
     while True:
         oracion = str(input("Ingrese una oracion:"))
         #print(oracion)
-        cyk_parser(gramatica_refactorizada, oracion)
+        prueba_cyk(gramatica_refactorizada, oracion.split())
         if not oracion:
             break
     
