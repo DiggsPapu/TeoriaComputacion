@@ -1,11 +1,22 @@
+from print import print_tree
 # Estructura para hacer el arbol
 class ParseTree:
+    '''
+    Clase del nodo para desarrollar el arbol
+    '''
     def __init__(self, label, children=None):
         self.label = label
         self.children = children if children is not None else []
         
 # El algoritmo de CYK  
 def cyk_parser(gramatica:dict, enunciado:str):
+    '''
+    Algoritmo CYK
+    
+    Args:
+    gramatica (diccionario): diccionario en chomsky con la gramática a utilizar
+    enunciado (string): frase que se desea analizar
+    '''
     no_terminal_initial:str = list(gramatica.keys())[0]
     palabras = enunciado.split()
     n = len(palabras)
@@ -38,28 +49,48 @@ def cyk_parser(gramatica:dict, enunciado:str):
         print("NO")
         
 def build_tree(i, j, non_terminal, gramatica, palabras, tabla):
-        if i == j:
+    '''
+    Funcion para construir el arbol
+    
+    Args:
+    i (int): Indice izquierdo
+    j (int): Indice derecho
+    non_terminal (str): No terminal a utilizar
+    gramatica (dict): Gramatica
+    palabras (list): Palabras del enunciado
+    tabla (list): Tabla CYK
+    '''
+    if i == j:
+        for production in gramatica[non_terminal]:
+            elements = production.split(" ")
+            if palabras[i] in elements:
+                palabra = ParseTree(palabras[i])
+                return ParseTree(non_terminal, [palabra])
+            elif len(elements)>1:
+                for element in elements:
+                    if palabras[i] in gramatica[element]:
+                        palabra = ParseTree(palabras[i])
+                        return ParseTree(element, [palabra])
+    else:
+        for k in range(i, j):
             for production in gramatica[non_terminal]:
-                elements = production.split(" ")
-                if palabras[i] in elements:
-                    palabra = ParseTree(palabras[i])
-                    return ParseTree(non_terminal, [palabra])
-                elif len(elements)>1:
-                    for element in elements:
-                        if palabras[i] in gramatica[element]:
-                            palabra = ParseTree(palabras[i])
-                            return ParseTree(element, [palabra])
-        else:
-            for k in range(i, j):
-                for production in gramatica[non_terminal]:
-                    if len(production.split()) == 2:
-                        A, B = production.split()
-                        if A in tabla[i][k] and B in tabla[k + 1][j]:
-                            left_tree = build_tree(i, k, A, gramatica, palabras, tabla)
-                            right_tree = build_tree(k + 1, j, B, gramatica, palabras, tabla)
-                            return ParseTree(non_terminal, [left_tree, right_tree])
-                        
+                if len(production.split()) == 2:
+                    A, B = production.split()
+                    if A in tabla[i][k] and B in tabla[k + 1][j]:
+                        left_tree = build_tree(i, k, A, gramatica, palabras, tabla)
+                        right_tree = build_tree(k + 1, j, B, gramatica, palabras, tabla)
+                        return ParseTree(non_terminal, [left_tree, right_tree])
+# Funcion para construir el arbol
 def construct_parse_tree(tabla, gramatica, start_symbol, palabras):
+    '''
+    Funcion para construir el arbol del parser
+    
+    Args:
+    tabla (list): Tabla CYK
+    gramatica (dict): Gramatica
+    start_symbol (str): Simbolo de comienzo
+    palabras (list): Palabras del enunciado
+    '''
     # Longitud
     n = len(palabras)    
     if tabla != None:
@@ -70,6 +101,16 @@ def construct_parse_tree(tabla, gramatica, start_symbol, palabras):
         return None
 # Es para generar el .dot en el archivo
 def write_node(node:ParseTree, file, nodes_def="",nodes_connection="", nodes_already = []):
+    '''
+    Funcion para escribir el nodo en el archivo dot
+    
+    Args:
+    node (ParseTree): Nodo a escribir
+    file (file): Archivo donde se va a escribir
+    nodes_def (str): Definicion de los nodos ya escritos
+    nodes_connection (str): Conectores entre los nodos ya escritos
+    nodes_already (list): Nodos que ya han sido escritos, se usa para hacer conteo de repeticiones
+    '''
     # Esto sirve porque en el caso de que sean nodos ya usados para generar una palabra en especifico pero se requiere que se vuelvan a usar entonces se usa esto.
     amount_sucesions = nodes_already.count(node.label)
     if amount_sucesions>0:
@@ -100,6 +141,12 @@ def write_node(node:ParseTree, file, nodes_def="",nodes_connection="", nodes_alr
     return nodes_def, nodes_connection
 # Construccion del arbol graphviz
 def build_graphviz_tree(tree:ParseTree):
+    '''
+    Funcion para construir el arbol en graphviz
+    
+    Args:
+    tree (ParseTree): Arbol a construir
+    '''
     # Realiza manualmente la creacion del dot, sin librerias.
     with open("./parse_tree.dot", 'w') as file:
         file.write("digraph AFD{\nnode [shape=circle];\nrankdir=UD;\n")
@@ -107,42 +154,18 @@ def build_graphviz_tree(tree:ParseTree):
         file.write(nodes_def)
         file.write(nodes_connection)
         file.write("}\n")
-        
-def print_tree(tree, level=0):
-    if tree is not None:
-        print("  " * level + tree.label)
-        for child in tree.children:
-            print_tree(child, level + 1)
+# Metodo para validar un enunciado segun cyk
+def validacion_sentencias(gramatica_chomsky):
+    '''
+        Este metodo tiene como objetivo la validacion de oraciones,
+        indicando si tal oracion pertenece o no en la gramatica.
 
-# Gramática
-# gramatica = {
-#     "S": ["NP VP"],
-#     "VP": ["cooks", "cuts", "eats", "V NP", "NTERMINAL1 VP1", "drinks"],
-#     "PP": ["P NP"],
-#     "NP": ["Det N", "he", "she"],
-#     "V": ["cooks", "drinks", "eats", "cuts"],
-#     "P": ["in", "width"],
-#     "N": ["cat", "dog", "beer", "cake", "juice", "meat", "soup", "fork", "knife", "oven", "spoon"],
-#     "Det": ["a", "the"],
-#     "VP1": ["P NP", "PP VP1"],
-#     "NTERMINAL1": ["V NP"]
-# }
-# gramatica = {'S': ['NP VP'], 'VP': ['cooks', 'drinks', 'V NP', 'eats', 'cuts', 'NTERMINAL1 VP1'], 'PP': ['P NP'], 'NP': ['Det N', 'he', 'she'], 'V': ['cooks', 'drinks', 'eats', 'cuts'], 'P': ['in', 'width'], 'N': ['cat', 'dog', 'beer', 'cake', 'juice', 'meat', 'soup', 'fork', 'knife', 'oven', 'spoon'], 'Det': ['a', 'the'], 'VP1': ['PP VP1', 'P NP'], 'NTERMINAL1': ['V NP']}
-
-# # Cadena de entrada
-# enunciado = "he cooks a cake in the oven"
-
-# cyk_parser(gramatica, enunciado)
-
-
-# Usage
-# gramatica = {
-#     "S": ["NP VP", "S and S", "P S"],
-#     "NP": ["I", "he", "she"],
-#     "VP": ["reads", "eats", "sleeps"],
-#     "P": ["before", "after"],
-# }
-
-# enunciado = "he cooks a cake in the oven"
-
-
+        Args:
+        gramatica_sin_chomsky (dict): Diccionario con los elementos no terminales
+        y sus respectivas derivaciones
+    '''
+    while True:
+        oracion = str(input("Ingrese una oracion: "))
+        cyk_parser(gramatica=gramatica_chomsky,enunciado=oracion)
+        if str(input("Desea ingresar algun otro enunciado?:S/N: "))!="S":
+            break

@@ -1,0 +1,9 @@
+S -> A B | VP A | C P A
+A -> a A | P B
+A -> ε
+B -> b B A
+B -> ε
+VP -> c
+C -> d P
+C -> P e | e
+P -> ε

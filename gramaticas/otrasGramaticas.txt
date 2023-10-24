@@ -1,0 +1,64 @@
+# YA PASO ESTA GRAMATICA
+# grammar = [
+#     "S->a S|A|C",
+#     "A->a",
+#     "B->a a",
+#     "C->a C b"
+# ]
+# YA PASO ESTA GRAMATICA
+# grammar = [
+#     "S->A B",
+#     "A->a A A|ε",
+#     "B->b B B|ε"
+# ]
+# YA PASO ESTA GRAMATICA
+# grammar = [
+#     "S->A S A S A|a B|B|S|ε",
+#     "A->B|S|ε",
+#     "B->b|A|B"
+# ]
+# YA PASO
+# grammar = [
+#     "S->A S A S A|c|ε",
+#     "A->b|ε"
+# ]
+# YA PASO
+# grammar = [
+#     "S->a S|A|C",
+#     "A->a",
+#     "B->a a",
+#     "C->a C b"
+# ]
+# YA PASO
+# grammar = [
+# "S->A|ε|Z|b S|Np Detr|a TU",
+# "A->B E|z B|ε|w|Cas",
+# "E->a|ε",
+# "Cas->a Cas b|b S",
+# "Detr->0",
+# "TU->O TU O TU|B A S|u Cas",
+# "O->TU O TU"
+# ]
+# YA PASO ESTA GRAMATICA
+# grammar = [
+#     "E->T X|F Y|L Z|id",
+#     "X->P W|P T",
+#     "T->F Y|L Z|id",
+#     "Y->M V|M F",
+#     "F->L Z|id",
+#     "Z->E R",
+#     "W->T X",
+#     "V->F Y",
+#     "L->(",
+#     "R->)",
+#     "P->+",
+#     "M->*"
+# ]
+# YA PASO LA GRAMATICA
+# grammar = [
+#     "E->T X",
+#     "X->+ T X|e",
+#     "T->F Y",
+#     "Y->* F Y|e",
+#     "F->( E )|id"
+# ]

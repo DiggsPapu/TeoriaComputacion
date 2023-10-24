@@ -1,44 +1,4 @@
-import re
 import copy
-# Metodo que sirve para arreglar la gramatica
-def arreglar_gramatica(gramatica:list)->dict:
-    '''
-    Funcion para arreglar la gramatica dada de manera que la genera en un formato compatible
-    
-    Args:
-    gramatica (list): La gramatica a arreglar
-    '''
-    structure = {}
-    no_terminales = []
-    terminales = []
-    for regla in gramatica:
-        partes = regla.split("->")
-        no_terminal = partes[0]
-        produccion = partes[1]
-        no_terminales.append(no_terminal)
-        if no_terminal not in structure.keys():
-            structure[no_terminal] = produccion.split("|")
-        else:
-            structure[no_terminal].extend(produccion.split("|"))
-        for production in structure[no_terminal]:
-            elementos = production.split(" ")
-            todos = []
-            for elemento in elementos:
-                # Es epsilon
-                if elemento == "ε":
-                    pass
-                # Es no terminal
-                elif re.match('[A-Z]+[a-z]*[0-9]*',elemento):
-                    no_terminales.append(elemento)
-                # Es terminal
-                elif re.match('([a-z]*[0-9]*\ ?)+',elemento):
-                    terminales.append(elemento)
-                    todos.append(1)
-            if len(elementos)==len(todos):
-                terminales.append(production)
-    no_terminales = list(set(no_terminales))
-    terminales = list(set(terminales))
-    return structure, no_terminales, terminales
 # Metodo que sirve para eliminar la recursividad
 def eliminar_recursividad(gramatica:dict, no_terminales:list):
     '''
@@ -221,35 +181,49 @@ def eliminar_producciones_epsilon(gramatica:dict):
     gramatica (dict): Dictioario que contiene la gramatica
     '''
     anulables = []
+    reglas_anulables = []
     # Identificar las producciones epsilon y remover las producciones epsilon
     for no_terminal in gramatica.keys():
         if "ε" in gramatica[no_terminal]:
             # Aniado los que son no anulables a una lista de no anulables
            anulables.append(no_terminal)
            gramatica[no_terminal].remove("ε")
-    for no_terminal, productions in gramatica.items():
+            # Solo tenia una unica produccion a epsilon    
+           if len(gramatica[no_terminal])==0:
+               reglas_anulables.append(no_terminal)
+    # Eliminar reglas borrables
+    for no_terminal_eliminable in reglas_anulables:
+        gramatica.pop(no_terminal_eliminable)
+    # Crear una copia para no perder punteros
+    gramatica_new = copy.deepcopy(gramatica)
+    # Eliminar epsilons y aniadir epsilons resultantes
+    for no_terminal, productions in gramatica_new.items():
         for production in productions:
             elementos = production.split(" ")
             elementos_evaluados = []
-            for elemento in elementos:   
-                        #  Si es anulable y no ha sido evaluado
-                    if elemento in anulables and elemento not in elementos_evaluados:
-                        cantidad_ocurrencias = elementos.count(elemento)
-                        if cantidad_ocurrencias>1:
-                            # Se aniade la produccion 1
-                            epsilon_productions = [production]
-                            epsilon_productions = generar_producciones_epsilon(elementos=elementos,elemento_anulable=elemento,epsilon_productions=epsilon_productions,cantidad_ocurrencias=cantidad_ocurrencias)
-                            gramatica[no_terminal].extend(epsilon_productions)
-                            gramatica[no_terminal] = list(set(gramatica[no_terminal]))
+            for elemento in elementos:
+                # Si es una regla eliminable
+                if elemento in reglas_anulables:
+                    gramatica[no_terminal].remove(production)
+                    break
+                #  Si es anulable y no ha sido evaluado
+                if elemento in anulables and elemento not in elementos_evaluados:
+                    cantidad_ocurrencias = elementos.count(elemento)
+                    if cantidad_ocurrencias>1:
+                        # Se aniade la produccion 1
+                        epsilon_productions = [production]
+                        epsilon_productions = generar_producciones_epsilon(elementos=elementos,elemento_anulable=elemento,epsilon_productions=epsilon_productions,cantidad_ocurrencias=cantidad_ocurrencias)
+                        gramatica[no_terminal].extend(epsilon_productions)
+                        gramatica[no_terminal] = list(set(gramatica[no_terminal]))
+                        elementos_evaluados.append(elemento)
+                    elif cantidad_ocurrencias == 1:
+                        n_p = elementos.copy()
+                        n_p.remove(elemento)
+                        n_p = " ".join(n_p)
+                        if n_p!='':
+                            gramatica[no_terminal].append(n_p)
                             elementos_evaluados.append(elemento)
-                        elif cantidad_ocurrencias == 1:
-                            n_p = elementos.copy()
-                            n_p.remove(elemento)
-                            n_p = " ".join(n_p)
-                            if n_p!='':
-                                gramatica[no_terminal].append(n_p)
-                                elementos_evaluados.append(elemento)
-                                gramatica[no_terminal] = list(set(gramatica[no_terminal]))
+                            gramatica[no_terminal] = list(set(gramatica[no_terminal]))
     return gramatica                   
 # Metodo para determinar si cierto no terminal es alcanzable
 def es_alcanzable(gramatica:dict, no_terminales:list, no_terminal:str, no_terminal_inicial:str, producciones_exploradas:list): 
@@ -549,161 +523,3 @@ def conversion_chomsky(gramatica:dict, terminales:list):
                 gramatica_new[no_terminal].insert(index_p, " ".join(elementos))
     # print(gramatica_new)
     return gramatica_new
-# Metodo para cargar la gramatica
-def cargar_gramatica(nombre_archivo):
-    '''
-    Metodo para cargar la gramatica desde un archivo de texto, de manera que debe de estar separado por espacios
-    
-    Args:
-    nombre_archivo (string): ruta del archivo de entrada
-    '''
-    gramatica = []
-    try:
-        with open(nombre_archivo, 'r') as archivo:
-            for linea in archivo:
-                linea = linea.strip()
-                if validacion_gramatica(linea):
-                    simbolo, cuerpo = linea.split('->')
-                    productions = cuerpo.split("|")
-                    productions = [production.strip() for production in productions]
-                    productions = "|".join(productions)
-                    gramatica.append(simbolo.strip()+"->"+productions)
-                else:
-                    print(f"Error: La producción '{linea}' no es válida.")
-    except FileNotFoundError:
-        print(f"Error: No se pudo encontrar el archivo '{nombre_archivo}'.")
-
-    return gramatica
-# Metodo para validar una gramatica
-def validacion_gramatica(grammars):
-    '''
-        Metodo para validar si se ingresa una gramatica valida, tanto de manera manual
-        como una gramatica directa.
-
-        Args:
-        grammars (list): gramatica ingresada. 
-    '''
-    regex_pattern = r'^[\w\s]+->[\w\s\|\$]+$'
-    resultados = []
-
-    for production in grammars:
-        if re.match(regex_pattern, production):
-            #print(f"La producción '{production}' es válida.")
-            resultados.append(True)
-        else:
-            #print(f"La producción '{production}' no es válida.")
-            resultados.append(False)
-    return resultados
-# YA PASO ESTA GRAMATICA, NO SE PUEDE TRABAJAR PORQUE AL REMOVER LOS EPSILON NO SE POSEEN SUFICIENTES BETAS
-# grammar = [
-#     "E->E + T|T",
-#     "T->T * F|F",
-#     "F->( E )|id|ε"
-# ]
-# YA PASO ESTA GRAMATICA
-# grammar = [
-#     "E->E + T|T",
-#     "T->T * F|F",
-#     "F->( E )|id"
-# ]
-# YA PASO ESTA GRAMATICA
-# grammar = [
-#     "E->E + E",
-#     "E->E * E",
-#     "E->0|1|2|3|4|5|6|7|8|9",
-#     "E->A|E",
-#     "A->A A",
-#     "A->( A )",
-#     "A->a",
-# ]
-# YA PASO ESTA GRAMATICA
-# grammar = [
-#     "S->NP VP",
-#     "VP->VP PP",
-#     "VP->V NP",
-#     "VP->cooks|drinks|eats|cuts",
-#     "PP->P NP",
-#     "NP->Det N",
-#     "NP->he|she",
-#     "V->cooks|drinks|eats|cuts",
-#     "P->in|width",
-#     "N->cat|dog",
-#     "N->beer|cake|juice|meat|soup",
-#     "N->fork,|knife|oven|spoon",
-#     "Det->a|the"
-# ]
-# grammar = [
-#         "S->A B|VP A|C P A",
-#         "A->a A|P B",
-#         "A->ε",
-#         "B->b B A",
-#         "B->ε",
-#         "VP->c",
-#         "C->d P",
-#         "C->P e|e",
-#         "P->ε"
-#     ]
-# YA PASO ESTA GRAMATICA
-# grammar = [
-#     "S->a S|A|C",
-#     "A->a",
-#     "B->a a",
-#     "C->a C b"
-# ]
-# YA PASO ESTA GRAMATICA
-# grammar = [
-#     "S->A B",
-#     "A->a A A|ε",
-#     "B->b B B|ε"
-# ]
-# YA PASO ESTA GRAMATICA
-# grammar = [
-#     "S->A S A S A|a B|B|S|ε",
-#     "A->B|S|ε",
-#     "B->b|A|B"
-# ]
-# YA PASO
-# grammar = [
-#     "S->A S A S A|c|ε",
-#     "A->b|ε"
-# ]
-# YA PASO
-# grammar = [
-#     "S->a S|A|C",
-#     "A->a",
-#     "B->a a",
-#     "C->a C b"
-# ]
-# YA PASO
-# grammar = [
-# "S->A|ε|Z|b S|Np Detr|a TU",
-# "A->B E|z B|ε|w|Cas",
-# "E->a|ε",
-# "Cas->a Cas b|b S",
-# "Detr->0",
-# "TU->O TU O TU|B A S|u Cas",
-# "O->TU O TU"
-# ]
-# YA PASO ESTA GRAMATICA
-# grammar = [
-#     "E->T X|F Y|L Z|id",
-#     "X->P W|P T",
-#     "T->F Y|L Z|id",
-#     "Y->M V|M F",
-#     "F->L Z|id",
-#     "Z->E R",
-#     "W->T X",
-#     "V->F Y",
-#     "L->(",
-#     "R->)",
-#     "P->+",
-#     "M->*"
-# ]
-# YA PASO LA GRAMATICA
-# grammar = [
-#     "E->T X",
-#     "X->+ T X|e",
-#     "T->F Y",
-#     "Y->* F Y|e",
-#     "F->( E )|id"
-# ]
