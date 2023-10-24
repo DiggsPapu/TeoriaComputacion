@@ -1,6 +1,13 @@
 import re
 import copy
+# Metodo que sirve para arreglar la gramatica
 def arreglar_gramatica(gramatica:list)->dict:
+    '''
+    Funcion para arreglar la gramatica dada de manera que la genera en un formato compatible
+    
+    Args:
+    gramatica (list): La gramatica a arreglar
+    '''
     structure = {}
     no_terminales = []
     terminales = []
@@ -32,7 +39,15 @@ def arreglar_gramatica(gramatica:list)->dict:
     no_terminales = list(set(no_terminales))
     terminales = list(set(terminales))
     return structure, no_terminales, terminales
+# Metodo que sirve para eliminar la recursividad
 def eliminar_recursividad(gramatica:dict, no_terminales:list):
+    '''
+    Funcion que sirve para eliminar la recursividad de una gramatica
+    
+    Args:
+    gramatica (dict): La gramatica original
+    no_terminales (list): Los no terminales de la gramatica
+    '''
     new_no_terminales = copy.deepcopy(no_terminales)
     # Idea: encontrar todos los posibles recursivos y almacenarlos en una lista y luego operarlos
     recursivos = {}
@@ -81,8 +96,17 @@ def eliminar_recursividad(gramatica:dict, no_terminales:list):
             return None, new_no_terminales
         
     return gramatica, new_no_terminales
-
+# Metodo que sirve para calcular las parejas unarias que se obtienen con transitividad
 def recursividad_parejas_unarias(gramatica:dict, parejas_unarias:list, unary_pair:tuple, no_terminales:list):
+    '''
+    Funcion para encontrar las parejas unitarias que se encuentra con transitividad, derivando.
+    
+    Args:
+    gramatica (dict): Diccionario de gramaticas
+    parejas_unarias (list): Listado de parejas unarias
+    unary_pair (tuple): Pair de producciones
+    no_terminales (list): No terminales del lenguaje
+    '''
     for production in gramatica[unary_pair[1]]:
         if unary_pair[1] != production and production in no_terminales:
             new_p = (unary_pair[1],production)
@@ -90,7 +114,14 @@ def recursividad_parejas_unarias(gramatica:dict, parejas_unarias:list, unary_pai
                 parejas_unarias.append(new_p)
                 parejas_unarias = recursividad_parejas_unarias(gramatica,parejas_unarias,new_p, no_terminales)
     return parejas_unarias
+# Metodo para crear las parejas unarias
 def crear_parejas_unarias(gramatica:dict):
+    '''
+    Funcion para crear todas las parejas unarias
+    
+    Args:
+    gramatica (dict): Diccionario de gramaticas
+    '''
     parejas_unarias = []
     no_terminales = gramatica.keys()
     for no_terminal, productions in gramatica.items():
@@ -109,7 +140,14 @@ def crear_parejas_unarias(gramatica:dict):
             elif no_terminal == production:
                 gramatica[no_terminal].remove(production)
     return parejas_unarias, gramatica
+# Metodo para remover las producciones unarias
 def remover_producciones_unitarias(gramatica:dict):
+    '''
+    Funcion para remover las producciones unitarias
+    
+    Args:
+    gramatica (dict): Diccionario de gramaticas
+    '''
     parejas_unarias, gramatica = crear_parejas_unarias(gramatica)
     print("Parejas unitarias:"+str(parejas_unarias))
     for no_t1, no_t2 in parejas_unarias:
@@ -123,16 +161,35 @@ def remover_producciones_unitarias(gramatica:dict):
         gramatica_new[no_t1].extend(gramatica[no_t2])
         gramatica_new[no_t1] = list(set(gramatica_new[no_t1]))
     return gramatica_new
-
+# Metodo para que retorne el indice segun la ocurrencia de un elemento en una lista
 def index_ocurrencia_elemento(lista:list, element:str, occurrence_number:int):
+    '''
+    Funcion para determinar el indice de la enesima ocurrencia en una lista.
+    
+    Args:
+    lista (list): Listado a buscar
+    element (str): Elemento a buscar
+    occurrence_number (int): Numero de ocurrencia del elemento
+    '''
     found_count = 0
     for index, item in enumerate(lista):
         if item == element:
             found_count += 1
             if found_count == occurrence_number:
                 return index
-    return -1  # Element not found for the specified occurrence.
+    return -1
+# Metodo para generar todas las posibles producciones epsilon al permutar.
 def generar_producciones_epsilon(elementos:list, elemento_anulable:str, cantidad_ocurrencias:int, epsilon_productions:list = [], num_oc:int=1):
+    '''
+    Funcion para generar todas las posibles producciones permutando las epsilon eliminando los no terminales que derivan en epsilon
+    
+    Args:
+    elementos (list): es una lista que representa una produccion que es epsilon
+    elemento_anulable (str): Es el no terminal anulable
+    cantidad_ocurrencias (int): Es la cantidad de ocurrencias de un no terminal anulable por epsilon
+    epsilon_productions (list): lista con todas las producciones epsilon que se generan
+    num_oc (int): Es el numero de ocurrencia a evaluar.
+    '''
     if num_oc<=cantidad_ocurrencias:
         copy_list = elementos.copy()
         copy_list.pop(index_ocurrencia_elemento(lista=elementos, element=elemento_anulable,occurrence_number=num_oc))
@@ -155,8 +212,14 @@ def generar_producciones_epsilon(elementos:list, elemento_anulable:str, cantidad
     except:
         pass
     return epsilon_productions
-    
+# Metodo para eliminar las producciones epsilon
 def eliminar_producciones_epsilon(gramatica:dict):
+    '''
+    Funcion para eliminar todas las posibles producciones epsilon
+    
+    Args:
+    gramatica (dict): Dictioario que contiene la gramatica
+    '''
     anulables = []
     # Identificar las producciones epsilon y remover las producciones epsilon
     for no_terminal in gramatica.keys():
@@ -164,8 +227,6 @@ def eliminar_producciones_epsilon(gramatica:dict):
             # Aniado los que son no anulables a una lista de no anulables
            anulables.append(no_terminal)
            gramatica[no_terminal].remove("ε")
-    
-    
     for no_terminal, productions in gramatica.items():
         for production in productions:
             elementos = production.split(" ")
@@ -190,9 +251,18 @@ def eliminar_producciones_epsilon(gramatica:dict):
                                 elementos_evaluados.append(elemento)
                                 gramatica[no_terminal] = list(set(gramatica[no_terminal]))
     return gramatica                   
-
-
+# Metodo para determinar si cierto no terminal es alcanzable
 def es_alcanzable(gramatica:dict, no_terminales:list, no_terminal:str, no_terminal_inicial:str, producciones_exploradas:list): 
+    '''
+    Funcion para definir si un no terminal es alcanzable
+    
+    Args:
+    gramatica (diccionario): Gramática en diccionario
+    no_terminal_inicial (str): Símbolo inicial a evaluar dado que es recursivo
+    no_terminal (str): No terminal que se requiere
+    no_terminales (list): Lista de no terminales
+    producciones_exploradas (list): producciones ya exploradas en la funcion recursiva
+    '''
     producciones_exploradas = list(set(producciones_exploradas))
     # Si el no terminal inicial no esta en las producciones exploradas entonces este no terminal y sus producciones no han sido explorados
     if no_terminal_inicial not in producciones_exploradas:
@@ -211,76 +281,19 @@ def es_alcanzable(gramatica:dict, no_terminales:list, no_terminal:str, no_termin
             # Significa que ni siquiera tiene producciones asignadas, por ende es inalcanzable
             return False
     return False
-
-def produccion_es_util(production:str, no_terminales:list, gramatica:dict, reglas_utiles:dict, terminales:list, no_terminales_explorados:list=[]):
-    # Una produccion puede estar compuesta por terminales y no terminales entonces se debe de separar en elementos
-    elements = production.split(" ")
-    # Si tiene un solo elemento -> es una sola produccion y es un terminal
-    if len(elements)==1 and elements[0] in terminales:
-        return True, reglas_utiles
-    # Si no esta en la gramatica entonces no tiene producciones
-    elif len(elements)==1 and elements[0] not in gramatica.keys() and elements[0] in no_terminales:
-        return False, reglas_utiles
-    # Si esta en la gramatica entonces tiene producciones
-    elif len(elements)==1 and elements[0] in gramatica.keys():
-        # Si ya se calculo retornar si es util o no y la regla util
-        if elements[0] in reglas_utiles.keys():
-            return reglas_utiles[element], reglas_utiles
-        else:
-            # Calcular si es util
-            util, reglas_utiles = produccion_es_util(production=gramatica[element],no_terminales=no_terminales,gramatica=gramatica,reglas_utiles=reglas_utiles,terminales=terminales)
-            reglas_utiles[element].append(util)
-            return util, reglas_utiles
-    # Si no tiene elementos entonces no es util
-    elif len(elements)==0:
-        return False, reglas_utiles
-    # Tiene varios elementos en el terminal hay que chequear si todos son terminales e ir a buscar si lleva a algun no terminal valido
-    all_terminals = []
-    for element in elements:
-        # Si es terminal todo bien
-        if element in terminales:
-            all_terminals.append(True)            
-        # Tiene al menos una produccion no terminal entonces se requiere de recursion para chequear a donde lleva y si retorna un terminal entonces se puede seguir chequeando si no no
-        # el diccionario sirve para determinar si llega a algo o no, ademas se tendra que usar recursion si en el diccionario no ha sido calculado aun
-        elif element in no_terminales and element in reglas_utiles.keys() and element not in no_terminales_explorados:
-            # Si ya se calculo si una regla con cierto no_terminal es util entonces se usa esto para calcular y por ende no es necesario meterlo en explorados
-            if len(reglas_utiles[element])>0:
-                all_terminals.append(reglas_utiles[element][0])
-            # Si no se ha calculado
-            else:
-                for prod in gramatica[element]:
-                    # Se calcula si es una produccion util
-                    no_terminales_explorados.append(element)
-                    util, reglas_utiles = produccion_es_util(production=prod,no_terminales=no_terminales,gramatica=gramatica,reglas_utiles=reglas_utiles,terminales=terminales,no_terminales_explorados=no_terminales_explorados)
-                    all_terminals.append(util)
-                    reglas_utiles[element].append(util)
-        # Dado que no esta en reglas utiles
-        elif element not in no_terminales_explorados and element in no_terminales and element not in reglas_utiles.keys():
-            for prod in gramatica[element]:
-                util, reglas_utiles = produccion_es_util(
-                production=prod,
-                no_terminales=no_terminales,
-                gramatica=gramatica,
-                reglas_utiles=reglas_utiles,
-                terminales=terminales
-                )
-                all_terminals.append(util)
-                reglas_utiles[element] = util
-                
-        elif element in no_terminales:
-            for prod in gramatica[element]:
-                util, reglas_utiles = produccion_es_util(production=gramatica[element],no_terminales=no_terminales,gramatica=gramatica,reglas_utiles=reglas_utiles,terminales=terminales)
-                all_terminals.append(util)
-                reglas_utiles[element].append(util)
-        elif element in no_terminales_explorados:
-            return False, reglas_utiles
-        # Su regla no ha sido creada entonces toca calcular
-    # Compuesto full de terminales
-    if False in all_terminals:
-        return False
-    return True
-
+# Metodo para determinar si una produccion en especifico es util
 def prod_util(no_terminal_inicial:str, gramatica:dict, reglas_utiles:dict, no_terminales:list, terminales:list, no_terminales_explorados:list):
+    '''
+    Metodo para determinar si una regla en especifico es util
+    
+    Args:
+    no_terminal_inicial: Es el no terminal inicial, suele ser S.
+    no_terminales: Los no termianles del lenguaje.
+    gramatica: La gramatica del lenguage.
+    reglas_utiles: Reglas utiles previas.
+    terminales: Terminales del lenguaje.
+    no_terminales_explorados: Son todos aquellos no terminales que ya han sido explorados dado que es una funcion recursiva.
+    '''
     s_terminales = set(terminales)
     s_productions = set(gramatica[no_terminal_inicial])
     # si tiene al menos una terminal entonces es una produccion util
@@ -316,13 +329,20 @@ def prod_util(no_terminal_inicial:str, gramatica:dict, reglas_utiles:dict, no_te
                     return True
     # En caso de que se evalue todo y no llegue a nada
     return False
-
+# Metodo para remover las producciones inutiles
 def remover_producciones_inutiles(gramatica:dict, no_terminales:list, terminales:list):
+    '''
+    Metodo para remover las producciones inutiles
+    
+    Args:
+    gramatica (dict): Gramatica del lenguaje
+    no_terminales (list): Listado de los no-terminales
+    terminales (list): Listado de los terminales
+    '''
     reglas_utiles = {}
     # Se supone que es el primero
     no_terminal_inicial = list(gramatica.keys())[0]
     gramatica_new = copy.deepcopy(gramatica)
-    no_terminales_new = list(gramatica.keys())
     no_terminales_inproductivos = []
     # Voy a determinar todos los no terminales en la gramatica que deriven a algo
     for no_terminal, productions in gramatica.items():
@@ -431,8 +451,7 @@ def remover_producciones_inutiles(gramatica:dict, no_terminales:list, terminales
                             gramatica_new[no_terminal].remove(prod)
                             break
                 if False not in eval and len(eval)==len(elements):
-                    reglas_utiles[no_terminal]=True
-                    
+                    reglas_utiles[no_terminal]=True  
     items_gramatica = copy.deepcopy(list(gramatica_new.items()))
     for no_terminal, productions in items_gramatica:
         for production in productions:
@@ -453,8 +472,15 @@ def remover_producciones_inutiles(gramatica:dict, no_terminales:list, terminales
                 if not es_alcanzable_:
                     gramatica_new.pop(no_terminal)
     return gramatica_new
-
+# Metodo para convertir a chomsky
 def conversion_chomsky(gramatica:dict, terminales:list):
+    '''
+    Metodo para convertir a chomsky una gramatica que no tenga producciones epsilon ni producciones unitarias.
+    
+    Args:
+    gramatica (dict): Gramatica en formato de diccionario
+    terminales (list): Terminales de la gramatica
+    '''
     # Paso 1 convertir todas las producciones con terminales de longitud n>2 a no terminales
     gramatica_new = copy.deepcopy(gramatica)
     terminales_trabajados = {}
@@ -521,12 +547,16 @@ def conversion_chomsky(gramatica:dict, terminales:list):
                         elementos.insert(0, no_terminales_trabajados[concat])
                 gramatica_new[no_terminal].pop(index_p)
                 gramatica_new[no_terminal].insert(index_p, " ".join(elementos))
-        
     # print(gramatica_new)
     return gramatica_new
-
+# Metodo para cargar la gramatica
 def cargar_gramatica(nombre_archivo):
-    ''''''
+    '''
+    Metodo para cargar la gramatica desde un archivo de texto, de manera que debe de estar separado por espacios
+    
+    Args:
+    nombre_archivo (string): ruta del archivo de entrada
+    '''
     gramatica = []
     try:
         with open(nombre_archivo, 'r') as archivo:
@@ -544,7 +574,7 @@ def cargar_gramatica(nombre_archivo):
         print(f"Error: No se pudo encontrar el archivo '{nombre_archivo}'.")
 
     return gramatica
-
+# Metodo para validar una gramatica
 def validacion_gramatica(grammars):
     '''
         Metodo para validar si se ingresa una gramatica valida, tanto de manera manual
@@ -564,13 +594,6 @@ def validacion_gramatica(grammars):
             #print(f"La producción '{production}' no es válida.")
             resultados.append(False)
     return resultados
-
-def otro_formato(gramatica:dict):
-    new_gramatica = {}
-    for no_terminal, productions in gramatica.items():
-        new_gramatica[no_terminal]="|".join(productions)
-    print(new_gramatica)
-    return new_gramatica
 # YA PASO ESTA GRAMATICA, NO SE PUEDE TRABAJAR PORQUE AL REMOVER LOS EPSILON NO SE POSEEN SUFICIENTES BETAS
 # grammar = [
 #     "E->E + T|T",
@@ -628,11 +651,11 @@ def otro_formato(gramatica:dict):
 #     "C->a C b"
 # ]
 # YA PASO ESTA GRAMATICA
-grammar = [
-    "S->A B",
-    "A->a A A|ε",
-    "B->b B B|ε"
-]
+# grammar = [
+#     "S->A B",
+#     "A->a A A|ε",
+#     "B->b B B|ε"
+# ]
 # YA PASO ESTA GRAMATICA
 # grammar = [
 #     "S->A S A S A|a B|B|S|ε",
@@ -684,33 +707,3 @@ grammar = [
 #     "Y->* F Y|e",
 #     "F->( E )|id"
 # ]
-# grammar = cargar_gramatica("./NuevaImplementacion/prueba1.txt")
-# grammar = cargar_gramatica("./NuevaImplementacion/prueba2.txt")
-print(grammar)
-gramatica, no_terminales, terminales = arreglar_gramatica(grammar)
-
-print("Gramatica arreglada: "+str(gramatica))
-print("No terminales:"+str(no_terminales))
-print("Terminales:"+str(terminales))
-print("\n___________________________________________________________________________________________________\n")
-gramatica = eliminar_producciones_epsilon(gramatica)
-print("Gramatica sin producciones epsilon: "+str(gramatica))
-print("\n___________________________________________________________________________________________________\n")
-gramatica, no_terminales = eliminar_recursividad(gramatica, no_terminales)
-print("Gramatica sin recursividad:"+str(gramatica))
-print("No terminales:"+str(no_terminales))
-gramatica = eliminar_producciones_epsilon(gramatica)
-print("\n___________________________________________________________________________________________________\n")
-print("Gramatica sin producciones epsilon: "+str(gramatica))
-print("\n___________________________________________________________________________________________________\n")
-gramatica = remover_producciones_unitarias(gramatica)
-print("Gramatica sin producciones unitarias: "+str(gramatica))
-print("\n___________________________________________________________________________________________________\n")
-
-gramatica = remover_producciones_inutiles(gramatica, no_terminales, terminales)
-print("Gramatica sin producciones inutiles: "+str(gramatica))
-print("\n___________________________________________________________________________________________________\n")
-gramatica = conversion_chomsky(gramatica=gramatica, terminales=terminales)
-print("Gramatica en forma normal de chomsky: "+str(gramatica))
-gramatica = otro_formato(gramatica)
-

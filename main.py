@@ -41,11 +41,10 @@ def main():
     gramatica = conversion_chomsky(gramatica=gramatica, terminales=terminales)
     print("Gramatica en forma normal de chomsky: ")
     imprimir_gramatica(gramatica)
-    chomsky = otro_formato(gramatica)
     print("\n___________________________________________________________________________________________________\n")
     print(gramatica)
     print("\n___________________________________________________________________________________________________\n")
-    validacion_sentencias(chomsky)
+    validacion_sentencias(gramatica)
     
 def validacion_sentencias(gramatica_chomsky):
     '''
@@ -56,17 +55,10 @@ def validacion_sentencias(gramatica_chomsky):
         gramatica_sin_chomsky (dict): Diccionario con los elementos no terminales
         y sus respectivas derivaciones
     '''
-    gramatica_refactorizada = {}
-
-    for claves_5, valores_5 in gramatica_chomsky.items():       
-        gramatica_refactorizada[claves_5] = valores_5.split("|")
-    print(f"gramatica refactorizada: {gramatica_refactorizada}")
     while True:
         oracion = str(input("Ingrese una oracion: "))
-        cyk_parser(gramatica=gramatica_refactorizada,enunciado=oracion)
+        cyk_parser(gramatica=gramatica_chomsky,enunciado=oracion)
         if str(input("Desea ingresar algun otro enunciado?:S/N: "))!="S":
             break
-    
-
 if __name__ == "__main__":
     main()
