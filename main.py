@@ -7,7 +7,7 @@ def main():
     '''
         En este metodo se inicializa la ejecucion de todo el programa.
     '''
-    grammar = cargar_gramatica("./gramaticas/prueba1.txt")
+    grammar = cargar_gramatica("./gramaticas/g6.txt")
     print("Reglas a trabajar:")
     for rule in grammar:print(" "+rule)
     print("\n___________________________________________________________________________________________________\n")

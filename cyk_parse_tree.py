@@ -11,7 +11,7 @@ class ParseTree:
         self.children = children if children is not None else []
         
 # El algoritmo de CYK  
-def cyk_parser(gramatica:dict, enunciado:str):
+def cyk_with_parse_tree(gramatica:dict, enunciado:str):
     '''
     Algoritmo CYK
     
@@ -169,7 +169,7 @@ def validacion_sentencias(gramatica_chomsky):
     while True:
         oracion = str(input("Ingrese una oracion: "))
         start_time = t.time()
-        cyk_parser(gramatica=gramatica_chomsky,enunciado=oracion)
+        cyk_with_parse_tree(gramatica=gramatica_chomsky,enunciado=oracion)
         end_time = t.time()
         execution_time = end_time-start_time
         min = execution_time/60
