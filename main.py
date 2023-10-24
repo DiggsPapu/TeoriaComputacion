@@ -1,6 +1,7 @@
 from cyk_parse_tree import *
 from cfg_implementacion import *
 from fileReader import *
+from prueba2 import *
 
 def main():
     '''
@@ -47,7 +48,7 @@ def validacion_sentencias(gramatica_chomsky):
     while True:
         oracion = str(input("Ingrese una oracion:"))
         #print(oracion)
-        prueba_cyk(gramatica_refactorizada, oracion.split())
+        cyk_parser(gramatica_refactorizada, oracion)
         if not oracion:
             break
     
