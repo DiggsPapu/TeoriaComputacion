@@ -14,26 +14,39 @@ def cyk_with_parse_tree(grammar, sentence):
         n = len(sentence)
         
         table = [[set() for _ in range(n)] for _ in range(n)]
-        
+        print(f"tabla incial: {table}")
         for i in range(n):
+            print(f"iterador i: {i}")
             for rule, productions in grammar.items():
+                print(f"diccionario: {rule} -> {productions}")
                 for prod in productions:
+                    print(f"producciones: {prod}")
                     if prod == sentence[i]:
                         table[i][i].add(ParseTreeNode(rule, word=prod))
+                        print(f"tabla: {table}")
         
         for length in range(2, n + 1):
+            print(f"largo: {length}")
             for i in range(n - length + 1):
+                print(f"nuevo iterador i: {i}")
                 j = i + length - 1
                 for k in range(i, j):
+                    print(f"iterador k: {k}")
                     for rule, productions in grammar.items():
+                        print(f"dircionario otra vez: {rule} -> {productions}")
                         for prod in productions:
+                            print(f"producciones 2: {prod}")
                             for left_node in table[i][k]:
+                                print(f"nodo izquierdo: {left_node}")
                                 for right_node in table[k + 1][j]:
+                                    print(f"nodo derecho: {right_node}")
                                     if left_node.symbol + ' ' + right_node.symbol == prod:
+                                        print("VERDADERO")
                                         table[i][j].add(ParseTreeNode(rule, left=left_node, right=right_node))
         
         if 'E' in [node.symbol for node in table[0][n - 1]]:
             parse_tree = list(table[0][n - 1])[0]
+            print(f"FUNCIONA?")
             return parse_tree
         else:
             return None
