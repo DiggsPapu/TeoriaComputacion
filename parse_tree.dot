@@ -1,0 +1,25 @@
+digraph AFD{
+node [shape=circle];
+rankdir=UD;
+S [shape=circle] [label="S"];
+NP [shape=circle] [label="NP"];
+she [shape=circle] [label="she"];
+VP [shape=circle] [label="VP"];
+V [shape=circle] [label="V"];
+drinks [shape=circle] [label="drinks"];
+NP_2 [shape=circle] [label="NP"];
+Det [shape=circle] [label="Det"];
+a [shape=circle] [label="a"];
+N [shape=circle] [label="N"];
+juice [shape=circle] [label="juice"];
+S->NP;
+NP->she;
+S->VP;
+VP->V;
+V->drinks;
+VP->NP_2;
+NP_2->Det;
+Det->a;
+NP_2->N;
+N->juice;
+}

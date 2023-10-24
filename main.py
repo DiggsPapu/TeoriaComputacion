@@ -1,36 +1,52 @@
 from cyk_parse_tree import *
-from cfg_implementacion import *
-from fileReader import *
-from prueba2 import *
+from CFG import *
+from print import *
 
 def main():
     '''
         En este metodo se inicializa la ejecucion de todo el programa.
     '''
-    gramatica_file = "1.txt"
-    grammar = cargar_gramatica(gramatica_file)
-    
-    sin_produccion_epsilon = eliminar_producciones_epsilon(grammar)
-    print("SIN PRODUCCIONES EPSILON")
-    for clave_sin_epsilon, valor_sin_epsilon in sin_produccion_epsilon.items():
-        print(f"{clave_sin_epsilon} -> {valor_sin_epsilon}")
+    grammar = cargar_gramatica("./prueba1.txt")
+    print("Reglas a trabajar:")
+    for rule in grammar:print(" "+rule)
+    print("\n___________________________________________________________________________________________________\n")
+    gramatica, no_terminales, terminales = arreglar_gramatica(grammar)
+    print("Gramatica arreglada: ")
+    imprimir_gramatica(gramatica)
+    print("No terminales:"+str(no_terminales))
+    print("Terminales:"+str(terminales))
+    print("\n___________________________________________________________________________________________________\n")
+    gramatica = eliminar_producciones_epsilon(gramatica)
+    print("Gramatica sin producciones epsilon: ")
+    imprimir_gramatica(gramatica)
+    print("\n___________________________________________________________________________________________________\n")
+    gramatica, no_terminales = eliminar_recursividad(gramatica, no_terminales)
+    print("Gramatica sin recursividad:")
+    imprimir_gramatica(gramatica)
+    print("No terminales:"+str(no_terminales))
+    print("\n___________________________________________________________________________________________________\n")
+    gramatica = eliminar_producciones_epsilon(gramatica)
+    print("Gramatica sin producciones epsilon: ")
+    imprimir_gramatica(gramatica)
+    print("\n___________________________________________________________________________________________________\n")
+    gramatica = remover_producciones_unitarias(gramatica)
+    print("Gramatica sin producciones unitarias: ")
+    imprimir_gramatica(gramatica)
+    print("\n___________________________________________________________________________________________________\n")
 
-    print("\nSIN PRODUCCIONES UNITARIAS")
-    sin_producciones_unitarias = eliminar_producciones_unitarias(sin_produccion_epsilon)
-    for clave_sin_unitarias, valor_sin_unitarias in sin_producciones_unitarias.items():
-        print(f"{clave_sin_unitarias} -> {valor_sin_unitarias}")
-    
-    print("\nSIN PRODUCCIONES INUTILES")
-    sin_simbolos_inutiles = eliminar_simbolos_inutiles(sin_producciones_unitarias)
-    for clave_sin_inutiles, valor_sin_inutiles in sin_simbolos_inutiles.items():
-        print(f"{clave_sin_inutiles} -> {valor_sin_inutiles}")
-    
-    print("\nFORMA NORMAL DE CHOMSKY")
-    chomsky = forma_normal_chomsky(sin_simbolos_inutiles)
-    for clave_chomsky, valor_chomsky in chomsky.items():
-        print(f"{clave_chomsky} -> {valor_chomsky}")
+    gramatica = remover_producciones_inutiles(gramatica, no_terminales, terminales)
+    print("Gramatica sin producciones inutiles: ")
+    imprimir_gramatica(gramatica)
+    print("\n___________________________________________________________________________________________________\n")
+    gramatica = conversion_chomsky(gramatica=gramatica, terminales=terminales)
+    print("Gramatica en forma normal de chomsky: ")
+    imprimir_gramatica(gramatica)
+    chomsky = otro_formato(gramatica)
+    print("\n___________________________________________________________________________________________________\n")
+    print(gramatica)
+    print("\n___________________________________________________________________________________________________\n")
     validacion_sentencias(chomsky)
-
+    
 def validacion_sentencias(gramatica_chomsky):
     '''
         Este metodo tiene como objetivo la validacion de oraciones,
@@ -44,12 +60,11 @@ def validacion_sentencias(gramatica_chomsky):
 
     for claves_5, valores_5 in gramatica_chomsky.items():       
         gramatica_refactorizada[claves_5] = valores_5.split("|")
-    #print(f"gramatica refactorizada: {gramatica_refactorizada}")
+    print(f"gramatica refactorizada: {gramatica_refactorizada}")
     while True:
-        oracion = str(input("Ingrese una oracion:"))
-        #print(oracion)
-        prueba_cyk(gramatica_refactorizada, oracion.split())
-        if not oracion:
+        oracion = str(input("Ingrese una oracion: "))
+        cyk_parser(gramatica=gramatica_refactorizada,enunciado=oracion)
+        if str(input("Desea ingresar algun otro enunciado?:S/N: "))!="S":
             break
     
 
