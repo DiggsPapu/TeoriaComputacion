@@ -1,4 +1,6 @@
 from print import print_tree
+import time as t
+
 # Estructura para hacer el arbol
 class ParseTree:
     '''
@@ -166,6 +168,13 @@ def validacion_sentencias(gramatica_chomsky):
     '''
     while True:
         oracion = str(input("Ingrese una oracion: "))
+        start_time = t.time()
         cyk_parser(gramatica=gramatica_chomsky,enunciado=oracion)
+        end_time = t.time()
+        execution_time = end_time-start_time
+        min = execution_time/60
+        sec = round((execution_time%60),3)
+        hours = min/60
+        print("\nTiempo de ejecucion: \n"+str(hours)+" hrs: "+str(min)+" min: "+str(sec)+" seg")
         if str(input("Desea ingresar algun otro enunciado?:S/N: "))!="S":
             break

@@ -35,7 +35,6 @@ def main():
         print("Gramatica sin producciones unitarias: ")
         imprimir_gramatica(gramatica)
         print("\n___________________________________________________________________________________________________\n")
-
         gramatica = remover_producciones_inutiles(gramatica, no_terminales, terminales)
         print("Gramatica sin producciones inutiles: ")
         imprimir_gramatica(gramatica)
