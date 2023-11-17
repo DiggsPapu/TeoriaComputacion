@@ -1,17 +1,22 @@
-# Theory of Computer Repo
+# Lab 12
 * Diego Andres Alonzo Medinilla   20172
-* Samuel Argueta 211024
-## Labs
-### Lab2
-It is in the branch of Lab2 it was done with Samuel Argueta.
-### Lab3
-It is in the branch of Lab3 it was done with Samuel Argueta. It was about converting a postfix expression to AST.
 
-### Lab4
-It is in the branch of Lab4, it was done with Samuel Argueta, was bout converting to a graph representing an AFN.
+## De qué se trató
 
-### Lab5
-It is in the branch of Lab5, it was done with Samuel Argueta, it was about making some derivations and minimizing some AFD's.
+El laboratorio se trató de utilizar las funciones lambda para resolver algunos ejercicios en haskell.
 
-### Lab7
-It is in its own branch. Contains the resolution of the exercise 2. It was done with Samuel Argueta And Diego Medinilla.
+## Ejercicio 1
+
+![Lab12](./Photos/Ex1.png)
+
+## Ejercicio 2
+
+![Lab12](./Photos/Ex2.png)
+
+## Ejercicio 3
+
+![Lab12](./Photos/Ex3.png)
+
+## Ejercicio 4
+
+![Lab12](./Photos/Ex4.png)
