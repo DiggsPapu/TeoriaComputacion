@@ -1,3 +1,4 @@
+-- Ejercicio 2 para crear una funcion que calcule la potencia N de un set.
 potenciaN :: Int -> [Int] -> [Int]
 potenciaN result = map (^ result) 
 main :: IO ()
