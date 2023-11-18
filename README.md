@@ -20,3 +20,6 @@ El laboratorio se trató de utilizar las funciones lambda para resolver algunos 
 ## Ejercicio 4
 
 ![Lab12](./Photos/Ex4.png)
+
+## Video
+https://youtu.be/-PXAyn-bVAg
