@@ -1,0 +1,240 @@
+q_states:
+  q_list:
+  - "q0"
+  - "q1"
+  - "q2"
+  - "q3"
+  - "q4"
+  - "q5"
+  - "q6"
+  - "q7"
+  - "q8"
+  - "qrej"
+  - "qacc"
+  initial: 'q0'
+  final: 
+  - 'qacc'
+  - 'qrej'
+  accept: 
+  - 'qacc'
+alphabet:
+- '0'
+- '1'
+tape_alphabet:
+- '0'
+- '1'
+- 'X'
+blank: 'X'
+delta:
+  - params:
+      initial_state: 'q0'
+      tape_input: [ '1', 'X', 'X' ]
+    output:
+      final_state: 'q0'
+      tape_output: [ '0', '0', 'X' ]
+      tape_displacement: [ 'R', 'S', 'S' ]
+  
+  - params:
+      initial_state: 'q0'
+      tape_input: [ 'X', '0', 'X' ]
+    output:
+      final_state: 'qacc'
+      tape_output: [ 'X', '0', 'X' ]
+      tape_displacement: [ 'S', 'S', 'S']
+      
+  - params:
+      initial_state: 'q0'
+      tape_input: [ '1', '0', 'X' ]
+    output:
+      final_state: 'q1'
+      tape_output: [ '0', '0', 'X' ]
+      tape_displacement: [ 'R', 'S', 'S' ]
+
+  - params:
+      initial_state: 'q1'
+      tape_input: [ 'X', '0', 'X' ]
+    output:
+      final_state: 'qacc'
+      tape_output: [ 'X', '0', 'X' ]
+      tape_displacement: [ 'S', 'S', 'S' ]
+  
+  - params:
+      initial_state: 'q1'
+      tape_input: [ '1', '0', 'X' ]
+    output:
+      final_state: 'q2'
+      tape_output: [ '1', '0', 'X' ]
+      tape_displacement: [ 'L', 'S', 'S' ]
+
+  - params:
+      initial_state: 'q2'
+      tape_input: [ '0', '0', 'X' ]
+    output:
+      final_state: 'q2'
+      tape_output: [ '0', '0', '0' ]
+      tape_displacement: [ 'L', 'S' , 'L' ]
+
+  - params:
+      initial_state: 'q2'
+      tape_input: [ 'X', '0', 'X' ]
+    output:
+      final_state: 'q3'
+      tape_output: [ 'X', '0', 'X' ]
+      tape_displacement: [ 'R', 'S', 'R' ]
+      
+  - params:
+      initial_state: 'q3'
+      tape_input: [ '0', '0', '0' ]
+    output:
+      final_state: 'q3'
+      tape_output: [ '0', '0', '0' ]
+      tape_displacement: [ 'L', 'S', 'L' ]
+
+  - params:
+      initial_state: 'q3'
+      tape_input: [ 'X', '0', 'X' ]
+    output:
+      final_state: 'q4'
+      tape_output: [ 'X', '0', 'X' ]
+      tape_displacement: [ 'R', 'S', 'R' ]
+
+  - params:
+      initial_state: 'q4'
+      tape_input: [ '0', '0', '0' ]
+    output:
+      final_state: 'q4'
+      tape_output: [ '0', '0', '0' ]
+      tape_displacement: [ 'R', 'S', 'S' ]
+
+  - params:
+      initial_state: 'q4'
+      tape_input: [ '1', '0', '0' ]
+    output:
+      final_state: 'q5'
+      tape_output: [ '1', '0', '0' ]
+      tape_displacement: [ 'S', 'S', 'S' ]
+  
+  - params:
+      initial_state: 'q5'
+      tape_input: [ '1', '0', '0' ]
+    output:
+      final_state: 'q5'
+      tape_output: [ '0', 'X', '0' ]
+      tape_displacement: [ 'L', 'R', 'S' ]
+
+  - params:
+      initial_state: 'q5'
+      tape_input: [ 'X', '0', '0' ]
+    output:
+      final_state: 'q5'
+      tape_output: [ '0', 'X', '0' ]
+      tape_displacement: [ 'L', 'R', 'S' ]
+
+  - params:
+      initial_state: 'q5'
+      tape_input: [ '0', '0', '0' ]
+    output:
+      final_state: 'q5'
+      tape_output: [ '0', '0', '0' ]
+      tape_displacement: [ 'L', 'S', 'S' ]
+  
+  - params:
+      initial_state: 'q5'
+      tape_input: [ 'X', 'X', '0' ]
+    output:
+      final_state: 'q6'
+      tape_output: [ 'X', 'X', '0' ]
+      tape_displacement: [ 'R', 'S', 'S' ]
+  
+  - params:
+      initial_state: 'q5'
+      tape_input: [ '0', 'X', '0' ]
+    output:
+      final_state: 'q5'
+      tape_output: [ '0', 'X', '0' ]
+      tape_displacement: [ 'L', 'S', 'S' ]
+  
+  - params:
+      initial_state: 'q6'
+      tape_input: [ '0', 'X', '0' ]
+    output:
+      final_state: 'q6'
+      tape_output: [ '0', '0', '0' ]
+      tape_displacement: [ 'R', 'L', 'S' ]
+  
+  - params:
+      initial_state: 'q6'
+      tape_input: [ 'X', 'X', '0' ]
+    output:
+      final_state: 'qacc'
+      tape_output: [ 'X', 'X', '0' ]
+      tape_displacement: [ 'S', 'R', 'S' ]
+  
+  - params:
+      initial_state: 'q6'
+      tape_input: [ '1', 'X', '0' ]
+    output:
+      final_state: 'q7'
+      tape_output: [ '1', 'X', '0' ]
+      tape_displacement: [ 'S', 'R', 'S' ]
+      
+  - params:
+      initial_state: 'q7'
+      tape_input: [ '1', '0', '0' ]
+    output:
+      final_state: 'q7'
+      tape_output: [ '0', '0', 'X' ]
+      tape_displacement: [ 'L', 'S', 'R' ]
+
+  - params:
+      initial_state: 'q7'
+      tape_input: [ '0', '0', '0' ]
+    output:
+      final_state: 'q7'
+      tape_output: [ '0', '0', '0' ]
+      tape_displacement: [ 'L', 'S', 'S' ]
+
+  - params:
+      initial_state: 'q7'
+      tape_input: [ 'X', '0', '0' ]
+    output:
+      final_state: 'q7'
+      tape_output: [ '0', '0', 'X' ]
+      tape_displacement: [ 'L', 'S', 'R' ]
+
+  - params:
+      initial_state: 'q7'
+      tape_input: [ 'X', '0', 'X' ]
+    output:
+      final_state: 'q8'
+      tape_output: [ 'X', '0', 'X' ]
+      tape_displacement: [ 'R', 'S', 'S' ]
+
+  - params:
+      initial_state: 'q8'
+      tape_input: [ '0', '0', 'X' ]
+    output:
+      final_state: 'q8'
+      tape_output: [ '0', '0', '0' ]
+      tape_displacement: [ 'R', 'S', 'L' ]
+  
+  - params:
+      initial_state: 'q8'
+      tape_input: [ 'X', '0', 'X' ]
+    output:
+      final_state: 'qacc'
+      tape_output: [ 'X', '0', 'X' ]
+      tape_displacement: [ 'S', 'S', 'R' ]
+      
+  - params:
+      initial_state: 'q8'
+      tape_input: [ '1', '0', 'X' ]
+    output:
+      final_state: 'q4'
+      tape_output: [ '1', '0', 'X' ]
+      tape_displacement: [ 'S', 'S', 'R' ]
+      
+simulation_strings:
+- '1111111'
+- 'XXXXX'
+- 'XXXXX'
