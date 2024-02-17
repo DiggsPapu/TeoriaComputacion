@@ -6,11 +6,10 @@
 
 Reader and parser for yaml files
 '''
-from TMachine import TuringMachine
 from MultiTapeTMachine import *
 from graphviz import Digraph
 import yaml
-def createTouringMultiTapeFromFile(filename) -> TuringMachine: 
+def createTouringMultiTapeFromFile(filename) -> MultiTapeTuringMachine: 
     '''
     Lee un archivo yaml, retorna una maquina de touring com la 
     imformación leída en el yaml
@@ -31,25 +30,7 @@ def createTouringMultiTapeFromFile(filename) -> TuringMachine:
         # print(transition_function)
         
         return MultiTapeTuringMachine(tapes= simulation_strings, blank_symbol= blank_symbol, initial_state = inicial, final_states=final,transition_function= transition_function, accept_states= acc)
-    
-def createTouringFromFile(filename) -> TuringMachine: 
-    '''
-    Lee un archivo yaml, retorna una maquina de touring com la 
-    imformación leída en el yaml
-    '''
-
-    with open(filename, 'r') as yaml_file:
-        data = yaml.load(yaml_file,Loader=yaml.FullLoader)
-        inicial = data['q_states']['initial']
-        final = {val for val in data['q_states']['final']}
-        acc = {val for val in data['q_states']['accept']}
-        blank_symbol = data['blank']
-        transition_function = {}
-        simulation_strings = data['simulation_strings']
-        for params in data['delta']:
-            transition_function[(params['params']['initial_state'], params['params']['tape_input'])] = (params['output']['final_state'], params['output']['tape_output'], params['output']['tape_displacement'])
-        return TuringMachine(simulation_strings, blank_symbol, inicial, final, transition_function,acc)    
-    
+  
 def create_turing_machine_graph(yaml_file):
     with open(yaml_file, 'r') as file:
         data = yaml.safe_load(file)
